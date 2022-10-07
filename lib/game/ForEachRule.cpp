@@ -1,11 +1,17 @@
 using namespace std;
 
-class ForEachRule : public IRule
+class ForEachRule final : public IRule
 {
     public:
-        void executeRule()
+        void executeRule() override
         {
-            
+            for(auto rule: ruleList)
+            {
+                //execute some rule
+            }
         }
+
     private:
+        //list object to operate on
+        vector ruleList;
 }
