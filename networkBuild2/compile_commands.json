@@ -1,0 +1,27 @@
+[
+{
+  "directory": "/media/sf_cmpt373/socialGame/social-gaming/networkBuild2/lib/networking",
+  "command": "/usr/bin/c++ -DBOOST_SYSTEM_DYN_LINK -DBOOST_SYSTEM_NO_LIB -I/media/sf_cmpt373/socialGame/social-gaming/lib/networking/include -I/media/sf_cmpt373/socialGame/social-gaming/lib/networking/src  -Wall -fno-rtti -std=gnu++17 -o CMakeFiles/networking.dir/src/Server.cpp.o -c /media/sf_cmpt373/socialGame/social-gaming/lib/networking/src/Server.cpp",
+  "file": "/media/sf_cmpt373/socialGame/social-gaming/lib/networking/src/Server.cpp"
+},
+{
+  "directory": "/media/sf_cmpt373/socialGame/social-gaming/networkBuild2/lib/networking",
+  "command": "/usr/bin/c++ -DBOOST_SYSTEM_DYN_LINK -DBOOST_SYSTEM_NO_LIB -I/media/sf_cmpt373/socialGame/social-gaming/lib/networking/include -I/media/sf_cmpt373/socialGame/social-gaming/lib/networking/src  -Wall -fno-rtti -std=gnu++17 -o CMakeFiles/networking.dir/src/Client.cpp.o -c /media/sf_cmpt373/socialGame/social-gaming/lib/networking/src/Client.cpp",
+  "file": "/media/sf_cmpt373/socialGame/social-gaming/lib/networking/src/Client.cpp"
+},
+{
+  "directory": "/media/sf_cmpt373/socialGame/social-gaming/networkBuild2/tools/chatserver",
+  "command": "/usr/bin/c++  -I/media/sf_cmpt373/socialGame/social-gaming/lib/networking/include  -Wall -fno-rtti -std=gnu++17 -o CMakeFiles/chatserver.dir/chatserver.cpp.o -c /media/sf_cmpt373/socialGame/social-gaming/tools/chatserver/chatserver.cpp",
+  "file": "/media/sf_cmpt373/socialGame/social-gaming/tools/chatserver/chatserver.cpp"
+},
+{
+  "directory": "/media/sf_cmpt373/socialGame/social-gaming/networkBuild2/tools/chatclient",
+  "command": "/usr/bin/c++  -I/media/sf_cmpt373/socialGame/social-gaming/lib/networking/include  -Wall -fno-rtti -std=gnu++17 -o CMakeFiles/chatclient.dir/chatclient.cpp.o -c /media/sf_cmpt373/socialGame/social-gaming/tools/chatclient/chatclient.cpp",
+  "file": "/media/sf_cmpt373/socialGame/social-gaming/tools/chatclient/chatclient.cpp"
+},
+{
+  "directory": "/media/sf_cmpt373/socialGame/social-gaming/networkBuild2/tools/chatclient",
+  "command": "/usr/bin/c++  -I/media/sf_cmpt373/socialGame/social-gaming/lib/networking/include  -Wall -fno-rtti -std=gnu++17 -o CMakeFiles/chatclient.dir/ChatWindow.cpp.o -c /media/sf_cmpt373/socialGame/social-gaming/tools/chatclient/ChatWindow.cpp",
+  "file": "/media/sf_cmpt373/socialGame/social-gaming/tools/chatclient/ChatWindow.cpp"
+}
+]

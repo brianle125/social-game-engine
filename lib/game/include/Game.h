@@ -7,8 +7,13 @@ namespace gameModel {
 		const std::string name;
 		const int minimumPlayers;
 		const int maximumPlayers;
-		 
-		//method to create List of Rules
+
+		Game(std::string n, int min, int max, bool aud) : name(n), minimumPlayers(min), 
+			maximumPlayers(max), audience(aud) {}  
+		~Game();
+
+		void createRules();
+		void update();
 
 	private:
 		
@@ -18,6 +23,7 @@ namespace gameModel {
 		//dictionary of setup
 
 		//dictionary of constants
+		
 		//dictionary of variables
 		 
 		//List of Rules
