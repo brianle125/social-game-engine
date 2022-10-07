@@ -8,6 +8,7 @@ vector<string> Reverse::getList()
     return list;
 }
 
+// TODO: remove set and use constructor instead?
 void Reverse::setList(vector<string> newList)
 {
     list = newList;
