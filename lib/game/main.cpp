@@ -1,12 +1,14 @@
 #include <GameCreator.h>
-
+#include <iostream>
 using namespace std;
 
-//testing purposes
+//THIS IS A TESTING FUNCTION
 int
-main() {
+main(int argc, char *argv[]) {
 	GameCreator creator;
-	std::string filename = "games/zen.json";
-	creator.createGame(filename);
+	std::string filename(argv[1]);
+	gameModel::Game newGame = creator.createGame(filename);
+
+	newGame.printGame();
 	return 0;
 }
