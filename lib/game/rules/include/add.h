@@ -26,6 +26,6 @@ namespace rules{
 	    private:
             std::string target;
             int value;
-            gameModel::Game game;
+            gameModel::Game& game;
 	};
 }
