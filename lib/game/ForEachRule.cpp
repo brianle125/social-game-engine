@@ -1,24 +1,14 @@
-#include "include/IRule.h"
+#include "include/ForEachRule.h"
 #include <vector>
 
 using namespace std;
 
-class ForEachRule final : public IRule
+ForEachRule::ForEachRule(vector<string> & list) : ruleList(list) {}
+
+void ForEachRule::ExecuteRule() 
 {
-    public:
-        rules::ForEachRule(vector<string> list, auto elem) : ruleList(list), elementObj(elem) {}
-
-        void rules::executeRule() override
-        {
-            for(auto rule: ruleList)
-            {
-                //execute some rule
-                rule.run();
-            }
-        }
-
-    private:
-        //list object to operate on
-        vector<string> ruleList;
-        auto elementObj; 
+    for(auto rule: ruleList)
+    {
+        //execute rule; todo
+    }
 }

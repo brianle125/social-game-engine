@@ -4,7 +4,7 @@ namespace rules {
 
 	class IRule {
 	public:
-		virtual void executeRule();
+		virtual void ExecuteRule();
 
 		~IRule();
 

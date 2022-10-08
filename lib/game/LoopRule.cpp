@@ -1,22 +1,17 @@
-using namespace std;
-#include "include/IRule.h"
+#include "include/LoopRule.h"
 #include <vector>
 
-class LoopRule final: public IRule
+using namespace std;
+
+LoopRule::LoopRule(vector<string>& list, bool con) : ruleList(list), failCondition(con) {}
+
+void LoopRule::ExecuteRule() 
 {
-    public:
-        rules::LoopRule(vector<string> list, bool con) : ruleList(list), failCondition(con) {}
-        void rules::executeRule() override
-        {
-            int idx = 0;
-            while(!failCondition && idx < ruleList.size())
-            {
-                //execute rules in the ruleList 
-                //ruleList[idx].run();
-                idx++;
-            }
-        }
-    private:
-        vector<string> ruleList;
-        bool failCondition;
-};
+    int idx = 0;
+    while(!failCondition && idx < ruleList.size())
+    {
+        //execute rules in the ruleList 
+        //ruleList[idx].run();
+        idx++;
+    }
+}

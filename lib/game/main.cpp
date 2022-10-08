@@ -1,4 +1,5 @@
 #include <GameCreator.h>
+#include <IRule.h>
 #include <iostream>
 using namespace std;
 
@@ -9,6 +10,10 @@ main(int argc, char *argv[]) {
 	std::string filename(argv[1]);
 	gameModel::Game newGame = creator.createGame(filename);
 
+	vector<string> list = {"test1"};
+	ParallelForRule parallel(list);
+
+	parallel.executeRule();
 	newGame.printGame();
 	return 0;
 }
