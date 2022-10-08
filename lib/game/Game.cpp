@@ -1,7 +1,8 @@
+#include "Game.h"
 
 using namespace std;
 
-void gameModel::createRules()
+void gameMode::createRules()
 {
 
 }

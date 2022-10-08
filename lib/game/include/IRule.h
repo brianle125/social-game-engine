@@ -9,7 +9,5 @@ namespace rules {
 		~IRule();
 
 	private:
-
-
 	};
 }
