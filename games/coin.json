@@ -1,0 +1,44 @@
+
+
+{
+  "configuration": {
+    "name": "coin flip",
+    "player count": {"min": 2, "max": 2},
+    "audience": false,
+    "setup": {
+      "Rounds": 1
+    }
+  },
+
+  "constants": {
+    "coin": [
+      { "name": "heads",     "player": "1"},
+      { "name": "tails",    "player": "2"}
+    ]
+  },
+
+  "variables": {
+    "winnerSide": []
+    },
+
+  "per-player": {},
+
+  "per-audience": {},
+
+  "rules": 
+  [{ "rule": "shuffle",
+    "List": "coin"
+    }, 
+
+    { "rule": "deal",
+    "from": "coin",
+    "to": "winnerSide",
+     "count": 1
+     },
+
+     { "rule": "global-message",
+     "value": "{winnerSide.elements.name} won"
+     }
+    ]
+
+}
