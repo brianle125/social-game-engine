@@ -20,7 +20,7 @@ namespace gameModel {
 		//dictionary of constants
 		//dictionary of variables
 		 
-		//List of Rules
+		std::vector<IRule> rules;
 
 	};
 }
