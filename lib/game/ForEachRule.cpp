@@ -1,5 +1,6 @@
 using namespace std;
 #include "IRule.h"
+#include <vector>
 
 class ForEachRule final : public IRule
 {
