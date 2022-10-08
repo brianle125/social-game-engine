@@ -1,12 +1,12 @@
 using namespace std;
-#include "IRule.h"
+#include "include/IRule.h"
 #include <vector>
 
 class LoopRule final: public IRule
 {
     public:
-        LoopRule(vector<string> list, bool con) : ruleList(list), failCondition(con) {}
-        void executeRule() override
+        rules::LoopRule(vector<string> list, bool con) : ruleList(list), failCondition(con) {}
+        void rules::executeRule() override
         {
             int idx = 0;
             while(!failCondition && idx < ruleList.size())

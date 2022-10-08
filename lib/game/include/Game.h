@@ -8,12 +8,11 @@ namespace gameModel {
 		const int minimumPlayers;
 		const int maximumPlayers;
 
-		Game(std::string n, int min, int max, bool aud) : name(n), minimumPlayers(min), 
-			maximumPlayers(max), audience(aud) {}  
-		~Game();
+		Game(std::string gameName, int gameMinimumPlayers, int gameMaximumPlayers, bool gameAudience) noexcept;
 
-		void createRules();
-		void update();
+		void printGame();
+		 
+		//method to create List of Rules
 
 	private:
 		
@@ -26,7 +25,7 @@ namespace gameModel {
 		
 		//dictionary of variables
 		 
-		//List of Rules
+		//std::vector<IRule> rules;
 
 	};
 }

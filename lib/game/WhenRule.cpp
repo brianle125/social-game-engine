@@ -1,16 +1,16 @@
 using namespace std;
-#include "IRule.h"
+#include "include/IRule.h"
 #include <vector>
 
 class WhenRule final : public IRule
 {
     public:
-        WhenRule(bool con) : condition(con) {}
-        void executeRule() override
+        rules::WhenRule(bool con) : condition(con) {}
+        void rules::executeRule() override
         {
             if(condition)
             {
-                //execute rule here
+                //TODO: execute rule here
             }
         }
     private:

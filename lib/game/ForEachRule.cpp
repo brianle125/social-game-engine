@@ -1,13 +1,14 @@
-using namespace std;
-#include "IRule.h"
+#include "include/IRule.h"
 #include <vector>
+
+using namespace std;
 
 class ForEachRule final : public IRule
 {
     public:
-        ForEachRule(vector<string> list) : ruleList(list) {}
+        rules::ForEachRule(vector<string> list, auto elem) : ruleList(list), elementObj(elem) {}
 
-        void executeRule() override
+        void rules::executeRule() override
         {
             for(auto rule: ruleList)
             {
@@ -19,4 +20,5 @@ class ForEachRule final : public IRule
     private:
         //list object to operate on
         vector<string> ruleList;
+        auto elementObj; 
 }
