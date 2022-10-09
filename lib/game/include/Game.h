@@ -1,4 +1,8 @@
 #pragma once
+#include <IRule.h>
+
+#include <vector>
+#include <memory>
 
 namespace gameModel {
 
@@ -13,6 +17,7 @@ namespace gameModel {
 		void printGame();
 		 
 		//method to create List of Rules
+		void addRule(std::unique_ptr<rules::IRule> rule);
 
 	private:
 		
@@ -24,7 +29,7 @@ namespace gameModel {
 		//dictionary of constants
 		//dictionary of variables
 		 
-		//std::vector<IRule> rules;
+		std::vector<std::unique_ptr<rules::IRule>> rules;
 
 	};
 }
