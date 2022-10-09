@@ -131,27 +131,27 @@ int main() {
     try {
         CoinGame g1;
         cout<< ""<<g1.getName()<<endl;
-//        cout<< ""<<g1.getPlayerMin()<<endl;
-//        cout<< ""<<g1.getPlayerMax()<<endl;
-//        cout<<""<<g1.getAudience()<<endl;
-//        cout<<""<<g1.getRound()<<endl;
+        cout<< ""<<g1.getPlayerMin()<<endl;
+        cout<< ""<<g1.getPlayerMax()<<endl;
+        cout<<""<<g1.getAudience()<<endl;
+        cout<<""<<g1.getRound()<<endl;
 
 
-//        cout<<""<<g1.getConstants()[0].getCoinName()<<endl;
-//        cout<<""<<g1.getConstants()[0].getPlayerName()<<endl;
-//        cout<<""<<g1.getConstants()[1].getCoinName()<<endl;
-//        cout<<""<<g1.getConstants()[1].getPlayerName()<<endl;
-//
-//        cout<<""<<g1.getRules()[0].getRuleName()<<endl;
-//        cout<<""<<g1.getRules()[0].getList()<<endl;
-//
-//        cout<<""<<g1.getRules()[1].getRuleName()<<endl;
-//        cout<<""<<g1.getRules()[1].getFrom()<<endl;
-//        cout<<""<<g1.getRules()[1].getTo()<<endl;
-//        cout<<""<<g1.getRules()[1].getCount()<<endl;
-//
-//        cout<<""<<g1.getRules()[2].getRuleName()<<endl;
-//        cout<<""<<g1.getRules()[2].getValue()<<endl;
+        cout<<""<<g1.getConstants()[0].getCoinName()<<endl;
+        cout<<""<<g1.getConstants()[0].getPlayerName()<<endl;
+        cout<<""<<g1.getConstants()[1].getCoinName()<<endl;
+        cout<<""<<g1.getConstants()[1].getPlayerName()<<endl;
+
+        cout<<""<<g1.getRules()[0].getRuleName()<<endl;
+        cout<<""<<g1.getRules()[0].getList()<<endl;
+
+        cout<<""<<g1.getRules()[1].getRuleName()<<endl;
+        cout<<""<<g1.getRules()[1].getFrom()<<endl;
+        cout<<""<<g1.getRules()[1].getTo()<<endl;
+        cout<<""<<g1.getRules()[1].getCount()<<endl;
+
+        cout<<""<<g1.getRules()[2].getRuleName()<<endl;
+        cout<<""<<g1.getRules()[2].getValue()<<endl;
 
         return 0;
     }
