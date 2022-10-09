@@ -1,7 +1,15 @@
 #include "coinInfo.h"
+#include "coinRule.h"
 #include <string>
-//class game
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <exception>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 using namespace std;
+//class game
+
 class CoinGame{
 private:
     string name;
@@ -13,9 +21,10 @@ private:
     //so create a class for constant
     CoinInfo constants[2];
     string variables;
-    string rules;
+    CoinRule rules[3];
 
 public:
+    CoinGame();
     void setName(string str);
     string getName();
     void setPlayerMin(int num);
@@ -30,6 +39,7 @@ public:
     CoinInfo* getConstants();
     void setVariables(string str);
     string getVariables();
-    void setRules(string str);
-    string getRules();
+    void setRules(CoinRule coinRule[]);
+    CoinRule* getRules();
+    void readJsonFile(string fileName);
 };
