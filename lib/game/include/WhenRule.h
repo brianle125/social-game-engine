@@ -1,6 +1,6 @@
 #include "IRule.h"
 
-class WhenRule final : public IRule
+class WhenRule final : public rules::IRule
 {
     public:
         WhenRule(bool con);

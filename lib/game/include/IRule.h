@@ -4,9 +4,8 @@ namespace rules {
 
 	class IRule {
 	public:
-		virtual void ExecuteRule();
-
-		~IRule();
+		virtual ~IRule() {}
+		virtual void ExecuteRule() = 0;
 
 	private:
 	};

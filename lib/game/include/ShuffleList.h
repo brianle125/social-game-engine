@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class ShuffleList final : public IRule {
+class ShuffleList final : public rules::IRule {
     private:
         vector<string>& memberList;
     

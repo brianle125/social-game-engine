@@ -1,1 +1,0 @@
-/usr/bin/c++ -rdynamic CMakeFiles/gameTest.dir/main.o -o gameTest  libgameLib.a 

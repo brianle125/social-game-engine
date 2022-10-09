@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-class LoopRule final: public IRule
+class LoopRule final: public rules::IRule
 {
     public:
         LoopRule(vector<string>& list, bool con);
