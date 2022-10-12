@@ -1,9 +1,9 @@
 #pragma once
-#include <../../rules/include/IRule.h>
-// #include "IRule.h"
 
 #include <vector>
 #include <memory>
+
+#include "IRule.h"
 
 namespace gameModel {
 
