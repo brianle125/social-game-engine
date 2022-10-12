@@ -13,14 +13,22 @@ set_target_properties(gameLib PROPERTIES PUBLIC_HEADER include/GameCreator.h)
 #link gamelib with Json
 target_link_libraries(gameLib PRIVATE nlohmann_json::nlohmann_json)
 
+add_library (rulesLib IRule.cpp)
+set_target_properties(gameLib PROPERTIES PUBLIC_HEADER include/IRule.h)
+
 target_include_directories(gameLib PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
-install(TARGETS gameLib DESTINATION lib PUBLIC_HEADER DESTINATION include)
+target_include_directories(rulesLib PUBLIC 
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
-target_link_libraries(gameTest gameLib)
+install(TARGETS gameLib rulesLib DESTINATION lib PUBLIC_HEADER DESTINATION include)
+
+target_link_libraries(gameTest gameLib rulesLib)
 
 install(TARGETS gameTest DESTINATION bin)
 

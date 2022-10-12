@@ -19,6 +19,9 @@ gameModel::Game GameCreator::createGame(std::string gameSpecification) {
 				 data["configuration"]["player count"]["min"].get<int>(),
 				 data["configuration"]["audience"].get<bool>());
 
+	//parse and add variables here
+
+	//parse and add rules here
 
 	return newGame;
 }
