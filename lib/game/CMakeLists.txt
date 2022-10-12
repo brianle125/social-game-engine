@@ -1,7 +1,7 @@
 add_subdirectory(coinGameTest)
 
 add_executable(gameTest main.cpp)
-set_target_properties(gameTest PROPERTIES CXX_STANDARD 17)
+set_target_properties(gameTest PROPERTIES CXX_STANDARD 20)
 
 add_library (gameLib GameCreator.cpp Game.cpp)
 set_target_properties(gameLib PROPERTIES PUBLIC_HEADER include/GameCreator.h)
