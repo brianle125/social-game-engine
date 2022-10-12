@@ -1,1 +1,0 @@
-/usr/bin/c++  -Wall -fno-rtti CMakeFiles/chatserver.dir/chatserver.cpp.o -o ../../bin/chatserver  ../../lib/libnetworking.a -lpthread /usr/lib/libboost_system.so.1.80.0 

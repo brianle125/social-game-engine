@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class ForEachRule : public rules::IRule {
+class ForEachRule final : public rules::IRule {
     public:
         ForEachRule(vector<string> list);
         ~ForEachRule() {}
