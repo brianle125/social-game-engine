@@ -1,10 +1,13 @@
 #pragma once
 
+#include <fstream>
+#include <Game.h>
+
 class GameCreator {
 public:
 
 	//create game from JSON
-	//Game createGame(//Json object//) {}
+	gameModel::Game createGame(std::string gameSpecification);
 private:
 
 	//JSON parser
