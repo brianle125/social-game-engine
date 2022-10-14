@@ -4,7 +4,8 @@
 
 using namespace std;
 CoinGame::CoinGame(){
-    string file_path = "../../../games/coin.json";
+    //path from bin to coin.json
+    string file_path = "../games/coin.json";
     readJsonFile(file_path);
 }
 
