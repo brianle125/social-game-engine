@@ -1,11 +1,61 @@
 //connect to server:
 // telnet localhost 9999
 
-#include <sys/socket.h> // For socket functions
-#include <netinet/in.h> // For sockaddr_in
+#include <sys/socket.h> // For socket functions, only unix
+#include <netinet/in.h> // For sockaddr_in, only unix
 #include <cstdlib> // For exit() and EXIT_FAILURE
 #include <iostream> // For cout
-#include <unistd.h> // For read
+#include <unistd.h> // For read, only unix
+
+int ask_for_game_choice(int connection){
+    //send message - choose game number
+    std::string message_choose_game_number = "We provide games below:\n";
+    message_choose_game_number += "1. CoinGame\n";
+    message_choose_game_number += "2. ZenGame\n";
+    message_choose_game_number += "Enter the number to choose the game you want: \n";
+    send(connection, message_choose_game_number.c_str(), message_choose_game_number.size(), 0);
+
+    // Read from the connection
+    char buffer_choose_game[100] = { 0 };
+    auto bytesRead_ = read(connection, buffer_choose_game, 100);
+   // std::cout << "The game you choose is: " << buffer_choose_game;
+
+    //handle user input error
+    int game_choice = atoi(buffer_choose_game);
+    while(game_choice == 0){
+        std::string str = "Please enter a number: (1/2)\n";
+        send(connection, str.c_str(), str.size(), 0);
+        memset(buffer_choose_game, 0, 100);
+        auto bytesRead = read(connection, buffer_choose_game, 100); //get new message
+        game_choice = atoi(buffer_choose_game);
+    }
+
+    std::cout << "The game you choose is: " << buffer_choose_game;
+    return game_choice;
+}
+
+char ask_for_game_configuration(int connection){
+    //send message - configure the game?
+    std::string configure_message = "Do you want to configure the game? (yes: y, no:n): \n";
+    send(connection, configure_message.c_str(), configure_message.size(), 0);
+    char buffer_configure_game[100];
+    auto bytesRead_ = read(connection, buffer_configure_game, 100);
+    std::cout << "Do you want to configure the game? (yes: y, no:n): " << buffer_configure_game;
+
+    char first_char = buffer_configure_game[0];
+    while(first_char != 'y' && first_char !='n'){
+        std::string str = "Please enter an valid char: (y/n)\n";
+        send(connection, str.c_str(), str.size(), 0);//send message
+        memset(buffer_configure_game, ' ', 100);
+        auto bytesRead = read(connection, buffer_configure_game, 100); //get new message
+        first_char = buffer_configure_game[0];
+    }
+    // Send a message to the connection
+    std::cout << "You choose to configure the game: (y:yes/n:no) " << buffer_configure_game;
+    std::string response = "Good talking to you\n";
+    send(connection, response.c_str(), response.size(), 0);
+    return buffer_configure_game[0];
+}
 
 int main() {
     // Create a socket (IPv4, TCP)
@@ -40,28 +90,8 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    //send message - choose game number
-    std::string message_choose_game_number = "We provide games below:\n";
-    message_choose_game_number += "1. CoinGame\n";
-    message_choose_game_number += "2. ZenGame\n";
-    message_choose_game_number += "Enter the number to choose the game you want: \n";
-    send(connection, message_choose_game_number.c_str(), message_choose_game_number.size(), 0);
-
-    // Read from the connection
-    char buffer_choose_game[100];
-    auto bytesRead = read(connection, buffer_choose_game, 100);
-    std::cout << "The game you choose is: " << buffer_choose_game;
-
-    //send message - configure the game?
-    std::string configure_message = "Do you want to configure the game? (yes: y, no:n): \n";
-    send(connection, configure_message.c_str(), configure_message.size(), 0);
-    char buffer_configure_game[100];
-    auto bytesRead_ = read(connection, buffer_configure_game, 100);
-    std::cout << "Do you want to configure the game? (yes: y, no:n): " << buffer_configure_game;
-
-    // Send a message to the connection
-    std::string response = "Good talking to you\n";
-    send(connection, response.c_str(), response.size(), 0);
+    ask_for_game_choice(connection);
+    ask_for_game_configuration(connection);
 
     // Close the connections
     close(connection);
