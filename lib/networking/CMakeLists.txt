@@ -4,6 +4,8 @@ add_library(networking
   src/Client.cpp
 )
 
+add_subdirectory(src)
+
 find_package(Boost 1.72 COMPONENTS system REQUIRED)
 
 target_include_directories(networking
