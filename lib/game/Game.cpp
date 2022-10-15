@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Game.h>
-#include <../../rules/include/IRule.h>
+
+#include "IRule.h"
 
 using namespace std;
 
