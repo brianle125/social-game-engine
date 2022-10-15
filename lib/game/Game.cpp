@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Game.h>
+#include <../../rules/include/IRule.h>
 
 using namespace std;
 
@@ -11,4 +12,8 @@ void gameModel::Game::printGame() {
 		"\nMinimum Players: " << minimumPlayers <<
 		"\nMaximum Players: " << maximumPlayers <<
 		"\nAudience?: " << audience << "\n";
+}
+
+void gameModel::Game::addRule(std::unique_ptr<rules::IRule> rule) {
+	rules.push_back(std::move(rule));
 }

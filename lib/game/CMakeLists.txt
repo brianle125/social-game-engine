@@ -1,9 +1,4 @@
-### download Json library
-include(FetchContent)
-
-FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.2/json.tar.xz)
-FetchContent_MakeAvailable(json)
-###
+add_subdirectory(coinGameTest)
 
 add_executable(gameTest main.cpp)
 set_target_properties(gameTest PROPERTIES CXX_STANDARD 17)
@@ -20,41 +15,8 @@ target_include_directories(gameLib PUBLIC
 
 install(TARGETS gameLib DESTINATION lib PUBLIC_HEADER DESTINATION include)
 
-target_link_libraries(gameTest gameLib)
+target_link_libraries(gameTest gameLib rulesLib)
 
 install(TARGETS gameTest DESTINATION bin)
 
-####### here is for excute coinGame.cpp
-####### remenber to delete it later
 
-add_library(coinInfo coinInfo.cpp coinInfo.h )
-add_library(coinRule coinRule.cpp coinRule.h )
-
-add_executable(coinGame coinGame.cpp coinGame.h)
-set_target_properties(coinGame PROPERTIES CXX_STANDARD 17)
-
-target_link_libraries(coinGame PRIVATE coinInfo)
-target_link_libraries(coinGame PRIVATE coinRule)
-target_link_libraries(coinGame PRIVATE nlohmann_json::nlohmann_json)
-
-### foreach testing
-
-add_library(forEachInfo ForEachRule.cpp include/ForEachRule.h)
-
-add_executable(forEach ForEachRule.cpp include/ForEachRule.h)
-set_target_properties(forEach PROPERTIES CXX_STANDARD 17)
-set_target_properties(forEachInfo PROPERTIES PUBLIC_HEADER include/ForEachRule.h)
-
-target_include_directories(gameLib PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
-
-install(TARGETS forEachInfo DESTINATION lib PUBLIC_HEADER DESTINATION include)
-target_link_libraries(forEach forEachInfo)
-install(TARGETS forEach DESTINATION bin)
-
-
-
-#reference:
-#https://github.com/nlohmann/json
