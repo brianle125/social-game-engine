@@ -22,7 +22,7 @@ int ask_for_game_choice(int connection){
 
     //handle user input error
     int game_choice = atoi(buffer_choose_game);
-    while(game_choice == 0){
+    while(game_choice == 0 || game_choice > 2 || game_choice < 1){
         std::string str = "Please enter a number: (1/2)\n";
         send(connection, str.c_str(), str.size(), 0);
         memset(buffer_choose_game, 0, 100);
@@ -55,6 +55,35 @@ char ask_for_game_configuration(int connection){
     std::string response = "Good talking to you\n";
     send(connection, response.c_str(), response.size(), 0);
     return buffer_configure_game[0];
+}
+
+int ask_about_configuration_information(int connection){
+    std::string configure_message = "You can configure these things: \n";
+    configure_message += "1. max number of players \n";
+    configure_message += "2. min number of players \n";
+    configure_message += "3. set audience（default: no audience）\n";
+    configure_message += "4. set Rounds（default: 1 round）\n";
+    configure_message += "Please enter one number each time: \n";
+
+    send(connection, configure_message.c_str(), configure_message.size(), 0);
+
+    char buffer_configure_info[100];
+    auto bytesRead_ = read(connection, buffer_configure_info, 100);
+    int configuration_choice;
+
+    configuration_choice = atoi(buffer_configure_info);
+    //handle error
+    while(configuration_choice == 0 || configuration_choice > 4 || configuration_choice < 1){
+        std::string str = "Please enter one number each time: (1/2/3/4)\n";
+        send(connection, str.c_str(), str.size(), 0);
+        memset(buffer_configure_info, 0, 100);
+        auto bytesRead = read(connection, buffer_configure_info, 100); //get new message
+        configuration_choice = atoi(buffer_configure_info);
+    }
+
+    std::cout << "The configuration you want to change is: " << configuration_choice;
+
+    return configuration_choice;
 }
 
 int main() {
@@ -90,9 +119,15 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    ask_for_game_choice(connection);
-    ask_for_game_configuration(connection);
+    int game_choice = ask_for_game_choice(connection);
+    char configure = ask_for_game_configuration(connection);
 
+    if(configure == 'y'){
+        int configuration_choice = ask_about_configuration_information(connection);
+        std::cout << "configuration choice: " << configuration_choice<<std::endl;
+    }
+    std::cout << "game_choice: " << game_choice<<std::endl;
+    std::cout << "configure: " << configure<<std::endl;
     // Close the connections
     close(connection);
     close(sockfd);
