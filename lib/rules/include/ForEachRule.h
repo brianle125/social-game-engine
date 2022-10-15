@@ -7,11 +7,11 @@ using namespace std;
 
 class ForEachRule final : public rules::IRule {
     public:
-        ForEachRule(vector<string> list);
+        ForEachRule(vector<string> & list);
         ~ForEachRule() {}
         void ExecuteRule() override;
 
     private:
         //list object to operate on, modify later
-        vector<string> ruleList;
+        vector<string> memberList;
 };
