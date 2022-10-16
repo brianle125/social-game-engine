@@ -8,7 +8,7 @@ using namespace std;
 class InParallel final : public rules::IRule {
     public:
         InParallel(vector<string> & list);
-        void ExecuteRule() override;
+        void executeRule() override;
     private:
         vector<string> memberList; 
 };

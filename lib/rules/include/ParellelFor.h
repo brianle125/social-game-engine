@@ -6,7 +6,7 @@ using namespace std;
 class ParallelFor final : public rules::IRule {
     public:
         ParallelFor(vector<string> & list);
-        void ExecuteRule() override;
+        void executeRule() override;
     private:
         vector<string> memberList; 
 };
