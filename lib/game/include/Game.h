@@ -28,6 +28,7 @@ namespace gameModel {
 		//dictionary of setup
 
 		//dictionary of constants
+		
 		//dictionary of variables
 		 
 		std::vector<std::unique_ptr<rules::IRule>> rules;

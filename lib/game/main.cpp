@@ -1,4 +1,5 @@
 #include <GameCreator.h>
+#include <IRule.h>
 #include <iostream>
 using namespace std;
 
@@ -8,7 +9,6 @@ main(int argc, char *argv[]) {
 	GameCreator creator;
 	std::string filename(argv[1]);
 	gameModel::Game newGame = creator.createGame(filename);
-
 	newGame.printGame();
 	return 0;
 }

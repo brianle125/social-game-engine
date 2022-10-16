@@ -13,7 +13,6 @@ void gameModel::Game::printGame() {
 		"\nMinimum Players: " << minimumPlayers <<
 		"\nMaximum Players: " << maximumPlayers <<
 		"\nAudience?: " << audience << "\n";
-
 }
 
 void gameModel::Game::addRule(std::unique_ptr<rules::IRule> rule) {
