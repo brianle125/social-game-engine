@@ -1,6 +1,7 @@
 #include <vector>
 #include "IRule.h"
 #include <string>
+#pragma once
 
 class Switch{
     
