@@ -1,16 +1,22 @@
 #pragma once
 #include <nlohmann/json.hpp>
-
+#include <memory>
 #include <fstream>
 #include <Game.h>
 
+#include "IRule.h"
+
 class GameCreator {
 public:
+	GameCreator(std::string gameSpecification);
 
 	//create game from JSON
-	gameModel::Game createGame(std::string gameSpecification);
+	gameModel::Game createGame();
 private:
 
-	//JSON parser
+	nlohmann::json gameSource;
+	std::unordered_map<std::string, std::function<void (nlohmann::json)>> ruleBuilders;
+
+	std::vector<std::unique_ptr<rules::IRule>> createRules(const nlohmann::json data);
 	//ask client for setup input
 };

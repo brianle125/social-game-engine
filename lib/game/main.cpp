@@ -6,9 +6,11 @@ using namespace std;
 //THIS IS A TESTING FUNCTION
 int
 main(int argc, char *argv[]) {
-	GameCreator creator;
 	std::string filename(argv[1]);
-	gameModel::Game newGame = creator.createGame(filename);
+	GameCreator creator(filename);
+	gameModel::Game newGame = creator.createGame();
 	newGame.printGame();
+
+	newGame.executeRules();
 	return 0;
 }

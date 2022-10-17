@@ -19,4 +19,11 @@ target_link_libraries(gameTest gameLib rulesLib)
 
 install(TARGETS gameTest DESTINATION bin)
 
+#copies games to binary directory
+add_custom_command(
+    TARGET gameTest POST_BUILD 
+    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+    ${CMAKE_SOURCE_DIR}/games 
+    ${CMAKE_BINARY_DIR}/games
+)
 

@@ -20,6 +20,8 @@ namespace gameModel {
 		//method to create List of Rules
 		void addRule(std::unique_ptr<rules::IRule> rule);
 
+		void executeRules();
+
 	private:
 		
 		

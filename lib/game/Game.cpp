@@ -18,3 +18,9 @@ void gameModel::Game::printGame() {
 void gameModel::Game::addRule(std::unique_ptr<rules::IRule> rule) {
 	rules.push_back(std::move(rule));
 }
+
+void gameModel::Game::executeRules() {
+	for(auto const& rule : rules) {
+		rule->executeRule();
+	}
+}

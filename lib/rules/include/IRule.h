@@ -7,9 +7,9 @@ namespace rules {
 	public:
 		virtual void executeRule() = 0;
 		IRule();
-		IRule(std::string name) noexcept;
+		IRule(std::string name);
 		
-		virtual ~IRule() = 0;
+		virtual ~IRule();
 
 	private:
 
