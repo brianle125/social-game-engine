@@ -1,3 +1,6 @@
+#include <iostream>
+#include <vector>
+#pragma once
 //Player class included to test the function
 // class Player{
 //     public:

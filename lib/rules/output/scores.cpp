@@ -1,3 +1,4 @@
+  #include "scores.h"
 //Player class included to test the function
 
 // class Player{
