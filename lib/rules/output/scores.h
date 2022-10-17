@@ -1,0 +1,17 @@
+//Player class included to test the function
+// class Player{
+//     public:
+    
+//     Player(std::string passedName, double passedScore); 
+//     std::string name;
+//     int score;
+// };
+
+class Scores{
+    public:
+    Scores(std::vector<Player> passedPlayers);
+    void outputScores();
+    
+    private:
+    std::vector<Player> players;
+};
