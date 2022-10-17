@@ -4,6 +4,8 @@
         value = a;
         myVector = vector;
     }
+
+    Switch::~Switch(){}
     
     void Switch::runRule(){
         for(int i = 0; i < myVector.size(); i++){
@@ -15,15 +17,15 @@
 
     //Text below was used for testing 
     // int x = 2;
-    // std::pair<int,std::string> pair1;
-    // std::pair<int,std::string> pair2;
-    // std::pair<int,std::string> pair3;
-    // pair1.first = 1;
-    // pair1.second = "jeein1";
-    // pair2.first = 2;
-    // pair2.second = "jeein2";
-    // pair3.first = 3;
-    // pair3.second = "jeein3";
-    // std::vector<std::pair<int,std::string>> cases = {pair1,pair2,pair3};
+    // std::pair<int,std::string> pair_1;
+    // std::pair<int,std::string> pair_2;
+    // std::pair<int,std::string> pair_3;
+    // pair_1.first = 1;
+    // pair_1.second = "String_1 ";
+    // pair_2.first = 2;
+    // pair_2.second = "String_2 ";
+    // pair_3.first = 3;
+    // pair_3.second = "String_3 ";
+    // std::vector<std::pair<int,std::string>> cases = {pair_1,pair_2,pair_3};
     // Switch mySwitch = Switch{x,cases};
     // mySwitch.runRule();  

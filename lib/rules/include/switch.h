@@ -8,6 +8,7 @@ class Switch{
 public:
 
     Switch(int a, std::vector <std::pair<int,std::string>> vector);
+    ~Switch();
     void runRule();
     
 private:
