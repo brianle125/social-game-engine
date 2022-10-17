@@ -8,6 +8,8 @@
 //         name = passedName;
 //         score = passedScore;
 //     }
+
+//     Player::~Player(){}
     
 //     std::string name;
 //     int score;
@@ -22,6 +24,8 @@ class Scores{
     {
         players = passedPlayers;
     }
+
+    Scores::~Scores(){}
     
     void outputScores(){
     int current_min = players[0].score;
