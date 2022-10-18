@@ -5,7 +5,9 @@
     "audience": false,
     "setup": { }
   },
-  "constants": {},
+  "constants": {
+    "player-name": "Para"
+  },
   "variables": {},
   "per-player": {},
   "per-audience": {},

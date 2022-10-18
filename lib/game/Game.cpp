@@ -15,6 +15,10 @@ void gameModel::Game::printGame() {
 		"\nAudience?: " << audience << "\n";
 }
 
+void gameModel::Game::addConstant(std::string name, myVariant value) {
+	constants.emplace(name, value);
+}
+
 void gameModel::Game::addRule(std::unique_ptr<rules::IRule> rule) {
 	rules.push_back(std::move(rule));
 }

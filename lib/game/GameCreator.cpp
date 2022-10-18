@@ -28,6 +28,16 @@ gameModel::Game GameCreator::createGame() {
 				 configData["audience"].get<bool>());
 
 	//parse and add variables here
+	json constants = gameSource["constants"];
+	for(auto constant : constants.items()) {
+		std::string keyname = constant.key();
+		std::string valuename = constant.value();
+
+		// typedef<myVariant> variant = valuename;
+
+		
+		std::cout << constant.key() << ", " << constant.value() << "\n";
+	}
 
 	//parse and add rules here
 	std::vector<std::unique_ptr<rules::IRule>> rules = createRules(gameSource);
