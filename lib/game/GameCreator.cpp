@@ -32,11 +32,11 @@ gameModel::Game GameCreator::createGame() {
 	for(auto constant : constants.items()) {
 		std::string keyname = constant.key();
 		std::string valuename = constant.value();
+		myVariant variant = valuename;
 
-		// typedef<myVariant> variant = valuename;
+		newGame.addConstant(keyname, variant);
 
 		
-		std::cout << constant.key() << ", " << constant.value() << "\n";
 	}
 
 	//parse and add rules here

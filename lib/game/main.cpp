@@ -11,6 +11,8 @@ main(int argc, char *argv[]) {
 	gameModel::Game newGame = creator.createGame();
 	newGame.printGame();
 
+	std::cout << boost::get<string>(newGame.getConstant("player-name")) << "\n";
+
 	newGame.executeRules();
 	return 0;
 }

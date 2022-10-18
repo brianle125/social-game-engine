@@ -19,6 +19,10 @@ void gameModel::Game::addConstant(std::string name, myVariant value) {
 	constants.emplace(name, value);
 }
 
+myVariant gameModel::Game::getConstant(std::string key) {
+	return constants.find(key)->second;
+}
+
 void gameModel::Game::addRule(std::unique_ptr<rules::IRule> rule) {
 	rules.push_back(std::move(rule));
 }

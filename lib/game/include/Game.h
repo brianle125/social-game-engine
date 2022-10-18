@@ -19,6 +19,7 @@ namespace gameModel {
 		void printGame();
 
 		void addConstant(std::string name, myVariant value);
+		myVariant getConstant(std::string key);
 
 		//method to create List of Rules
 		void addRule(std::unique_ptr<rules::IRule> rule);
