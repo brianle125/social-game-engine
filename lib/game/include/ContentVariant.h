@@ -10,7 +10,7 @@ using namespace std;
 typedef boost::variant<int, string, bool> subVariant;//, vector<myVariant>, map<string, myVariant>> myVariant; 
 typedef boost::variant<int, string, bool, vector<subVariant>, map<string, subVariant>>  myVariant;
 
-class times_two_visitor
+class times_two
     : public boost::static_visitor<>
 {
 public:
