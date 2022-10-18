@@ -48,9 +48,11 @@ std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules(const json d
 	json rules = gameSource["rules"];
 
 	for(auto rule : rules) {
-		auto ruleBuilder = ruleBuilders.find(rule["rule"])->second;
-		auto newRule = ruleBuilder(rule);
-		ruleList.push_back(std::move(newRule));
+		auto ruleBuilder = ruleBuilders.find(rule["rule"]);
+		if(ruleBuilder != ruleBuilders.end()) {
+			auto newRule = ruleBuilder->second(rule);
+			ruleList.push_back(std::move(newRule));
+		}
 	}
 
 	return ruleList;
@@ -59,9 +61,17 @@ std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules(const json d
 
 
 void GameCreator::GenerateRuleBuilders() {
+	/*	RULE BUILDER TEMPLATE:
+	ruleBuilders.emplace("rule-name", 
+		[](json ruleData) -> std::unique_ptr<rules::IRule> {
+			//whatever you need to create your rule here
+			return std::move(newRule);
+		});
+	*/
+
 	ruleBuilders.emplace("global-message", 
 		[](json ruleData) -> std::unique_ptr<rules::IRule> {
 			auto newRule = std::make_unique<GlobalMessage>(GlobalMessage(ruleData["value"]));
 			return std::move(newRule);
-		});
+		});	
 }
