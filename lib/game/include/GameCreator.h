@@ -15,7 +15,8 @@ public:
 private:
 
 	nlohmann::json gameSource;
-	std::unordered_map<std::string, std::function<void (nlohmann::json)>> ruleBuilders;
+	std::unordered_map<std::string, std::function<std::unique_ptr<rules::IRule> (nlohmann::json)>> ruleBuilders;
+	void GenerateRuleBuilders();
 
 	std::vector<std::unique_ptr<rules::IRule>> createRules(const nlohmann::json data);
 	//ask client for setup input
