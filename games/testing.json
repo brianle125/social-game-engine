@@ -8,7 +8,9 @@
   "constants": {
     "player-name": "Para"
   },
-  "variables": {},
+  "variables": {
+    "wins": 0
+  },
   "per-player": {},
   "per-audience": {},
   "rules": [

@@ -20,6 +20,9 @@ namespace gameModel {
 
 		void addConstant(std::string name, myVariant value);
 		myVariant getConstant(std::string key);
+		void addVariable(std::string name, myVariant value);
+		myVariant getVariable(std::string key);
+		//void setVariable(std::string key, //variant or raw value?//);
 
 		//method to create List of Rules
 		void addRule(std::unique_ptr<rules::IRule> rule);

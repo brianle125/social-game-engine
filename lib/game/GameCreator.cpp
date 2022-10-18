@@ -28,6 +28,7 @@ gameModel::Game GameCreator::createGame() {
 				 configData["audience"].get<bool>());
 
 	//parse and add variables here
+	/*
 	json constants = gameSource["constants"];
 	for(auto constant : constants.items()) {
 		std::string keyname = constant.key();
@@ -35,9 +36,17 @@ gameModel::Game GameCreator::createGame() {
 		myVariant variant = valuename;
 
 		newGame.addConstant(keyname, variant);
-
-		
 	}
+
+	json variables = gameSource["variables"];
+	for(auto variable : variables.items()) {
+		std::string keyname = variable.key();
+		int valuename = variable.value();
+		myVariant variant = valuename;
+
+		newGame.addVariable(keyname, variant);
+	}
+	*/
 
 	//parse and add rules here
 	std::vector<std::unique_ptr<rules::IRule>> rules = createRules(gameSource);
@@ -53,7 +62,6 @@ std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules(const json d
 
 	std::vector<std::unique_ptr<rules::IRule>> ruleList;
 	ruleList.reserve(rules.size());
-
 
 	for(auto rule : rules) {
 		auto ruleBuilder = ruleBuilders.find(rule["rule"]);
