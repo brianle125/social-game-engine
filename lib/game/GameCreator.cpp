@@ -5,8 +5,6 @@
 #include "GameCreator.h"
 #include "Game.h"
 
-#include "GlobalMessage.h"
-
 using json = nlohmann::json;
 
 using namespace std;
