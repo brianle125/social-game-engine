@@ -3,7 +3,11 @@ add_subdirectory(coinGameTest)
 add_executable(gameTest main.cpp)
 set_target_properties(gameTest PROPERTIES CXX_STANDARD 20)
 
-add_library (gameLib GameCreator.cpp Game.cpp ruleBuilders.cpp)
+
+add_library (gameLib GameCreator.cpp Game.cpp ruleBuilders.cpp Player.cpp Audience.cpp)
+
+
+
 set_target_properties(gameLib PROPERTIES PUBLIC_HEADER include/GameCreator.h)
 #link gamelib with Json and rules
 target_link_libraries(gameLib PRIVATE nlohmann_json::nlohmann_json rulesLib)
