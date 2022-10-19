@@ -9,6 +9,6 @@ class LoopRule final: public rules::IRule
         void ExecuteRule() override;
         
     private:
-        vector<string>& memberList;
+        vector<string> memberList;
         bool failCondition;
 };

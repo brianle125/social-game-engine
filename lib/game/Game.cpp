@@ -3,8 +3,6 @@
 
 #include "IRule.h"
 
-using namespace std;
-
 gameModel::Game::Game(std::string gameName, int gameMinimumPlayers, int gameMaximumPlayers, bool gameAudience) noexcept
 	: name(gameName), minimumPlayers(gameMinimumPlayers), maximumPlayers(gameMaximumPlayers), audience(gameAudience) {}
 
