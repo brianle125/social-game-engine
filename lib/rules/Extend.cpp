@@ -1,7 +1,7 @@
 #include "include/Extend.h"
-#include <iostream>
 
-Extend::Extend(stdvector<myVariant>& original,stdvector<myVariant>& addition):originalVector(original),additionVector(addition){}
+
+Extend::Extend(std::vector<myVariant>& original,std::vector<myVariant>& addition):originalVector(original),additionVector(addition){}
 
 
 void Extend::ExecuteRule()

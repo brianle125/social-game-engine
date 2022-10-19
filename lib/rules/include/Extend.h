@@ -1,12 +1,14 @@
 #include <vector>
-#include <string>
 #include "IRule.h"
+#include <ContentVariant>
 
 class Extend{
     public:
-        Extend(stdvector<myVariant>& originalVector,stdvector<myVariant>& additionVector);
+        Extend(std::vector<myVariant>& originalVector,std::vector<myVariant>& additionVector);
+
+        void ExecuteRule();
 
     private:
-        vector<myVariant>& originalVector
-        vector<myVariant>& additionVector
+        vector<myVariant>& originalVector;
+        vector<myVariant>& additionVector;
 };
