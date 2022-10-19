@@ -416,3 +416,6 @@ Server::buildImpl(Server& server,
   return std::unique_ptr<ServerImpl,ServerImplDeleter>(impl);
 }
 
+void Server::awaitResponse(Connection client, rules::InputRule* rule) {
+  responseQueue.insert(std::make_pair(client.id, rule));
+}

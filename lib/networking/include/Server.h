@@ -14,6 +14,9 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <map>
+
+#include "inputRule.h"
 
 
 namespace networking {
@@ -124,6 +127,14 @@ public:
    */
   void disconnect(Connection connection);
 
+  /**
+   *  Add rule to the responseQueue.
+   *  The responseQueue keeps track of the rules that are
+   *  waiting on a reponse from a client.
+   */
+  void awaitResponse(Connection client, rules::InputRule* rule);
+
+  std::map<uintptr_t, rules::InputRule*> responseQueue;
 private:
   friend class ServerImpl;
 
