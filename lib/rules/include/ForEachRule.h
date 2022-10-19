@@ -9,7 +9,7 @@ class ForEachRule final : public rules::IRule {
     public:
         ForEachRule(vector<string> & list);
         ~ForEachRule() {}
-        void ExecuteRule() override;
+        void executeRule() override;
 
     private:
         //list object to operate on, modify later

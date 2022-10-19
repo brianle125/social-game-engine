@@ -5,7 +5,7 @@ using namespace std;
 
 LoopRule::LoopRule(vector<string>& list, bool con) : memberList(list), failCondition(con) {}
 
-void LoopRule::ExecuteRule() 
+void LoopRule::executeRule() 
 {
     int idx = 0;
     while(!failCondition && idx < memberList.size())

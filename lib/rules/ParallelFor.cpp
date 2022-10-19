@@ -4,7 +4,7 @@
 
 ParallelFor::ParallelFor(vector<string> & list) : memberList(list) {}
 
-void ParallelFor::ExecuteRule() {
+void ParallelFor::executeRule() {
     std::for_each(memberList.begin(), memberList.end(),
     [](auto&& member)
     {

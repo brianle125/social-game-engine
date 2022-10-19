@@ -4,7 +4,7 @@
 
 InParallel::InParallel(vector<string> & list) : memberList(list) {}
 
-void InParallel::ExecuteRule() {
+void InParallel::executeRule() {
     std::for_each(std::execution::par, memberList.begin(), memberList.end(),
     [](auto&& member)
     {
