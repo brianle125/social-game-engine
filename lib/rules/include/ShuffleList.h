@@ -5,12 +5,12 @@
 
 using namespace std;
 
-class ShuffleList final : public IRule {
+class ShuffleList final : public rules::IRule {
     private:
         vector<string>& memberList;
     
     public:
         ShuffleList(vector<string>& l);
-        void ExecuteRule() override;
+        void executeRule() override;
 
 };
