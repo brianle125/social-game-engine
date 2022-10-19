@@ -6,7 +6,8 @@
 #include <cstdlib> // For exit() and EXIT_FAILURE
 #include <iostream> // For cout
 #include <unistd.h> // For read, only unix
-#include <cstring>  // For building on non unix systems
+#include <cstring>
+
 
 int ask_for_game_choice(int connection){
     //send message - choose game number
