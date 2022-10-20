@@ -5,11 +5,11 @@ namespace rules {
 
 	class IRule {
 	public:
+		virtual void executeRule() = 0;
 		IRule();
-		IRule(std::string name) noexcept;
+		IRule(std::string name);
 		
-		virtual void ExecuteRule() = 0;
-		virtual ~IRule() = 0;
+		virtual ~IRule();
 
 	private:
 		std::string ruleName;
