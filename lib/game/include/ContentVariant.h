@@ -7,8 +7,14 @@
 
 using namespace std;
 
-typedef boost::variant<int, string, bool> subVariant;//, vector<myVariant>, map<string, myVariant>> myVariant; 
-typedef boost::variant<int, string, bool, vector<subVariant>, map<string, subVariant>>  myVariant;
+typedef boost::make_recursive_variant<
+    int,
+    float,
+    string, 
+    bool,
+    vector<boost::recursive_variant_>, 
+    unordered_map<string, boost::recursive_variant_>
+    >::type myVariant;
 
 class times_two
     : public boost::static_visitor<>
@@ -20,6 +26,11 @@ public:
         i *= 2;
     }
 
+    void operator()(float & f) const
+    {
+        f *= 2;
+    }
+
     void operator()(std::string & str) const
     {
         str += str;
@@ -27,13 +38,14 @@ public:
 
     void operator()(bool & b) const {}
 
-    void operator()(vector<subVariant> & v) const {
+    void operator()(vector<myVariant> & v) const 
+    {
         auto old = v.size();   
         v.reserve(2 * old);
         copy_n(v.begin(), old, back_inserter(v));        
     }
 
-    void operator()(map<string, subVariant> & m) const {}
+    void operator()(unordered_map<string, myVariant> & m) const {}
 
 
 };
