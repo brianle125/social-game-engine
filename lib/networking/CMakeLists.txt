@@ -1,9 +1,11 @@
 
-add_library(networking
-  src/Server.cpp
-  src/Client.cpp
-)
+#add_library(networking
+#  src/http_server.cpp
+#)
 
+set (CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_FLAGS, "-lpthread")
+add_executable(networking src/http_server.cpp)
 add_subdirectory(src)
 
 find_package(Boost 1.72 COMPONENTS system REQUIRED)
@@ -31,4 +33,6 @@ set_target_properties(networking
 install(TARGETS networking
   ARCHIVE DESTINATION lib
 )
+
+add_executable(server_host src/server_host.cpp)
 
