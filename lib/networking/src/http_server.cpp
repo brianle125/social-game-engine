@@ -3,10 +3,22 @@
 #include <boost/uuid/uuid_generators.hpp> // generators
 #include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
 #include "GameRoomId.h"
+#include "GameRoom.h"
 
-void store_game_room(GameRoomId game_room_id){
+//global hash to contain all invitation code
+std::unordered_map<GameRoomId, GameRoom, GameRoomIdHashFunction> gameRooms;
+void store_game_room(GameRoom game_room){
     //not implement
+    gameRooms.insert({game_room.get_game_room_id(), game_room});
+}
 
+crow::response get_game_room(const std::string game_room_id) {
+    auto iter = gameRooms.find(game_room_id);
+    if (iter == gameRooms.end()){
+        return crow::response(crow::status::NOT_FOUND);
+    }
+
+    return crow::response(iter->second.serialized());
 }
 
 crow::response create_game(const crow::request &req) {
@@ -21,6 +33,8 @@ crow::response create_game(const crow::request &req) {
 
         auto uuid = boost::uuids::random_generator()();
         GameRoomId id(uuid);
+        GameRoom gameRoom(id, gameName);
+        store_game_room(gameRoom);
         //return a invitation code
         return crow::response{id.get_value()};
     } catch (const std::exception& ex) {
@@ -48,5 +62,7 @@ int main() {
             .methods("POST"_method)
                     (create_game);
 
-    app.port(18080).multithreaded().run();
+    CROW_ROUTE(app, "/game-rooms/<string>")(get_game_room);
+
+    app.port(18080).run();
 }

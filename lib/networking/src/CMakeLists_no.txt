@@ -1,0 +1,7 @@
+# find_package(Crow)
+
+set (CMAKE_CXX_STANDARD 11)
+add_executable(server_host server_host.cpp)
+add_executable(http_server http_server.cpp)
+# target_link_libraries(http_server PUBLIC Crow::Crow)
+

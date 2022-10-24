@@ -5,8 +5,7 @@
 
 set (CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_FLAGS, "-lpthread")
-add_executable(networking src/http_server.cpp src/GameRoomId.cpp)
-add_subdirectory(src)
+add_executable(networking src/http_server.cpp src/GameRoomId.cpp src/GameRoom.cpp)
 
 find_package(Boost 1.72 COMPONENTS system REQUIRED)
 

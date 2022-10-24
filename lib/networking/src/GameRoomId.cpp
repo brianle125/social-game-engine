@@ -13,6 +13,10 @@ GameRoomId::GameRoomId(const boost::uuids::uuid &id){
     value = boost::uuids::to_string(id);
 }
 
-std::string GameRoomId::get_value(){
+std::string GameRoomId::get_value() const {
     return value;
+}
+
+bool GameRoomId::operator== (const GameRoomId &other) const {
+    return this->value == other.value;
 }
