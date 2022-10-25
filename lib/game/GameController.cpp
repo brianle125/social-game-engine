@@ -5,8 +5,8 @@
 
 using namespace std;
 
-GameController::GameController(std::string gameName, int gameMinimumPlayers, int gameMaximumPlayers, bool gameAudience) noexcept
-	: name(gameName), minimumPlayers(gameMinimumPlayers), maximumPlayers(gameMaximumPlayers), audience(gameAudience) {}
+GameController::GameController(std::string gameName, int gameMinimumPlayers, int gameMaximumPlayers, bool gameAudience, GameModel gameModel) noexcept
+	: name(gameName), minimumPlayers(gameMinimumPlayers), maximumPlayers(gameMaximumPlayers), audience(gameAudience), model(gameModel) {}
 
 void GameController::printGame() {
 	std::cout << "Name: " << name <<

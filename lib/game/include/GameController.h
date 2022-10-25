@@ -8,7 +8,7 @@
 
 class GameController {
 public:
-    GameController(std::string gameName, int gameMinimumPlayers, int gameMaximumPlayers, bool gameAudience) noexcept;
+    GameController(std::string gameName, int gameMinimumPlayers, int gameMaximumPlayers, bool gameAudience, GameModel gameModel) noexcept;
 
     void printGame();
 

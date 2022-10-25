@@ -21,10 +21,19 @@ GameCreator::GameCreator(std::string gameSpecification) {
 GameController GameCreator::createGameController() {
 	json configData = gameSource["configuration"];
 
+	GameModel model = createGameModel();
+
 	GameController controller(configData["name"],
 							  configData["player count"]["min"],
 							  configData["player count"]["max"],
-							  configData["audience"]);
+							  configData["audience"],
+							  model);
+
+	auto rulesList = createRules();
+
+	for(auto &rule : rulesList) {
+		controller.addRule(std::move(rule));
+	}
 
 	return controller;
 }

@@ -14,6 +14,6 @@ main(int argc, char *argv[]) {
 	// std::cout << boost::get<string>(newGame.getConstant("player-name")) << "\n";
 	// std::cout << boost::get<int>(newGame.getVariable("wins")) << "\n";
 
-	//newGame.executeRules();
+	newGame.executeRules();
 	return 0;
 }
