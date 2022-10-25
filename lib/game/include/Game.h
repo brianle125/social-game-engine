@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "IRule.h"
-#include "ContentVariant.h"
+// #include "ContentVariant.h"
 
 namespace gameModel {
 
@@ -18,10 +18,10 @@ namespace gameModel {
 
 		void printGame();
 
-		void addConstant(std::string name, myVariant value);
-		myVariant getConstant(std::string key);
-		void addVariable(std::string name, myVariant value);
-		myVariant getVariable(std::string key);
+		// void addConstant(std::string name, myVariant value);
+		// myVariant getConstant(std::string key);
+		// void addVariable(std::string name, myVariant value);
+		// myVariant getVariable(std::string key);
 		//void setVariable(std::string key, //variant or raw value?//);
 
 		//method to create List of Rules
@@ -36,8 +36,8 @@ namespace gameModel {
 		const bool audience;
 		//dictionary of setup
 
-		std::unordered_map<std::string, myVariant> constants;
-		std::unordered_map<std::string, myVariant> variables;
+		// std::unordered_map<std::string, myVariant> constants;
+		// std::unordered_map<std::string, myVariant> variables;
 
 		std::vector<std::unique_ptr<rules::IRule>> rules;
 
