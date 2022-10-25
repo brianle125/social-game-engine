@@ -6,8 +6,6 @@
 
 using namespace std;
 
-
-
 void GameModel::addConstant(std::string name, myVariant value) {
 	constants.emplace(name, value);
 }

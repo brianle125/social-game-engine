@@ -1,4 +1,4 @@
-add_library (rulesLib IRule.cpp GlobalMessage.cpp ShuffleList.cpp)
+add_library (rulesLib IRule.cpp GlobalMessage.cpp)
 set_target_properties(rulesLib PROPERTIES PUBLIC_HEADER include/IRule.h)
 
 

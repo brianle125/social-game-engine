@@ -14,8 +14,6 @@ GameCreator::GameCreator(std::string gameSpecification) {
 	gameSource = json::parse(f);
 
 	GenerateRuleBuilders();
-
-	//createGame();
 }
 
 GameController GameCreator::createGameController() {

@@ -22,6 +22,6 @@ void GameController::addRule(std::unique_ptr<rules::IRule> rule) {
 
 void GameController::executeRules() {
 	for(auto const& rule : rules) {
-		rule->executeRule();
+		rule->executeRule(model);
 	}
 }
