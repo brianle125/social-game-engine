@@ -7,6 +7,7 @@
 
 
 #include "Server.h"
+#include "inputChoiceRule.h"
 
 #include <fstream>
 #include <iostream>
@@ -14,6 +15,7 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <map>
 
 
 using networking::Server;
@@ -22,11 +24,17 @@ using networking::Message;
 
 
 std::vector<Connection> clients;
+InputChoiceRule icr;
 
 
 void
 onConnect(Connection c) {
   std::cout << "New connection found: " << c.id << "\n";
+    if (icr.target.init == false) {
+        icr.target = Player(c);
+        icr.target.init = true;
+    }
+    icr.executeRule();
   clients.push_back(c);
 }
 
@@ -88,6 +96,28 @@ getHTTPMessage(const char* htmlLocation) {
 }
 
 
+MessageResult
+processMessagesResponse(Server& server, const std::deque<Message>& incoming) {
+  std::ostringstream result;
+  bool quit = false;
+  for (auto& message : incoming) {
+    if (message.text == "quit") {
+      server.disconnect(message.connection);
+    } else if (message.text == "shutdown") {
+      std::cout << "Shutting down.\n";
+      quit = true;
+    } else if (!server.responseQueue.empty()) {
+        std::map<uintptr_t, rules::InputRule*>::iterator clientItr = server.responseQueue.find(message.connection.id);
+        if (clientItr != server.responseQueue.end()) {
+            bool valid = clientItr->second->receiveResponse(message.text);
+            if (valid) { server.responseQueue.erase(clientItr); }
+        }
+    }
+  }
+  return MessageResult{result.str(), quit};
+}
+
+
 int
 main(int argc, char* argv[]) {
   if (argc < 3) {
@@ -98,6 +128,14 @@ main(int argc, char* argv[]) {
 
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
+  std::string one = "one";
+  std::string two = "two";
+  std::string three = "three";
+  std::vector<std::string> choices = {one, two, three};
+  std::string prompt("idk choose something");
+  std::string result("whygod");
+  InputChoiceRule rule(prompt, choices, result, &server);
+  icr = rule;
 
   while (true) {
     bool errorWhileUpdating = false;
@@ -108,11 +146,10 @@ main(int argc, char* argv[]) {
                 << " " << e.what() << "\n\n";
       errorWhileUpdating = true;
     }
-
     auto incoming = server.receive();
-    auto [log, shouldQuit] = processMessages(server, incoming);
+    auto [log, shouldQuit] = processMessagesResponse(server, incoming);
     auto outgoing = buildOutgoing(log);
-    server.send(outgoing);
+    //server.send(outgoing);
 
     if (shouldQuit || errorWhileUpdating) {
       break;
