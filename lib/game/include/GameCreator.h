@@ -2,7 +2,8 @@
 #include <nlohmann/json.hpp>
 #include <memory>
 #include <fstream>
-#include <Game.h>
+#include <GameModel.h>
+#include "GameController.h"
 
 #include "IRule.h"
 
@@ -11,13 +12,17 @@ public:
 	GameCreator(std::string gameSpecification);
 
 	//create game from JSON
-	gameModel::Game createGame();
+	GameController createGameController();
+	std::vector<std::unique_ptr<rules::IRule>> createRules();
+
 private:
 
 	nlohmann::json gameSource;
 	std::unordered_map<std::string, std::function<std::unique_ptr<rules::IRule> (nlohmann::json)>> ruleBuilders;
+
+	GameModel createGameModel();
 	void GenerateRuleBuilders();
 
-	std::vector<std::unique_ptr<rules::IRule>> createRules(const nlohmann::json data);
+	
 	//ask client for setup input
 };

@@ -5,7 +5,7 @@
 class GlobalMessage final : public rules::IRule {   
 public:
     GlobalMessage(std::string message);
-    void executeRule() override;
+    void executeRule(GameModel model) override;
 
 private:
     std::string message;
