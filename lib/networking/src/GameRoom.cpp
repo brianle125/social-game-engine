@@ -3,7 +3,6 @@
 //
 
 #include "GameRoom.h"
-#include <format>
 GameRoom::GameRoom(const GameRoomId &id, std::string game)
     : id(id), game_name(game){
 }
