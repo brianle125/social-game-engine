@@ -1,4 +1,6 @@
 set (CMAKE_CXX_STANDARD 17)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
 add_library(networking
         src/Server.cpp
@@ -45,6 +47,10 @@ target_include_directories(game_room_server
 target_link_libraries(game_room_server
         PRIVATE
         ${Boost_LIBRARIES}
+        )
+target_link_libraries(game_room_server
+        PRIVATE
+        Threads::Threads
         )
 
 install(TARGETS game_room_server
