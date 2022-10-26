@@ -1,11 +1,9 @@
 set (CMAKE_CXX_STANDARD 17)
-SET(CMAKE_CXX_FLAGS, "-lpthread")
 
 add_library(networking
         src/Server.cpp
         src/Client.cpp
         )
-
 
 find_package(Boost 1.72 COMPONENTS system REQUIRED)
 
