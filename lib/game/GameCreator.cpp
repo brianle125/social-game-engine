@@ -3,7 +3,7 @@
 #include <memory>
 #include <nlohmann/json.hpp>
 #include "GameCreator.h"
-#include "Game.h"
+#include "GameModel.h"
 
 using json = nlohmann::json;
 
@@ -14,18 +14,31 @@ GameCreator::GameCreator(std::string gameSpecification) {
 	gameSource = json::parse(f);
 
 	GenerateRuleBuilders();
-
-	//createGame();
 }
 
-gameModel::Game GameCreator::createGame() {
-
+GameController GameCreator::createGameController() {
 	json configData = gameSource["configuration"];
 
-	gameModel::Game newGame(configData["name"].get<std::string>(),
-				 configData["player count"]["min"].get<int>(),
-				 configData["player count"]["min"].get<int>(),
-				 configData["audience"].get<bool>());
+	GameModel model = createGameModel();
+
+	GameController controller(configData["name"],
+							  configData["player count"]["min"],
+							  configData["player count"]["max"],
+							  configData["audience"],
+							  model);
+
+	auto rulesList = createRules();
+
+	for(auto &rule : rulesList) {
+		controller.addRule(std::move(rule));
+	}
+
+	return controller;
+}
+
+GameModel GameCreator::createGameModel() {
+
+	GameModel newGame;
 
 	//parse and add variables here
 	/*
@@ -48,16 +61,10 @@ gameModel::Game GameCreator::createGame() {
 	}
 	*/
 
-	//parse and add rules here
-	std::vector<std::unique_ptr<rules::IRule>> rules = createRules(gameSource);
-	for(std::unique_ptr<rules::IRule> &rule : rules) {
-		newGame.addRule(std::move(rule));
-	}
-
 	return newGame;
 }
 
-std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules(const json data) {
+std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules() {
 	json rules = gameSource["rules"];
 
 	std::vector<std::unique_ptr<rules::IRule>> ruleList;

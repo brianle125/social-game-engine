@@ -1,4 +1,4 @@
-add_library (rulesLib IRule.cpp GlobalMessage.cpp ShuffleList.cpp inputRule.cpp inputChoiceRule.cpp)
+add_library (rulesLib IRule.cpp GlobalMessage.cpp inputRule.cpp inputChoiceRule.cpp)
 set_target_properties(rulesLib PROPERTIES PUBLIC_HEADER include/IRule.h)
 
 

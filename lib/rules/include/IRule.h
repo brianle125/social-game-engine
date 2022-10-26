@@ -1,11 +1,13 @@
 #pragma once
 #include <string>
 
+#include <../../game/include/GameModel.h>
+
 namespace rules {
 
 	class IRule {
 	public:
-		virtual void executeRule() = 0;
+		virtual void executeRule(GameModel model) = 0;
 		IRule();
 		IRule(std::string name);
 		
