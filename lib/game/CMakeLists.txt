@@ -4,7 +4,7 @@ add_executable(gameTest main.cpp)
 set_target_properties(gameTest PROPERTIES CXX_STANDARD 20)
 
 
-add_library (gameLib GameCreator.cpp Game.cpp ruleBuilders.cpp Player.cpp Audience.cpp)
+add_library (gameLib GameCreator.cpp GameModel.cpp GameController.cpp ruleBuilders.cpp Player.cpp Audience.cpp)
 
 
 
