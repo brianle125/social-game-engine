@@ -1,4 +1,4 @@
-add_library (rulesLib IRule.cpp GlobalMessage.cpp)
+add_library (rulesLib IRule.cpp GlobalMessage.cpp inputRule.cpp inputChoiceRule.cpp)
 set_target_properties(rulesLib PROPERTIES PUBLIC_HEADER include/IRule.h)
 
 
@@ -8,3 +8,8 @@ target_include_directories(rulesLib PUBLIC
 )
 
 install(TARGETS rulesLib DESTINATION lib PUBLIC_HEADER DESTINATION include)
+
+target_link_libraries(rulesLib
+  PUBLIC
+    networking
+)
