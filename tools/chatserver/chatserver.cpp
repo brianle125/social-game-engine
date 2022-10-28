@@ -15,7 +15,6 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
-#include <map>
 
 
 using networking::Server;
@@ -25,6 +24,7 @@ using networking::Message;
 
 std::vector<Connection> clients;
 InputChoiceRule icr;
+GameModel model;
 
 
 void
@@ -34,7 +34,7 @@ onConnect(Connection c) {
         icr.target = Player(c);
         icr.target.init = true;
     }
-    icr.executeRule();
+    icr.executeRule(model);
   clients.push_back(c);
 }
 
@@ -107,9 +107,9 @@ processMessagesResponse(Server& server, const std::deque<Message>& incoming) {
       std::cout << "Shutting down.\n";
       quit = true;
     } else if (!server.responseQueue.empty()) {
-        std::map<uintptr_t, rules::InputRule*>::iterator clientItr = server.responseQueue.find(message.connection.id);
+        std::unordered_map<uintptr_t, networking::Response>::iterator clientItr = server.responseQueue.find(message.connection.id);
         if (clientItr != server.responseQueue.end()) {
-            bool valid = clientItr->second->receiveResponse(message.text);
+            bool valid = clientItr->second.rule->receiveResponse(message.text, clientItr->second.start);
             if (valid) { server.responseQueue.erase(clientItr); }
         }
     }
@@ -128,13 +128,13 @@ main(int argc, char* argv[]) {
 
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
-  std::string one = "one";
-  std::string two = "two";
-  std::string three = "three";
-  std::vector<std::string> choices = {one, two, three};
+  myVariant one = std::string("one");
+  myVariant two = std::string("two");
+  myVariant three = std::string("three");
+  std::vector<myVariant> choices = {one, two, three};
   std::string prompt("idk choose something");
   std::string result("whygod");
-  InputChoiceRule rule(prompt, choices, result, &server);
+  InputChoiceRule rule(prompt, choices, result, &server, 5);
   icr = rule;
 
   while (true) {

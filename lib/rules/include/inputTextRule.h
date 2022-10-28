@@ -6,6 +6,7 @@
 
 #include <nlohmann/json.hpp>
 #include "inputRule.h"
+#include "IRule.h"
 #include "Server.h"
 
 using nlohmann::json;
@@ -20,7 +21,7 @@ struct Player {
     Player() {}
 };
 
-class InputTextRule : public rules::InputRule {
+class InputTextRule : public rules::InputRule, public rules::IRule {
 public:
     Player target; // TODO: maybe change to Player class when implemented
     std::string prompt;
@@ -31,9 +32,9 @@ public:
     InputTextRule(std::string prompt, std::string result, Server* server, int timeout = 0);
     InputTextRule() {}
 
-    void executeRule();
+    void executeRule(GameModel model) override;
 private:
     void validateArgs(json ruleConfig);
     void getInput() override;
-    bool receiveResponse(std::string message) override;
+    bool receiveResponse(std::string message, std::chrono::system_clock::time_point start) override;
 };
