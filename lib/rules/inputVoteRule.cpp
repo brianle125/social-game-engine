@@ -6,8 +6,8 @@
 using networking::Message;
 using networking::Response;
 
-InputVoteRule::InputVoteRule(std::string prompt, std::vector<myVariant> choices, std::string result, Server* server, int timeout)
-    : prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
+InputVoteRule::InputVoteRule(Player *target, std::string prompt, std::vector<myVariant> choices, std::string result, Server* server, int timeout)
+    : target{target}, prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
 }
 
 void InputVoteRule::executeRule(GameModel model) {
@@ -20,10 +20,10 @@ void InputVoteRule::getInput() {
             return str1 + ", " + boost::get<std::string>(str2);
         });
     std::string separator(": ");
-    Message message = { target.connection, prompt + separator + choicesStr };
+    Message message = { target->connection, prompt + separator + choicesStr };
     std::deque<Message> messages = { message };
     server->send(messages);
-    server->awaitResponse(target.connection, Response{ this, std::chrono::system_clock::now() });
+    server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
 }
 
 bool InputVoteRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {

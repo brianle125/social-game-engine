@@ -1,3 +1,4 @@
+#pragma once
 
 #include <boost/variant.hpp>
 #include <string>

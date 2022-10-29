@@ -8,30 +8,22 @@
 #include "inputRule.h"
 #include "IRule.h"
 #include "Server.h"
+#include "Player.h"
 
 using nlohmann::json;
 using networking::Server;
 using networking::Connection;
 
-struct Player {
-    Connection connection;
-    bool init = false;
-
-    Player(Connection c) : connection{c} {}
-    Player() {}
-};
-
 class InputVoteRule : public rules::InputRule, public rules::IRule {
 public:
-    Player target; // TODO: maybe change to Player class when implemented
+    Player *target; // TODO: maybe change to Player class when implemented
     std::string prompt;
     std::vector<myVariant> choices;
     std::string result;
     Server *server;
     int timeout;
 
-    InputVoteRule(std::string prompt, std::vector<myVariant> choices, std::string result, Server* server, int timeout = 0);
-    InputVoteRule() {}
+    InputVoteRule(Player *target, std::string prompt, std::vector<myVariant> choices, std::string result, Server* server, int timeout = 0);
 
     void executeRule(GameModel model) override;
 private:

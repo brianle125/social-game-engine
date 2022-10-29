@@ -25,16 +25,14 @@ using networking::Message;
 std::vector<Connection> clients;
 InputChoiceRule icr;
 GameModel model;
+Player p1("PLAYER1");
 
 
 void
 onConnect(Connection c) {
   std::cout << "New connection found: " << c.id << "\n";
-    if (icr.target.init == false) {
-        icr.target = Player(c);
-        icr.target.init = true;
-    }
-    icr.executeRule(model);
+  icr.target->connection = c;
+  icr.executeRule(model);
   clients.push_back(c);
 }
 
@@ -134,7 +132,7 @@ main(int argc, char* argv[]) {
   std::vector<myVariant> choices = {one, two, three};
   std::string prompt("idk choose something");
   std::string result("whygod");
-  InputChoiceRule rule(prompt, choices, result, &server, 5);
+  InputChoiceRule rule(&p1, prompt, choices, result, &server, 0);
   icr = rule;
 
   while (true) {

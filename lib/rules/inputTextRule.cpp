@@ -5,8 +5,8 @@
 using networking::Message;
 using networking::Response;
 
-InputTextRule::InputTextRule(std::string prompt, std::string result, Server* server, int timeout)
-    : prompt{prompt}, result{result}, server{server}, timeout{timeout} {
+InputTextRule::InputTextRule(Player *target, std::string prompt, std::string result, Server* server, int timeout)
+    : target{target}, prompt{prompt}, result{result}, server{server}, timeout{timeout} {
 }
 
 void InputTextRule::executeRule(GameModel model) {
@@ -15,10 +15,10 @@ void InputTextRule::executeRule(GameModel model) {
 
 void InputTextRule::getInput() {
     std::string separator(": ");
-    Message message = { target.connection, prompt + separator};
+    Message message = { target->connection, prompt + separator};
     std::deque<Message> messages = { message };
     server->send(messages);
-    server->awaitResponse(target.connection, Response{ this, std::chrono::system_clock::now() });
+    server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
 }
 
 bool InputTextRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {

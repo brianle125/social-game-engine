@@ -6,8 +6,8 @@
 using networking::Message;
 using networking::Response;
 
-InputChoiceRule::InputChoiceRule(std::string prompt, std::vector<myVariant> choices, std::string result, Server* server, int timeout)
-    : prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
+InputChoiceRule::InputChoiceRule(Player *target, std::string prompt, std::vector<myVariant> choices, std::string result, Server *server, int timeout)
+    : target{target}, prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
         this->choices = choices;
 }
 
@@ -23,10 +23,10 @@ void InputChoiceRule::getInput() {
             return str1 + ", " + boost::get<std::string>(str2);
         });
     std::string separator(": ");
-    Message message = { target.connection, prompt + separator + choicesStr + "\n"};
+    Message message = { target->connection, prompt + separator + choicesStr + "\n"};
     std::deque<Message> messages = { message };
     server->send(messages);
-    server->awaitResponse(target.connection, Response{ this, std::chrono::system_clock::now() });
+    server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
 }
 
 bool InputChoiceRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
