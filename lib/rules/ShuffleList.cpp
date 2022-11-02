@@ -11,7 +11,7 @@ ShuffleList::ShuffleList(vector<string>& l)
 
 
 //adapted from https://www.techiedelight.com/shuffle-vector-cpp/
-void ShuffleList::executeRule() 
+void ShuffleList::executeRule(GameModel model) 
 {
     unsigned seed = chrono::steady_clock::now().time_since_epoch().count(); //change to better random generator later
     std::shuffle(memberList.begin(), memberList.end(), default_random_engine(seed));

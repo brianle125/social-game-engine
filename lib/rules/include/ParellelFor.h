@@ -1,13 +1,12 @@
 #include "IRule.h"
 #include <vector>
 
-using namespace std;
 
 class ParallelFor final : public rules::IRule {
     public:
-        ParallelFor(vector<string> & list);
-        void executeRule() override;
+        ParallelFor(vector<std::string> & list);
+        void executeRule(GameModel model) override;
     private:
-        vector<string> memberList; 
+        vector<std::string> memberList; 
 };
 

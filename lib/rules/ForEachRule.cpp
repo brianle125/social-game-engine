@@ -2,16 +2,14 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
 
-ForEachRule::ForEachRule(vector<string> & list) : memberList(list) {}
+ForEachRule::ForEachRule(std::vector<string> & list) : memberList(list) {}
 
-void ForEachRule::executeRule() 
+void ForEachRule::executeRule(GameModel model) 
 {
     for(auto rule: memberList)
     {
-        //execute rule; todo
-        cout << "testing foreach" << endl;
+        //execute rules in the json array; todo
     }
 }
 
