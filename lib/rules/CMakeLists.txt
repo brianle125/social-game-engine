@@ -12,4 +12,5 @@ install(TARGETS rulesLib DESTINATION lib PUBLIC_HEADER DESTINATION include)
 target_link_libraries(rulesLib
   PUBLIC
     networking
+    gameLib
 )
