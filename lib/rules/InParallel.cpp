@@ -1,13 +1,12 @@
 #include <InParallel.h>
-#include <algorithm>
-#include <execution>
 
-InParallel::InParallel(vector<string> & list) : memberList(list) {}
+InParallel::InParallel(std::vector<IRule> &rules) : rules{rules} {}
 
-void InParallel::executeRule() {
-    std::for_each(std::execution::par, memberList.begin(), memberList.end(),
-    [](auto&& member)
-    {
-        //To do: execute each member
-    });
+void InParallel::executeRule(GameModel model) {
+    for (auto &rule : rules) {
+        rule.execute(model);
+    }
+    // 
+    // model.update() SOMETHING LIKE THIS MAYBE
 }
+    

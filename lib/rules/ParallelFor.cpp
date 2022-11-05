@@ -1,13 +1,15 @@
-#include <ParellelFor.h>
-#include <algorithm>
-#include <execution>
+#include <ParallelFor.h>
 
-ParallelFor::ParallelFor(vector<string> & list) : memberList(list) {}
+ParallelFor::ParallelFor(std::vector<dataVariant> *elements, std::vector<IRule> &rules) : elements{elements}, rules{rules} {}
 
-void ParallelFor::executeRule() {
-    std::for_each(memberList.begin(), memberList.end(),
-    [](auto&& member)
-    {
-        //To do: execute each member
-    });
+void ParallelFor::executeRule(GameModel model) {
+    for (auto &rule : rules) {
+        for (auto &object : *elements) {
+            // TODO: ACTUALLY FIGURE OUT IMPLEMENTATION
+            // MAYBE SOMETHING LIKE THIS help
+            // auto target = rva::visit(someVisitor{}, object);
+            // rule.setTarget(target);
+            rule.execute(model);
+        }
+    }
 }
