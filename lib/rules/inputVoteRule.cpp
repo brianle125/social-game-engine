@@ -15,10 +15,8 @@ void InputVoteRule::executeRule(GameModel model) {
 }
 
 void InputVoteRule::getInput() {
-    std::string choicesStr = std::accumulate(std::next(choices.begin()), choices.end(), boost::get<std::string>(choices[0]),
-        [] (const std::string str1, const myVariant &str2) {
-            return str1 + ", " + boost::get<std::string>(str2);
-        });
+    toStringVisitor stringVisitor;
+    std::string choicesStr = stringVisitor(choices);
     std::string separator(": ");
     Message message = { target->connection, prompt + separator + choicesStr };
     std::deque<Message> messages = { message };
@@ -26,16 +24,16 @@ void InputVoteRule::getInput() {
     server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
 }
 
-bool InputVoteRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
+rules::InputRule::InputValidation InputVoteRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> duration = end-start;
     std::cout << message << std::endl;
     if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
-        return true;
+        return rules::InputRule::InputValidation::success;
     } else if (std::find(choices.begin(), choices.end(), message) != choices.end()) {
-        return true;
+        return rules::InputRule::InputValidation::success;
     } else {
         getInput();
-        return false;
+        return rules::InputRule::InputValidation::failure;
     }
 }

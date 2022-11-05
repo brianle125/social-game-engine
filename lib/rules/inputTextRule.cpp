@@ -21,7 +21,7 @@ void InputTextRule::getInput() {
     server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
 }
 
-bool InputTextRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
+rules::InputRule::InputValidation InputTextRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
     std::cout << message << std::endl;
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> duration = end-start;
@@ -30,5 +30,5 @@ bool InputTextRule::receiveResponse(std::string message, std::chrono::system_clo
     } else {
         // do something
     }
-    return true;
+    return rules::InputRule::InputValidation::success;
 }

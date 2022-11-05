@@ -14,7 +14,7 @@ using nlohmann::json;
 using networking::Server;
 using networking::Connection;
 
-class InputVoteRule : public rules::InputRule, public rules::IRule {
+class InputVoteRule final : public rules::InputRule, public rules::IRule {
 public:
     Player *target; // TODO: maybe change to Player class when implemented
     std::string prompt;
@@ -27,7 +27,6 @@ public:
 
     void executeRule(GameModel model) override;
 private:
-    void validateArgs(json ruleConfig);
     void getInput() override;
-    bool receiveResponse(std::string message, std::chrono::system_clock::time_point start) override;
+    rules::InputRule::InputValidation receiveResponse(std::string message, std::chrono::system_clock::time_point start) override;
 };
