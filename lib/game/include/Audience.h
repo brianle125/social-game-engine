@@ -7,9 +7,9 @@ class AudienceMember {
 public:
     string const name;
         AudienceMember(string audienceMemberName);
-        void addContent(string key, dataBucket content);
-        dataBucket getContent(string key);
+        void addContent(string key, dataVariant content);
+        dataVariant getContent(string key);
 
     private:
-        unordered_map<string, dataBucket> audienceContents;
+        unordered_map<string, dataVariant> audienceContents;
 };
