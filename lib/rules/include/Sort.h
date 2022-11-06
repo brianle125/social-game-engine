@@ -5,10 +5,10 @@
 
 class Sort{
     public:
-        Sort(std::vector<myVariant>& vector);
+        Sort(std::vector<dataBucket>& vector);
 
         void Sort::ExecuteRule();
 
     private:
-        vector<myVariant>& sortVector;
+        vector<dataBucket>& sortVector;
 };

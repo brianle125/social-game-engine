@@ -4,11 +4,11 @@
 
 class Extend{
     public:
-        Extend(std::vector<myVariant>& originalVector,std::vector<myVariant>& additionVector);
+        Extend(std::vector<dataBucket>& originalVector,std::vector<dataBucket>& additionVector);
 
         void ExecuteRule();
 
     private:
-        vector<myVariant>& originalVector;
-        vector<myVariant>& additionVector;
+        vector<dataBucket>& originalVector;
+        vector<dataBucket>& additionVector;
 };

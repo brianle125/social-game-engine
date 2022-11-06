@@ -6,19 +6,19 @@
 
 using namespace std;
 
-void GameModel::addConstant(std::string name, myVariant value) {
+void GameModel::addConstant(std::string name, dataBucket value) {
 	constants.emplace(name, value);
 }
 
-myVariant GameModel::getConstant(std::string key) {
+dataBucket GameModel::getConstant(std::string key) {
 	return constants.find(key)->second;
 }
 
-void GameModel::addVariable(std::string name, myVariant value) {
+void GameModel::addVariable(std::string name, dataBucket value) {
 	variables.emplace(name, value);
 }
 
-myVariant GameModel::getVariable(std::string key) {
+dataBucket GameModel::getVariable(std::string key) {
 	return variables.find(key)->second;
 }
 
