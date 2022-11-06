@@ -45,7 +45,7 @@ crow::response fetch_game_room_route(const std::string game_room_id) {
         return crow::response(crow::status::NOT_FOUND);
     }
 
-    return crow::response(iter->second.serialized());
+    return crow::response(crow::status::OK, "json", iter->second.serialized());
 }
 
 

@@ -4,7 +4,8 @@
 
 #include "GameRoom.h"
 
-// For nlohmann json serialization
+// For nlohmann json serialization:
+// https://stackoverflow.com/questions/38336046/how-to-use-json-c-with-my-own-object
 void to_json(nlohmann::json& j, const GameRoom& g) {
     auto game_config = g.get_game_config();
     j = nlohmann::json{
