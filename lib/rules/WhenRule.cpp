@@ -1,17 +1,19 @@
-#include "include/WhenRule.h"
+#include "WhenRule.h"
 #include <vector>
+#include <iostream>
 
-using namespace std;
+WhenRule::WhenRule(std::string c) : failCondition(c) {}
+WhenRule::~WhenRule() {}
 
-WhenRule::WhenRule(std::string c) : failCondition(con) {}
-WhenRule::WhenRule(bool con) : condition(con) {}
-
-void WhenRule::executeRule() 
+void WhenRule::executeRule(GameModel model) 
 {
-    bool con = parseBooleanString(failCondition)
+    bool condition = parseBooleanString(failCondition)
     if(condition)
     {
         //TODO: execute rule here
     }
 }
+
+
+
 

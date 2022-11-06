@@ -5,10 +5,10 @@
 class LoopRule final: public rules::IRule
 {
     public:
-        LoopRule(vector<string>& list, bool con);
+        LoopRule(std::vector<myVariant>& list, bool con);
         void executeRule(GameModel model) override;
         
     private:
-        vector<string> memberList;
+        std::vector<myVariant> memberList;
         bool failCondition;
 };

@@ -6,9 +6,8 @@
 class Sort{
     public:
         Sort(std::vector<myVariant>& vector);
-
-        void Sort::ExecuteRule();
+        void Sort::executeRule() override;
 
     private:
-        vector<myVariant>& sortVector;
+       std::vector<myVariant>& sortVector;
 };

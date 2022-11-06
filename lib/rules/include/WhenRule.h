@@ -1,12 +1,14 @@
-#include "include/IRule.h"
+#pragma once
+
+#include "IRule.h"
+#include <string>
 
 class WhenRule final : public rules::IRule
 {
     public:
         WhenRule(std::string c);
-        WhenRule(bool con);
+        ~WhenRule() override;
         void executeRule(GameModel model) override;
     private:
-        bool condition;
         std::string failCondition;
 };

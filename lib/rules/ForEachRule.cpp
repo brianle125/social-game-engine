@@ -3,28 +3,13 @@
 #include <iostream>
 
 
-ForEachRule::ForEachRule(std::vector<string> & list) : memberList(list) {}
+ForEachRule::ForEachRule(std::vector<myVariant> & list) : memberList(list) {}
+ForEachRule::ForEachRule(std::string list) : listName(list) {}
 
 void ForEachRule::executeRule(GameModel model) 
 {
     for(auto rule: memberList)
     {
-        //execute rules in the json array; todo
+        rule.executeRule();
     }
 }
-
-//testing only, removal later
-// int main()
-// {
-//     try 
-//     {
-//         vector<string> list = {"one", "two"};
-//         ForEachRule fe(list);
-//         fe.executeRule();
-//     } 
-//     catch(exception &e)
-//     {
-//         cout << e.what() << endl;
-//         return -1;
-//     }  
-// }
