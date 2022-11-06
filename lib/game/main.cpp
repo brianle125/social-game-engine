@@ -14,6 +14,11 @@ main(int argc, char *argv[]) {
 	// std::cout << boost::get<string>(newGame.getConstant("player-name")) << "\n";
 	// std::cout << boost::get<int>(newGame.getVariable("wins")) << "\n";
 
-	newGame.executeRules();
+	//There is likely a better solution to this, but for now, this works
+	while(!newGame.isGameOver()) {
+		newGame.executeNextRule();
+		
+	}
+
 	return 0;
 }
