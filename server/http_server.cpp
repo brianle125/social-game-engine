@@ -53,7 +53,7 @@ crow::response create_empty_game_room_route(const crow::request &req) {
     //expect client respond: a string, e.g. "CoinGame"
     auto x = crow::json::load(req.body);
     if (!x) {
-        return crow::response(crow::status::BAD_REQUEST); // same as crow::response(400)
+        return crow::response(crow::status::BAD_REQUEST, "missing body"); // same as crow::response(400)
     }
     try {
         auto gameName = x["gameName"].s();//get a game name
@@ -66,7 +66,7 @@ crow::response create_empty_game_room_route(const crow::request &req) {
         //return a invitation code
         return crow::response{id.get_value()};
     } catch (const std::exception& ex) {
-        return crow::response(crow::status::BAD_REQUEST);
+        return crow::response(crow::status::BAD_REQUEST, ex.what());
     }
 }
 
@@ -80,22 +80,26 @@ crow::response save_game_room_config_route(const crow::request &req) {
     //expect client respond: a string, e.g. "CoinGame"
     auto x = crow::json::load(req.body);
     if (!x) {
-        return crow::response(crow::status::BAD_REQUEST); // same as crow::response(400)
+        return crow::response(crow::status::BAD_REQUEST, "missing body"); // same as crow::response(400)
     }
 
     try {
-        std::string id = x["id"].s();
-        nlohmann::json gameConfig = nlohmann::json::parse(R"(x["config"].s())"); //covert string to Json object
-        std::cout << gameConfig << std::endl;
+        nlohmann::json payload = nlohmann::json::parse(req.body);
+        std::string id = payload["id"];
         GameRoomId roomID(id);
         auto room = get_game_room(roomID);
         if (!room) {
             return crow::response(crow::status::NOT_FOUND);
         }
 
+        nlohmann::json game_config = payload["config"];
+        std::cout << game_config << std::endl;
+
         return crow::response(crow::status::OK);
     }catch (const std::exception& ex) {
-        return crow::response(crow::status::BAD_REQUEST);
+        nlohmann::json dude = nlohmann::json::parse(req.body);
+        std::cout << "dude id: " << dude["id"] << std::endl;
+        return crow::response(crow::status::BAD_REQUEST, ex.what());
     }
 }
 
@@ -117,7 +121,7 @@ int main() {
 
     CROW_ROUTE(app, "/game-rooms/<string>")(fetch_game_room_route);
 
-    CROW_ROUTE(app, "/game-rooms-configs")
+    CROW_ROUTE(app, "/game-room-configs")
             .methods("POST"_method)
                     (save_game_room_config_route);
 
