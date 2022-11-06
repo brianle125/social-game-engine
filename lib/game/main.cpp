@@ -1,6 +1,7 @@
 #include <GameCreator.h>
 #include <IRule.h>
 #include <iostream>
+#include <ContentVariant.h>
 using namespace std;
 
 //THIS IS A TESTING FUNCTION
@@ -11,8 +12,9 @@ main(int argc, char *argv[]) {
 	GameController newGame = creator.createGameController();
 	newGame.printGame();
 
-	// std::cout << boost::get<string>(newGame.getConstant("player-name")) << "\n";
-	// std::cout << boost::get<int>(newGame.getVariable("wins")) << "\n";
+	// dataVariant name = 10;
+	// string nameString = std::visit(toStringVisitor(), name);
+	// std::cout << nameString << "\n";
 
 	//There is likely a better solution to this, but for now, this works
 	while(!newGame.isGameOver()) {

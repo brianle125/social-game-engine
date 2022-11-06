@@ -41,12 +41,12 @@ GameModel GameCreator::createGameModel() {
 	GameModel newGame;
 
 	//parse and add variables here
-	/*
+	
 	json constants = gameSource["constants"];
 	for(auto constant : constants.items()) {
 		std::string keyname = constant.key();
-		std::string valuename = constant.value();
-		dataVariant variant = valuename;
+		std::string value = constant.value();
+		dataVariant variant = value;
 
 		newGame.addConstant(keyname, variant);
 	}
@@ -54,12 +54,12 @@ GameModel GameCreator::createGameModel() {
 	json variables = gameSource["variables"];
 	for(auto variable : variables.items()) {
 		std::string keyname = variable.key();
-		int valuename = variable.value();
-		dataVariant variant = valuename;
+		int value = variable.value();
+		dataVariant variant = value;
 
 		newGame.addVariable(keyname, variant);
 	}
-	*/
+	
 
 	return newGame;
 }

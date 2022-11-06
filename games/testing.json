@@ -16,7 +16,7 @@
   "rules": [
     {
         "rule": "global-message",
-        "value": "testing from file!"
+        "value": "{player-name} has won {wins} times!"
     }
   ]
 }
