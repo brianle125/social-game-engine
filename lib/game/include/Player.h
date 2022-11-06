@@ -12,9 +12,9 @@ class Player {
         string const name;
         networking::Connection connection;
         Player(string playerName);
-        void addContent(string key, myVariant content);
-        myVariant getContent(string key);
+        void addContent(string key, dataVariant content);
+        dataVariant getContent(string key);
 
     private:
-        unordered_map<string, myVariant> playerContents;     
+        unordered_map<string, dataVariant> playerContents;     
 };

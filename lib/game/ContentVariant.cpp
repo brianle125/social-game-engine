@@ -22,7 +22,7 @@ std::string toStringVisitor::operator()(bool b) const {
     return b ? "true" : "false";
 }
 
-std::string toStringVisitor::operator()(vector<myVariant> v) const {
+std::string toStringVisitor::operator()(vector<dataVariant> v) const {
     std::string s = "[";
     int n = v.size();
     int i;
@@ -36,7 +36,7 @@ std::string toStringVisitor::operator()(vector<myVariant> v) const {
     return s;
 }
 
-std::string toStringVisitor::operator()(map<std::string, myVariant> m) const {
+std::string toStringVisitor::operator()(map<std::string, dataVariant> m) const {
     std::string s = "(";
     auto i = m.begin();
     auto i2 = m.begin();
@@ -60,7 +60,7 @@ std::string toStringVisitor::operator()(map<std::string, myVariant> m) const {
 
 //Shuffle visitors
 
-void shuffleVisitor::operator()(vector<myVariant> v) {
+void shuffleVisitor::operator()(vector<dataVariant> v) {
     unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
     std::shuffle(v.begin(), v.end(), default_random_engine(seed));
 }
@@ -78,7 +78,7 @@ void shuffleVisitor::operator()(T const) const {
 
 // }
 
-// void addVisitor::operator()(vector<myVariant> v) {
+// void addVisitor::operator()(vector<dataVariant> v) {
 
 // }
 

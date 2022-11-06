@@ -5,10 +5,10 @@ using namespace std;
 Player::Player(string playerName) 
 : name(playerName){}
 
-void Player::addContent(string key, myVariant content) {
+void Player::addContent(string key, dataVariant content) {
     playerContents[key] = content;
 }
 
-myVariant Player::getContent(string key) {
+dataVariant Player::getContent(string key) {
     return playerContents.find(key)->second;
 }
