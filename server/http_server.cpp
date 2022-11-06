@@ -96,9 +96,7 @@ crow::response save_game_room_config_route(const crow::request &req) {
         std::cout << game_config << std::endl;
 
         return crow::response(crow::status::OK);
-    }catch (const std::exception& ex) {
-        nlohmann::json dude = nlohmann::json::parse(req.body);
-        std::cout << "dude id: " << dude["id"] << std::endl;
+    } catch (const std::exception& ex) {
         return crow::response(crow::status::BAD_REQUEST, ex.what());
     }
 }
