@@ -5,10 +5,10 @@ using namespace std;
 AudienceMember::AudienceMember(string audienceMemberName)
 : name(audienceMemberName) {}
 
-void AudienceMember::addContent(string key, dataBucket content) {
+void AudienceMember::addContent(string key, dataVariant content) {
     audienceContents[key] = content;
 }
 
-dataBucket AudienceMember::getContent(string key) {
+dataVariant AudienceMember::getContent(string key) {
     return audienceContents.find(key)->second;
 }

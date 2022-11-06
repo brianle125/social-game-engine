@@ -46,7 +46,7 @@ GameModel GameCreator::createGameModel() {
 	for(auto constant : constants.items()) {
 		std::string keyname = constant.key();
 		std::string valuename = constant.value();
-		dataBucket variant = valuename;
+		dataVariant variant = valuename;
 
 		newGame.addConstant(keyname, variant);
 	}
@@ -55,7 +55,7 @@ GameModel GameCreator::createGameModel() {
 	for(auto variable : variables.items()) {
 		std::string keyname = variable.key();
 		int valuename = variable.value();
-		dataBucket variant = valuename;
+		dataVariant variant = valuename;
 
 		newGame.addVariable(keyname, variant);
 	}

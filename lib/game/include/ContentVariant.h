@@ -20,7 +20,7 @@ typedef rva::variant<
     bool,
     vector<rva::self_t>,
     map<string, rva::self_t>
-    > dataBucket;
+    > dataVariant;
 
 #ifndef SAMPLEVISIT_H
 #define SAMPLEVISIT_H
@@ -30,12 +30,12 @@ struct toStringVisitor {
 	string operator()(float f) const;
 	string operator()(string s) const;
 	string operator()(bool b) const;
-	string operator()(vector<dataBucket> v) const;
-	string operator()(map<string, dataBucket> m) const;
+	string operator()(vector<dataVariant> v) const;
+	string operator()(map<string, dataVariant> m) const;
 };
 
 struct shuffleVisitor {
-	void operator()(vector<dataBucket> v);
+	void operator()(vector<dataVariant> v);
 	template<typename T>
 	void operator()(T const) const;
 };
@@ -45,8 +45,8 @@ struct shuffleVisitor {
 // 	void operator()(float f);
 // 	void operator()(string s);
 // 	void operator()(bool b);
-// 	void operator()(vector<dataBucket> v);
-// 	void operator()(map<string, dataBucket> m);
+// 	void operator()(vector<dataVariant> v);
+// 	void operator()(map<string, dataVariant> m);
 // };
 
 #endif
