@@ -4,6 +4,16 @@
 
 #include "GameRoom.h"
 
+// For nlohmann json serialization
+void to_json(nlohmann::json& j, const GameRoom& g) {
+    auto game_config = g.get_game_config();
+    j = nlohmann::json{
+            {"id", g.get_game_room_id().get_value()},
+            {"gameName", g.get_game_name()},
+            {"gameConfig", game_config ? *game_config : nlohmann::json()}};
+}
+
+
 GameRoom::GameRoom(const GameRoomId &id, const std::string & game)
         : id(id), game_name(game){
 }
@@ -20,9 +30,13 @@ std::string GameRoom::get_game_name() const {
     return game_name;
 }
 
+std::optional<nlohmann::json> GameRoom::get_game_config() const {
+    return game_config;
+}
+
 std::string GameRoom::serialized() const {
-    std::string starter = "{\"gameRoomId\":\"";
-    return starter + id.get_value() + "\",\"gameName\":\"" + game_name + "\"}";
+    nlohmann::json j = *this;
+    return j.dump();
 }
 bool GameRoom::operator== (const GameRoom &other) const {
     return other.id == this->id;
