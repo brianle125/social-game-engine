@@ -6,7 +6,7 @@
 using networking::Message;
 using networking::Response;
 
-InputVoteRule::InputVoteRule(Player *target, std::string prompt, std::vector<myVariant> choices, std::string result, Server* server, int timeout)
+InputVoteRule::InputVoteRule(Player *target, std::string prompt, std::vector<dataVariant> choices, std::string result, Server* server, int timeout)
     : target{target}, prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
 }
 
@@ -15,8 +15,8 @@ void InputVoteRule::executeRule(GameModel model) {
 }
 
 void InputVoteRule::getInput() {
-    toStringVisitor stringVisitor;
-    std::string choicesStr = stringVisitor(choices);
+    dataVariant choicesVariant(choices);
+    std::string choicesStr = rva::visit(toStringVisitor{}, choicesVariant);
     std::string separator(": ");
     Message message = { target->connection, prompt + separator + choicesStr };
     std::deque<Message> messages = { message };
@@ -30,7 +30,7 @@ rules::InputRule::InputValidation InputVoteRule::receiveResponse(std::string mes
     std::cout << message << std::endl;
     if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
         return rules::InputRule::InputValidation::success;
-    } else if (std::find(choices.begin(), choices.end(), message) != choices.end()) {
+    } else if (std::find(choices.begin(), choices.end(), dataVariant(message)) != choices.end()) {
         return rules::InputRule::InputValidation::success;
     } else {
         getInput();

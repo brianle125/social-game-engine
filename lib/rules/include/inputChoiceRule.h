@@ -18,14 +18,14 @@ class InputChoiceRule final : public rules::InputRule, public rules::IRule {
 public:
     Player *target; // TODO: maybe change to Player class when implemented
     std::string prompt;
-    std::vector<myVariant> choices;
+    std::vector<dataVariant> choices;
     std::string result;
     Server *server;
     int timeout;
 
     GameModel model;
 
-    InputChoiceRule(Player *target, std::string prompt, std::vector<myVariant> choices, std::string result, Server *server, int timeout = 0);
+    InputChoiceRule(Player *target, std::string prompt, std::vector<dataVariant> choices, std::string result, Server *server, int timeout = 0);
     InputChoiceRule() {}
 
     void executeRule(GameModel model) override;

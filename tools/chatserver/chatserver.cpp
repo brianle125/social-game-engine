@@ -126,10 +126,10 @@ main(int argc, char* argv[]) {
 
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
-  myVariant one = std::string("one");
-  myVariant two = std::string("two");
-  myVariant three = std::string("three");
-  std::vector<myVariant> choices = {one, two, three};
+  dataVariant one = std::string("one");
+  dataVariant two = std::string("two");
+  dataVariant three = std::string("three");
+  std::vector<dataVariant> choices = {one, two, three};
   std::string prompt("idk choose something");
   std::string result("whygod");
   InputChoiceRule rule(&p1, prompt, choices, result, &server, 0);
