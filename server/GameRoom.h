@@ -10,12 +10,14 @@ class GameRoom {
 private:
     GameRoomId id;
     std::string game_name;
+
 public:
-    GameRoom(const GameRoomId &, std::string);
+    GameRoom(const GameRoomId &, const std::string&);
+    GameRoom(GameRoomId &&, std::string&&);
     GameRoomId get_game_room_id() const;
     std::string get_game_name() const;
     std::string serialized() const;
-
+    bool operator== (const GameRoom &other) const;
 };
 
 
