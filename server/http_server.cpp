@@ -89,13 +89,20 @@ crow::response save_game_room_config_route(const crow::request &req) {
         GameRoomId roomID(id);
         auto room = get_game_room(roomID);
         if (!room) {
-            return crow::response(crow::status::NOT_FOUND);
+            return crow::response(crow::status::NOT_FOUND, "game room not found");
         }
 
         nlohmann::json game_config = payload["config"];
         std::cout << game_config << std::endl;
 
-        return crow::response(crow::status::OK);
+        auto new_room = room->with_config(game_config);
+        auto updated_room = update_game_room(new_room);
+
+        if (!updated_room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found while being updated");
+        }
+
+        return crow::response(crow::status::OK, "json", updated_room->serialized());
     } catch (const std::exception& ex) {
         return crow::response(crow::status::BAD_REQUEST, ex.what());
     }

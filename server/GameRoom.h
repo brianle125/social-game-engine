@@ -17,12 +17,15 @@ private:
 
 public:
     GameRoom(const GameRoomId &, const std::string&);
+    GameRoom(const GameRoomId &, const std::string&, const nlohmann::json&);
+
     GameRoom(GameRoomId &&, std::string&&);
     GameRoomId get_game_room_id() const;
     std::string get_game_name() const;
     std::optional<nlohmann::json> get_game_config() const;
     std::string serialized() const;
     bool operator== (const GameRoom &other) const;
+    GameRoom with_config(const nlohmann::json&);
 };
 
 #endif //HTTP_SERVER_CPP_GAMEROOM_H

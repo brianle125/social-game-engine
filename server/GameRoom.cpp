@@ -23,6 +23,10 @@ GameRoom::GameRoom(GameRoomId &&id, std::string && game)
         : id(id), game_name(game){
 }
 
+GameRoom::GameRoom(const GameRoomId &id, const std::string&game, const nlohmann::json& config): id(id), game_name(game) {
+    game_config = config;
+}
+
 GameRoomId GameRoom::get_game_room_id() const {
     return id;
 }
@@ -41,4 +45,9 @@ std::string GameRoom::serialized() const {
 }
 bool GameRoom::operator== (const GameRoom &other) const {
     return other.id == this->id;
+}
+
+GameRoom GameRoom::with_config(const nlohmann::json& config){
+    GameRoom new_room(this->id, this->game_name, config);
+    return new_room;
 }
