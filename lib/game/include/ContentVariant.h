@@ -37,13 +37,13 @@ struct toStringVisitor {
 struct toIntVisitor {
 	int operator()(int i) const;
 	int operator()(float f) const;
-}
+};
 
 
 struct toFloatVisitor{
 	float operator()(int i) const;
 	float operator()(float f) const;
-}
+};
 
 
 struct shuffleVisitor {
@@ -52,13 +52,20 @@ struct shuffleVisitor {
 	void operator()(T const) const;
 };
 
-// struct addVisitor {
-// 	void operator()(int i);
-// 	void operator()(float f);
-// 	void operator()(string s);
-// 	void operator()(bool b);
-// 	void operator()(vector<dataVariant> v);
-// 	void operator()(map<string, dataVariant> m);
-// };
+
+struct addVisitor
+{
+    dataVariant operator()(int first, int second) const;
+	dataVariant operator()(int first, float second) const;
+	dataVariant operator()(float first, int second) const;
+	dataVariant operator()(float first, float second) const;
+
+
+
+    //dataVariant operator()(int first, int second);
+    // all other overloads invalid
+    template <typename T, typename U>
+    dataVariant operator()(T, U) const;
+};
 
 #endif

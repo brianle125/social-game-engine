@@ -70,12 +70,12 @@ int toIntVisitor::operator()(float f) const {
 
 
 //toFloatVisitors
-int toFloatVisitor::operator()(int i) const {
+float toFloatVisitor::operator()(int i) const {
     return (float)i;
 }
 
 
-int toFloatVisitor::operator()(float f) const {
+float toFloatVisitor::operator()(float f) const {
     return f;
 }
 
@@ -98,10 +98,35 @@ void shuffleVisitor::operator()(T const) const {
 
 
 
-dataVariant addVisitor::operator()(int first, int second){
-    return first+second;
+dataVariant addVisitor::operator()(int first, int second) const{
+    return dataVariant(first+second);
 }
 
+dataVariant addVisitor::operator()(int first, float second) const{
+    return dataVariant(first+second);
+}
+
+dataVariant addVisitor::operator()(float first, int second) const{
+    return dataVariant(first+second);
+}
+
+dataVariant addVisitor::operator()(float first, float second) const{
+    return dataVariant(first+second);
+}
+
+
+
+dataVariant addVisitor::operator()(int first, int second) const{
+    return dataVariant(first+second);
+}
+
+
+
+template <typename T, typename U>
+dataVariant addVisitor::operator()(T, U) const
+{
+    throw std::invalid_argument{"invalid"};
+}
 
 //Add visitors
 
