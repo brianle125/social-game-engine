@@ -8,10 +8,10 @@
 
 class GameModel {
 public:
-    void addConstant(std::string name, myVariant value);
-    myVariant getConstant(std::string key);
-    void addVariable(std::string name, myVariant value);
-    myVariant getVariable(std::string key);
+    void addConstant(std::string name, dataVariant value);
+    dataVariant getConstant(std::string key);
+    void addVariable(std::string name, dataVariant value);
+    dataVariant getVariable(std::string key);
     //void setVariable(std::string key, //variant or raw value?//);
 
 private:
@@ -19,7 +19,7 @@ private:
     //list of Players
     //dictionary of setup
 
-    std::unordered_map<std::string, myVariant> constants;
-    std::unordered_map<std::string, myVariant> variables;
+    std::unordered_map<std::string, dataVariant> constants;
+    std::unordered_map<std::string, dataVariant> variables;
 
 };

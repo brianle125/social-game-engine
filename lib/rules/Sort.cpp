@@ -1,7 +1,7 @@
 #include "include/sort.h"
 
 
-Sort::Sort(std::vector<myVariant>& vector):sortVector(vector){}
+Sort::Sort(std::vector<dataVariant>& vector):sortVector(vector){}
 
 
 void Sort::ExecuteRule()

@@ -5,9 +5,10 @@
 
 class Sort{
     public:
-        Sort(std::vector<myVariant>& vector);
-        void Sort::executeRule() override;
+        Sort(std::vector<dataVariant>& vector);
+
+        void Sort::ExecuteRule();
 
     private:
-       std::vector<myVariant>& sortVector;
+        vector<dataVariant>& sortVector;
 };

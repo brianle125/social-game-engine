@@ -28,29 +28,29 @@ void GameCreator::GenerateRuleBuilders() {
 	});	
 
 
-	ruleBuilders.emplace("foreach", 
-		[](json ruleData) -> std::unique_ptr<rules::IRule> {
-			//ruleData["list"].get<std::vector<IRule>>()
-			auto newRule = std::make_unique<ForEachRule>(ForEachRule(ruleData["list"]));
-			return std::move(newRule);
-	});	
+	// ruleBuilders.emplace("foreach", 
+	// 	[](json ruleData) -> std::unique_ptr<rules::IRule> {
+	// 		dataVariant list = ruleData["rules"];
+	// 		auto newRule = std::make_unique<ForEachRule>(ForEachRule(ruleData["list"]));
+	// 		return std::move(newRule);
+	// });	
 
-//tentative
-	ruleBuilders.emplace("when", 
-		[](json ruleData) -> std::unique_ptr<rules::IRule> {
-			auto whileCon = ruleData["while"];
-			auto untilCon = ruleData["until"];
+	// //tentative
+	// ruleBuilders.emplace("when", 
+	// 	[](json ruleData) -> std::unique_ptr<rules::IRule> {
+	// 		auto whileCon = ruleData["while"];
+	// 		auto untilCon = ruleData["until"];
 
-			if(whileCon)
-			{
-				auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["list"]));
-				return std::move(newRule);
-			}
-			else if(untilCon) {
-				auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["list"]));
-				return std::move(newRule);
-			}
-	});	
+	// 		if(whileCon)
+	// 		{
+	// 			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["list"]));
+	// 			return std::move(newRule); 
+	// 		}
+	// 		else if(untilCon) {
+	// 			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["list"]));
+	// 			return std::move(newRule);
+	// 		}
+	// });	
 	
 	
 }

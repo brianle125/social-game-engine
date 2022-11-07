@@ -3,7 +3,7 @@
 
 using namespace std;
 
-LoopRule::LoopRule(vector<myVariant>& memberList, bool con) : memberList(list), failCondition(con) {}
+LoopRule::LoopRule(vector<dataVariant>& memberList, bool con) : memberList(list), failCondition(con) {}
 
 void LoopRule::executeRule(GameModel model) 
 {

@@ -7,9 +7,9 @@ class AudienceMember {
 public:
     string const name;
         AudienceMember(string audienceMemberName);
-        void addContent(string key, myVariant content);
-        myVariant getContent(string key);
+        void addContent(string key, dataVariant content);
+        dataVariant getContent(string key);
 
     private:
-        unordered_map<string, myVariant> audienceContents;
+        unordered_map<string, dataVariant> audienceContents;
 };
