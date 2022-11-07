@@ -16,11 +16,6 @@ void GameController::printGame() {
 		"\nMinimum Players: " << minimumPlayers <<
 		"\nMaximum Players: " << maximumPlayers <<
 		"\nAudience?: " << audience << "\n";
-
-	// dataVariant name = 10;
-	// auto nameString = std::visit(toStringVisitor(), name);
-	// std::cout << nameString << "\n";
-	//std::cout << model.getVariable("wins") << "\n";
 }
 
 
