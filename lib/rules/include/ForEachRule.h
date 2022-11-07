@@ -2,6 +2,9 @@
 #include <string>
 
 #include "IRule.h"
+#include <nlohmann/json.hpp>
+
+using nlohmann::json;
 
 
 class ForEachRule final : public rules::IRule {
