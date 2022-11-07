@@ -9,14 +9,6 @@
 #include "GameStatus.h"
 namespace fs = std::filesystem;
 
-std::unordered_map<std::string, GameStatus> gameStatusMapper = {
-        {"not_started", GameStatus::not_started},
-        {"error", GameStatus::error},
-        {"paused", GameStatus::paused},
-        {"running", GameStatus::running},
-        {"terminated", GameStatus::terminated},
-};
-
 std::unordered_map<GameRoomId, GameRoom, GameRoomIdHashFunction> gameRooms;
 
 std::string to_game_room_storge_name(const GameRoomId& id) {
@@ -128,7 +120,7 @@ crow::response save_game_room_config_route(const crow::request &req) {
     }
 }
 
-crow::response change_game_status(const crow::request &req) {
+crow::response change_game_status_route(const crow::request &req) {
     auto x = crow::json::load(req.body);
     if (!x) {
         return crow::response(crow::status::BAD_REQUEST, "missing body"); // same as crow::response(400)
@@ -146,14 +138,12 @@ crow::response change_game_status(const crow::request &req) {
         std::string game_status_key = payload["status"];
         std::cout << game_status_key << std::endl;
 
-        auto iter = gameStatusMapper.find(game_status_key);
-        if (iter == gameStatusMapper.end()) {
+        auto game_status = GameStatus::try_parse(game_status_key);
+        if (!game_status) {
             return crow::response(crow::status::BAD_REQUEST, "invalid game status: " + game_status_key);
         }
 
-        auto game_status = iter->second;
-
-        auto new_room = room->with_game_status(game_status);
+        auto new_room = room->with_game_status(*game_status);
         auto updated_room = update_game_room(new_room);
 
         if (!updated_room) {
@@ -188,6 +178,10 @@ int main() {
     CROW_ROUTE(app, "/game-room-configs")
             .methods("POST"_method)
                     (save_game_room_config_route);
+
+    CROW_ROUTE(app, "/game-room-statuses")
+            .methods("POST"_method)
+                    (change_game_status_route);
 
     app.port(18080).run();
 }

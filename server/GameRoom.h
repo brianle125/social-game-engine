@@ -19,12 +19,13 @@ private:
 
 public:
     GameRoom(const GameRoomId &, const std::string&);
-    GameRoom(const GameRoomId &, const std::string&, const nlohmann::json&, GameStatus);
+    GameRoom(const GameRoomId &, const std::string&, const std::optional<nlohmann::json>&, GameStatus);
     GameRoom(GameRoomId &&, std::string&&);
 
     GameRoomId get_game_room_id() const;
     std::string get_game_name() const;
     std::optional<nlohmann::json> get_game_config() const;
+    GameStatus get_game_status() const;
     std::string serialized() const;
     bool operator== (const GameRoom &other) const;
     GameRoom with_config(const nlohmann::json&);

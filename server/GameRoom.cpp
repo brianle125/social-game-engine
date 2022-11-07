@@ -11,7 +11,8 @@ void to_json(nlohmann::json& j, const GameRoom& g) {
     j = nlohmann::json{
             {"id", g.get_game_room_id().get_value()},
             {"gameName", g.get_game_name()},
-            {"gameConfig", game_config ? *game_config : nlohmann::json()}};
+            {"gameConfig", game_config ? *game_config : nlohmann::json()},
+            {"gameStatus", g.get_game_status().get_value()}};
 }
 
 GameRoom::GameRoom(const GameRoomId &id, const std::string & game)
@@ -25,7 +26,7 @@ GameRoom::GameRoom(GameRoomId &&id, std::string && game)
 GameRoom::GameRoom(
         const GameRoomId &id,
         const std::string&game,
-        const nlohmann::json& config,
+        const std::optional<nlohmann::json>& config,
         GameStatus status)
         : id(id), game_name(game) {
     game_config = config;
@@ -42,6 +43,10 @@ std::string GameRoom::get_game_name() const {
 
 std::optional<nlohmann::json> GameRoom::get_game_config() const {
     return game_config;
+}
+
+GameStatus GameRoom::get_game_status() const {
+    return game_status;
 }
 
 std::string GameRoom::serialized() const {
