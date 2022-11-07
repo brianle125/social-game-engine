@@ -14,7 +14,6 @@ void to_json(nlohmann::json& j, const GameRoom& g) {
             {"gameConfig", game_config ? *game_config : nlohmann::json()}};
 }
 
-
 GameRoom::GameRoom(const GameRoomId &id, const std::string & game)
         : id(id), game_name(game){
 }
@@ -23,8 +22,14 @@ GameRoom::GameRoom(GameRoomId &&id, std::string && game)
         : id(id), game_name(game){
 }
 
-GameRoom::GameRoom(const GameRoomId &id, const std::string&game, const nlohmann::json& config): id(id), game_name(game) {
+GameRoom::GameRoom(
+        const GameRoomId &id,
+        const std::string&game,
+        const nlohmann::json& config,
+        GameStatus status)
+        : id(id), game_name(game) {
     game_config = config;
+    game_status = status;
 }
 
 GameRoomId GameRoom::get_game_room_id() const {
@@ -48,6 +53,11 @@ bool GameRoom::operator== (const GameRoom &other) const {
 }
 
 GameRoom GameRoom::with_config(const nlohmann::json& config){
-    GameRoom new_room(this->id, this->game_name, config);
+    GameRoom new_room(this->id, this->game_name, config, this->game_status);
+    return new_room;
+}
+
+GameRoom GameRoom::with_game_status(GameStatus status) {
+    GameRoom new_room(this->id, this->game_name, this->game_config, status);
     return new_room;
 }

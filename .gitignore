@@ -125,3 +125,5 @@ CTestTestfile.cmake
 _deps
 
 *.DS_Store
+
+*/game_room_database/*

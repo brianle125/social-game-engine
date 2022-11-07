@@ -1,17 +1,38 @@
 #include <optional>
 #include "crow_all.h"
 #include <boost/uuid/uuid_generators.hpp> // generators
+#include <nlohmann/json.hpp>
+#include <fstream>
+#include <filesystem>
 #include "GameRoomId.h"
 #include "GameRoom.h"
-#include <nlohmann/json.hpp>
+#include "GameStatus.h"
+namespace fs = std::filesystem;
 
+std::unordered_map<std::string, GameStatus> gameStatusMapper = {
+        {"not_started", GameStatus::not_started},
+        {"error", GameStatus::error},
+        {"paused", GameStatus::paused},
+        {"running", GameStatus::running},
+        {"terminated", GameStatus::terminated},
+};
 
-//global hash to contain all invitation code
 std::unordered_map<GameRoomId, GameRoom, GameRoomIdHashFunction> gameRooms;
 
+std::string to_game_room_storge_name(const GameRoomId& id) {
+    fs::create_directory("game_room_database");
+    return "game_room_database/" + id.get_value() + ".json";
+}
+
 void store_game_room(GameRoom game_room){
-    //not implement
+    std::ofstream myfile;
+    auto id = game_room.get_game_room_id();
+
+    myfile.open(to_game_room_storge_name(id));
+    myfile << game_room.serialized();
+
     gameRooms.insert({game_room.get_game_room_id(), game_room});
+    myfile.close();
 }
 
 std::optional<GameRoom> get_game_room(GameRoomId id){
@@ -77,7 +98,6 @@ crow::response create_empty_game_room_route(const crow::request &req) {
  * @return an http response
  */
 crow::response save_game_room_config_route(const crow::request &req) {
-    //expect client respond: a string, e.g. "CoinGame"
     auto x = crow::json::load(req.body);
     if (!x) {
         return crow::response(crow::status::BAD_REQUEST, "missing body"); // same as crow::response(400)
@@ -106,6 +126,45 @@ crow::response save_game_room_config_route(const crow::request &req) {
     } catch (const std::exception& ex) {
         return crow::response(crow::status::BAD_REQUEST, ex.what());
     }
+}
+
+crow::response change_game_status(const crow::request &req) {
+    auto x = crow::json::load(req.body);
+    if (!x) {
+        return crow::response(crow::status::BAD_REQUEST, "missing body"); // same as crow::response(400)
+    }
+
+    try {
+        nlohmann::json payload = nlohmann::json::parse(req.body);
+        std::string id = payload["id"];
+        GameRoomId roomID(id);
+        auto room = get_game_room(roomID);
+        if (!room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found");
+        }
+
+        std::string game_status_key = payload["status"];
+        std::cout << game_status_key << std::endl;
+
+        auto iter = gameStatusMapper.find(game_status_key);
+        if (iter == gameStatusMapper.end()) {
+            return crow::response(crow::status::BAD_REQUEST, "invalid game status: " + game_status_key);
+        }
+
+        auto game_status = iter->second;
+
+        auto new_room = room->with_game_status(game_status);
+        auto updated_room = update_game_room(new_room);
+
+        if (!updated_room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found while being updated");
+        }
+
+        return crow::response(crow::status::OK, "json", updated_room->serialized());
+    } catch (const std::exception& ex) {
+        return crow::response(crow::status::BAD_REQUEST, ex.what());
+    }
+
 }
 
 void join_a_room() {
