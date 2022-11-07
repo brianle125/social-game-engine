@@ -34,6 +34,18 @@ struct toStringVisitor {
 	string operator()(map<string, dataVariant> m) const;
 };
 
+struct toIntVisitor {
+	int operator()(int i) const;
+	int operator()(float f) const;
+}
+
+
+struct toFloatVisitor{
+	float operator()(int i) const;
+	float operator()(float f) const;
+}
+
+
 struct shuffleVisitor {
 	void operator()(vector<dataVariant> v);
 	template<typename T>

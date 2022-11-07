@@ -58,6 +58,30 @@ std::string toStringVisitor::operator()(map<std::string, dataVariant> m) const {
 }
 
 
+//toIntVisitors
+int toIntVisitor::operator()(int i) const {
+    return i;
+}
+
+
+int toIntVisitor::operator()(float f) const {
+    return (int)f;
+}
+
+
+//toFloatVisitors
+int toFloatVisitor::operator()(int i) const {
+    return (float)i;
+}
+
+
+int toFloatVisitor::operator()(float f) const {
+    return f;
+}
+
+
+
+
 //Shuffle visitors
 
 void shuffleVisitor::operator()(vector<dataVariant> v) {
@@ -70,6 +94,13 @@ void shuffleVisitor::operator()(T const) const {
     //error handling of some sort
 }
 
+
+
+
+
+dataVariant addVisitor::operator()(int first, int second){
+    return first+second;
+}
 
 
 //Add visitors
