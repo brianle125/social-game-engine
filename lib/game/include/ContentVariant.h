@@ -1,5 +1,4 @@
 #pragma once
-//#include <boost/variant.hpp>
 #include <string>
 #include <vector>
 #include <map>
@@ -34,19 +33,50 @@ struct toStringVisitor {
 	string operator()(map<string, dataVariant> m) const;
 };
 
+struct toIntVisitor {
+	int operator()(int i) const;
+	int operator()(float f) const;
+};
+
+
+struct toFloatVisitor{
+	float operator()(int i) const;
+	float operator()(float f) const;
+};
+
+
 struct shuffleVisitor {
 	void operator()(vector<dataVariant> v);
 	template<typename T>
 	void operator()(T const) const;
 };
 
-// struct addVisitor {
-// 	void operator()(int i);
-// 	void operator()(float f);
-// 	void operator()(string s);
-// 	void operator()(bool b);
-// 	void operator()(vector<dataVariant> v);
-// 	void operator()(map<string, dataVariant> m);
-// };
+
+struct addVisitor
+{
+    dataVariant operator()(int i1, int i2) const;
+	dataVariant operator()(int i, float f) const;
+	dataVariant operator()(float f, int i) const;
+	dataVariant operator()(float f1, float f2) const;
+
+    // all other overloads invalid
+    template <typename T, typename U>
+    dataVariant operator()(T, U) const;
+};
+
+
+struct appendVisitor
+{
+    dataVariant operator()(string s1, string s2) const;
+	dataVariant operator()(vector<dataVariant> v, float f) const;
+	dataVariant operator()(vector<dataVariant> v, int i) const;
+	dataVariant operator()(vector<dataVariant> v, bool b) const;
+	dataVariant operator()(vector<dataVariant> v, string s) const;
+	dataVariant operator()(vector<dataVariant> v1, vector<dataVariant> v2) const;
+
+    // all other overloads invalid
+    template <typename T, typename U>
+    dataVariant operator()(T, U) const;
+};
 
 #endif

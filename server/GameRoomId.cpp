@@ -8,6 +8,10 @@ GameRoomId::GameRoomId(const std::string& id){
     value = id;
 }
 
+GameRoomId::GameRoomId(std::string&& id){
+    value = id;
+}
+
 GameRoomId::GameRoomId(const boost::uuids::uuid &id){
     //value = boost::lexical_cast<std::string>(id);
     value = boost::uuids::to_string(id);
