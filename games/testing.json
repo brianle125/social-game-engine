@@ -17,6 +17,13 @@
     {
         "rule": "global-message",
         "value": "testing from file!"
+    },
+    { "rule": "when",
+      "cases": [
+        { "condition": "some condition",
+          "rules": []
+        }
+      ]
     }
   ]
 }

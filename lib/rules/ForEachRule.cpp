@@ -12,7 +12,6 @@ void ForEachRule::executeRule(GameModel model)
     int totalRounds = model.getVariable("Rounds:");
     int currentRound = 1;
 
-
     while(currentRound <= totalRounds)
     {
         for(auto & rule: memberList)

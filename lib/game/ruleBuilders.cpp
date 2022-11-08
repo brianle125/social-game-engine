@@ -18,6 +18,7 @@ void GameCreator::GenerateRuleBuilders() {
 			//whatever you need to create your rule here
 			return std::move(newRule);
 		});
+
 	*/
 
 /////////////////////////////// OUTPUT ////////////////////////////////
@@ -31,28 +32,16 @@ void GameCreator::GenerateRuleBuilders() {
 
 	// ruleBuilders.emplace("foreach", 
 	// 	[](json ruleData) -> std::unique_ptr<rules::IRule> {
-	// 		dataVariant list = ruleData["rules"];
 	// 		auto newRule = std::make_unique<ForEachRule>(ForEachRule(ruleData["list"]));
 	// 		return std::move(newRule);
 	// });	
 
-	// //tentative
 	ruleBuilders.emplace("when", 
 		[](json ruleData) -> std::unique_ptr<rules::IRule> {
-			//add a more robust check for null values
-			auto whileCon = ruleData["while"];
-			auto untilCon = ruleData["until"];
-
-			if(!whileCon.empty())
-			{
-				auto newRule = std::make_unique<WhenRule>(WhenRule(whileCon));
-				return std::move(newRule); 
-			}
-			else if(!untilCon.empty()) {
-				auto newRule = std::make_unique<WhenRule>(WhenRule(untilCon));
-				return std::move(newRule);
-			}
-			return std::unique_ptr<rules::IRule>();
+			auto rulesToExecute = ruleData["rules"];
+			//todo: make a list to feed whenrule?
+			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["condition"]));
+			return std::move(newRule);
 	});	
 	
 	
