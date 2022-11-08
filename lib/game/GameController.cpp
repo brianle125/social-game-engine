@@ -46,8 +46,8 @@ void GameController::executeNextRule() {
 			}
 		}
 	}
-	catch (std::invalid_argument& e) {
-		std::cout << "exception: " << e.what() << "\n";
+	catch (invalid_argument& e) {
+		cout << "exception: " << e.what() << "\n";
 		//do more error handling here
 	}
 
