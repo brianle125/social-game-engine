@@ -12,6 +12,7 @@ main(int argc, char *argv[]) {
 	GameController newGame = creator.createGameController();
 	newGame.printGame();
 
+	
 	//There is likely a better solution to this, but for now, this works
 	while(!newGame.isGameOver()) {
 		newGame.executeNextRule();

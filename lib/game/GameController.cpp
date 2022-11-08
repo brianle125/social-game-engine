@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 #include <GameController.h>
 
 #include "ContentVariant.h"
@@ -21,15 +22,29 @@ void GameController::printGame() {
 
 void GameController::addRule(std::unique_ptr<rules::IRule> rule) {
 	rules.push_back(std::move(rule));
-	nextRule = rules.begin();
+	//nextRule = rules.begin();
+}
+
+void GameController::initializeStack() {
+	for(auto& rule : rules) {
+		rules::IRule* rulePointer = rule.get();
+		ruleStack.push(rulePointer);
+	}
 }
 
 void GameController::executeNextRule() {
 	try {
-		//double dereference, because nextRule is an iterator to unique_ptrs to rules
-		rules::IRule& rule = *nextRule->get();
-		rule.executeRule(model);
-		nextRule++;
+		auto rule = ruleStack.top();
+		auto newRules = rule->executeRule(model);
+		ruleStack.pop();
+
+		//can probably use value_or somehow to skip this check but Im not sure how right now
+		if(newRules.has_value()) {
+			for(auto& newRule : *newRules) {
+				cout << "new Rule\n";
+				ruleStack.push(&newRule);
+			}
+		}
 	}
 	catch (std::invalid_argument& e) {
 		std::cout << "exception: " << e.what() << "\n";
@@ -43,5 +58,6 @@ void GameController::executeNextRule() {
 }
 
 bool GameController::isGameOver() noexcept {
-	return nextRule == rules.end();
+	return ruleStack.empty();
+	//return nextRule == rules.end();
 }
