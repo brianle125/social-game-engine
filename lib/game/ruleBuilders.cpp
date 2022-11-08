@@ -4,6 +4,7 @@
 
 #include "GlobalMessage.h"
 #include "ForEachRule.h"
+#include "WhenRule.h"
 //#include "ShuffleList.h"
 
 
@@ -36,21 +37,23 @@ void GameCreator::GenerateRuleBuilders() {
 	// });	
 
 	// //tentative
-	// ruleBuilders.emplace("when", 
-	// 	[](json ruleData) -> std::unique_ptr<rules::IRule> {
-	// 		auto whileCon = ruleData["while"];
-	// 		auto untilCon = ruleData["until"];
+	ruleBuilders.emplace("when", 
+		[](json ruleData) -> std::unique_ptr<rules::IRule> {
+			//add a more robust check for null values
+			auto whileCon = ruleData["while"];
+			auto untilCon = ruleData["until"];
 
-	// 		if(whileCon)
-	// 		{
-	// 			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["list"]));
-	// 			return std::move(newRule); 
-	// 		}
-	// 		else if(untilCon) {
-	// 			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["list"]));
-	// 			return std::move(newRule);
-	// 		}
-	// });	
+			if(!whileCon.empty())
+			{
+				auto newRule = std::make_unique<WhenRule>(WhenRule(whileCon));
+				return std::move(newRule); 
+			}
+			else if(!untilCon.empty()) {
+				auto newRule = std::make_unique<WhenRule>(WhenRule(untilCon));
+				return std::move(newRule);
+			}
+			return std::unique_ptr<rules::IRule>();
+	});	
 	
 	
 }

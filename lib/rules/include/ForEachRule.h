@@ -9,7 +9,7 @@ using nlohmann::json;
 
 class ForEachRule final : public rules::IRule {
     public:
-        ForEachRule(std::vector<dataVariant> & list);
+        ForEachRule(std::vector<rules::IRule> & list);
         ForEachRule(std::string list);
         ~ForEachRule() {}
         void executeRule(GameModel model) override;
