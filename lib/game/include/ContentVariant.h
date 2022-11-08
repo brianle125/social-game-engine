@@ -1,5 +1,4 @@
 #pragma once
-//#include <boost/variant.hpp>
 #include <string>
 #include <vector>
 #include <map>
@@ -55,14 +54,26 @@ struct shuffleVisitor {
 
 struct addVisitor
 {
-    dataVariant operator()(int first, int second) const;
-	dataVariant operator()(int first, float second) const;
-	dataVariant operator()(float first, int second) const;
-	dataVariant operator()(float first, float second) const;
+    dataVariant operator()(int i1, int i2) const;
+	dataVariant operator()(int i, float f) const;
+	dataVariant operator()(float f, int i) const;
+	dataVariant operator()(float f1, float f2) const;
+
+    // all other overloads invalid
+    template <typename T, typename U>
+    dataVariant operator()(T, U) const;
+};
 
 
+struct appendVisitor
+{
+    dataVariant operator()(string s1, string s2) const;
+	dataVariant operator()(vector<dataVariant> v, float f) const;
+	dataVariant operator()(vector<dataVariant> v, int i) const;
+	dataVariant operator()(vector<dataVariant> v, bool b) const;
+	dataVariant operator()(vector<dataVariant> v, string s) const;
+	dataVariant operator()(vector<dataVariant> v1, vector<dataVariant> v2) const;
 
-    //dataVariant operator()(int first, int second);
     // all other overloads invalid
     template <typename T, typename U>
     dataVariant operator()(T, U) const;
