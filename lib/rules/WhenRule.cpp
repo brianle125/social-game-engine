@@ -16,6 +16,7 @@ void WhenRule::executeRule(GameModel model)
         variables.push_back(var);
     }
 
+    //initialize boolean from variables; subject to rework
     bool condition;
 
     if(condition)

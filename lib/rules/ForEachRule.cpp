@@ -8,7 +8,7 @@ ForEachRule::ForEachRule(std::string list) : listName(list) {}
 
 void ForEachRule::executeRule(GameModel model) 
 {
-    //for every round from 1-n
+    //Execute each rule in the list for every round from 1 to n
     int totalRounds = model.getVariable("Rounds:");
     int currentRound = 1;
 
