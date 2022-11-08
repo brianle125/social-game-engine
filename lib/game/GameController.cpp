@@ -35,8 +35,10 @@ void GameController::initializeStack() {
 void GameController::executeNextRule() {
 	try {
 		auto rule = ruleStack.top();
-		auto newRules = rule->executeRule(model);
 		ruleStack.pop();
+		auto newRules = rule->executeRule(model);
+		//TODO: parallel rules need some kind of immediate processing most likely, 
+		//or else rules need a way to mark themselves parallel and thus non-blocking
 
 		//can probably use value_or somehow to skip this check but Im not sure how right now
 		if(newRules.has_value()) {
@@ -50,11 +52,6 @@ void GameController::executeNextRule() {
 		cout << "exception: " << e.what() << "\n";
 		//do more error handling here
 	}
-
-	//old implementation
-	// for(auto const& rule : rules) {
-	// 	rule->executeRule(model);
-	// }
 }
 
 bool GameController::isGameOver() noexcept {

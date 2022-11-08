@@ -6,16 +6,17 @@
 #include "IRule.h"
 
 using namespace std;
+using lookupKey = string;
 
-void GameModel::addConstant(std::string name, dataVariant value) {
-	constants.emplace(name, value);
+void GameModel::addConstant(lookupKey key, dataVariant value) {
+	constants.emplace(key, value);
 }
 
-void GameModel::addVariable(std::string name, dataVariant value) {
-	variables.emplace(name, value);
+void GameModel::addVariable(lookupKey key, dataVariant value) {
+	variables.emplace(key, value);
 }
 
-dataVariant GameModel::getVariable(std::string key) {
+dataVariant GameModel::getVariable(lookupKey key) {
 	auto varToReturn = variables.find(key);
 	if(varToReturn != variables.end()) {
 		return varToReturn->second;
@@ -29,7 +30,7 @@ dataVariant GameModel::getVariable(std::string key) {
 	throw std::invalid_argument("Variable " + key + " Not Found");
 }
 
-void GameModel::setVariable(std::string key, dataVariant value) {
+void GameModel::setVariable(lookupKey key, dataVariant value) {
 	auto varToUpdate = variables.find(key);
 	if(varToUpdate != variables.end()) {
 		varToUpdate->second = value;
