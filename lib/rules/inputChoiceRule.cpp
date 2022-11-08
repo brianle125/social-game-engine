@@ -4,72 +4,38 @@
 #include <iostream>
 
 using networking::Message;
+using networking::Response;
 
-InputChoiceRule::InputChoiceRule(std::string prompt, std::vector<std::string> choices, std::string result, Server* server, int timeout)
-    : prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
+InputChoiceRule::InputChoiceRule(Player *target, std::string prompt, std::vector<dataVariant> choices, std::string result, Server *server, int timeout)
+    : target{target}, prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
+        this->choices = choices;
 }
 
-void InputChoiceRule::executeRule() {
+void InputChoiceRule::executeRule(GameModel model) { // base class may need to pass reference or pointer instead
+    this->model = model;
     getInput();
 }
 
-// TODO: implement timer
 void InputChoiceRule::getInput() {
-    std::string choicesStr = std::accumulate(std::next(choices.begin()), choices.end(), choices[0],
-        [] (const std::string &str1, const std::string &str2) {
-            return str1 + ", " + str2;
-        });
+    dataVariant choicesVariant(choices);
+    std::string choicesStr = rva::visit(toStringVisitor{}, choicesVariant);
     std::string separator(": ");
-    Message message = { target.connection, prompt + separator + choicesStr + "\n"};
+    Message message = { target->connection, prompt + separator + choicesStr + "\n"};
     std::deque<Message> messages = { message };
     server->send(messages);
-    server->awaitResponse(target.connection, this);
+    server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
 }
 
-bool InputChoiceRule::receiveResponse(std::string message) {
+rules::InputRule::InputValidation InputChoiceRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
+    auto end = std::chrono::system_clock::now();
+    std::chrono::duration<double> duration = end-start;
     std::cout << message << std::endl;
-    if (std::find(choices.begin(), choices.end(), message) != choices.end()) {
-        std::cout << "CORRECT" << std::endl;
-        return true;
+    if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
+        return rules::InputRule::InputValidation::success;
+    } else if (std::find(choices.begin(), choices.end(), dataVariant(message)) != choices.end()) {
+        return rules::InputRule::InputValidation::success;
     } else {
-        std::cout << "pls try again" << std::endl;
         getInput();
-        return false;
+        return rules::InputRule::InputValidation::failure;
     }
 }
-
-// TODO: decide on validating args later
-// void InputChoiceRule::validateArgs(json ruleConfig) {
-//     if (typeid(ruleConfig["to"]) == typeid(std::string)) {
-//         target = game.players[ruleConfig["to"]] ? game.players[ruleConfig["to"]] : NULL; // not sure how players should be stored
-//         if (!target) {
-//             // TODO: handle invalid, maybe use a helpful error msg
-//         }
-//     } else {
-//         // TODO: handle invalid, maybe use a helpful error msg
-//     }
-
-//     if (typeid(ruleConfig["choices"]) == typeid(std::vector<std::string>)) {
-//         choices = ruleConfig["choices"];
-//     } else {
-//         // TODO: handle invalid, maybe use a helpful error msg
-//     }
-
-//     if (typeid(ruleConfig["choices"]) == typeid(std::vector<std::string>)) {
-//         choices = ruleConfig["choices"];
-//     } else {
-//         // TODO: handle invalid, maybe use a helpful error msg
-//     }
-
-//     if (typeid(ruleConfig["result"]) == typeid(std::string)) {
-//         result = ruleConfig["result"];
-//     } else {
-//         // TODO: handle invalid, maybe use a helpful error msg
-//     }
-
-//     if (ruleConfig["timeout"] && typeid(ruleConfig["choices"]) == typeid(int)) {
-//         timeout = ruleConfig["timeout"];
-//     } else {
-//         // TODO: handle invalid, maybe use a helpful error msg
-//     }
-// }
