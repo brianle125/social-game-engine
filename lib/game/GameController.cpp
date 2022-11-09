@@ -17,12 +17,6 @@ void GameController::printGame() {
 		"\nMinimum Players: " << minimumPlayers <<
 		"\nMaximum Players: " << maximumPlayers <<
 		"\nAudience?: " << audience << "\n";
-
-	dataVariant test = model.getVariable("player-name");
-	cout << rva::visit(toStringVisitor{}, test) << "\n";
-
-	test = model.getVariable("wins");
-	cout << rva::visit(toStringVisitor{}, test) << "\n";
 }
 
 
