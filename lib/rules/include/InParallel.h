@@ -1,4 +1,4 @@
-#include "IRule.h"
+#include "include/IRule.h"
 #include <vector>
 
 class InParallel final : public rules::IRule {
