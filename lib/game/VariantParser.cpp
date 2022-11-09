@@ -25,12 +25,10 @@ dataVariant VariantParser::makeVariantFromJson(const json& j) {
 		break;
 
 	case nlohmann::detail::value_t::array:
-		cout << "Array Found\n";
 		data = makeVariantVectorFromJson(j);
 		break;
 
 	case nlohmann::detail::value_t::object:
-		cout << "Object Found\n";
 		data = makeVariantMapFromJson(j);
 		break;
 

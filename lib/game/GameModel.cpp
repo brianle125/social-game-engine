@@ -12,6 +12,10 @@ GameModel::GameModel() {
 	parser = VariantParser();
 }
 
+void GameModel::addSetupVariable(lookupKey key, dataVariant value) {
+	setup.emplace(key, value);
+}
+
 void GameModel::addConstant(lookupKey key, dataVariant value) {
 	constants.emplace(key, value);
 }
@@ -49,6 +53,17 @@ void GameModel::setVariable(lookupKey key, dataVariant value) {
 //These functions are nearly identical and thus repeat code, however
 //they express different concepts (creating constant values vs creating variables)
 //and separating them avoids confusion.
+void GameModel::addSetupVariablesFromJson(json setup) {
+	for(auto variable : setup.items()) {
+		string keyname = variable.key();
+		dataVariant variant = parser.makeVariantFromJson(setup.at(keyname));
+
+		addSetupVariable(keyname, variant);
+
+		cout << keyname << " - " << rva::visit (toStringVisitor{}, variant) << "\n";
+	}
+}
+
 void GameModel::addConstantsFromJson(json constants) {
 	for(auto constant : constants.items()) {
 		string keyname = constant.key();

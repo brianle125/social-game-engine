@@ -39,11 +39,13 @@ GameController GameCreator::createGameController() {
 }
 
 GameModel GameCreator::createGameModel() {
+	json setup = gameSource["configuration"]["setup"];
 	json constants = gameSource["constants"];
 	json variables = gameSource["variables"];
 
 	GameModel newGame;
 
+	newGame.addSetupVariablesFromJson(setup);
 	newGame.addConstantsFromJson(constants);
 	newGame.addVariablesFromJson(variables);
 

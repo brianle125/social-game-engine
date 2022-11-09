@@ -15,6 +15,7 @@ public:
     void addVariable(std::string name, dataVariant value);
     dataVariant getVariable(std::string key);
     void setVariable(std::string key, dataVariant value);
+    void addSetupVariablesFromJson(json setup);
     void addConstantsFromJson(json constants);
     void addVariablesFromJson(json variables);
     
@@ -24,7 +25,9 @@ private:
     //list of Players
     //dictionary of setup
 
+    std::unordered_map<std::string, dataVariant> setup;
     std::unordered_map<std::string, dataVariant> constants;
     std::unordered_map<std::string, dataVariant> variables;
 
+    void addSetupVariable(std::string name, dataVariant value);
 };
