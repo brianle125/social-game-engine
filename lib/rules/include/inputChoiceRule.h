@@ -32,7 +32,7 @@ public:
     InputChoiceRule(std::string prompt, std::vector<std::string> choices, std::string result, Server* server, int timeout = 0);
     InputChoiceRule() {}
 
-    void executeRule();
+    optional<vector<rules::IRule>> executeRule(GameModel model) override;
 private:
     void validateArgs(json ruleConfig);
     void getInput() override;

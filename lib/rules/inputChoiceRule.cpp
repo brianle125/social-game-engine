@@ -9,7 +9,8 @@ InputChoiceRule::InputChoiceRule(std::string prompt, std::vector<std::string> ch
     : prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
 }
 
-void InputChoiceRule::executeRule() {
+optional<vector<rules::IRule>> InputChoiceRule::executeRule(GameModel model) { // base class may need to pass reference or pointer instead
+    this->model = model;
     getInput();
 }
 
