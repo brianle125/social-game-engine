@@ -36,10 +36,9 @@ struct toStringVisitor {
 struct toIntVisitor {
 	int operator()(int i) const;
 	int operator()(float f) const;
-
-	template <typename T>
-    int operator()(T) const{
-    throw std::invalid_argument{"invalid"};
+	 template <typename T>
+    int operator()(T) const {
+		throw std::invalid_argument{"invalid"};
 	}
 };
 
@@ -47,22 +46,19 @@ struct toIntVisitor {
 struct toFloatVisitor{
 	float operator()(int i) const;
 	float operator()(float f) const;
-
-	template <typename T>
-    int operator()(T) const{
-    throw std::invalid_argument{"invalid"};
+	 template <typename T>
+    int operator()(T) const {
+		throw std::invalid_argument{"invalid"};
 	}
 };
 
 
 struct shuffleVisitor {
 	void operator()(vector<dataVariant> &v);
-	template<typename T>
-	void operator()(T const) const{
-    throw std::invalid_argument{"invalid"};
-	}
-};
 
+	template<typename T>
+	void operator()(T const) const {}
+};
 
 struct addVisitor
 {
@@ -74,8 +70,8 @@ struct addVisitor
     // all other overloads invalid
     template <typename T, typename U>
     dataVariant operator()(T, U) const{
-    throw std::invalid_argument{"invalid"};
-}
+		throw std::invalid_argument{"invalid"};
+	}
 };
 
 
@@ -91,14 +87,8 @@ struct appendVisitor
     // all other overloads invalid
     template <typename T, typename U>
     dataVariant operator()(T, U) const{
-    throw std::invalid_argument{"invalid"};
-}
-};
-
-struct reverseVisitor {
-	void operator()(vector<dataVariant> &v);
-	template <typename T>
-	void operator()(T const) const {}
+		throw std::invalid_argument{"invalid"};
+	}
 };
 
 #endif

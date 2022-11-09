@@ -84,6 +84,10 @@ void shuffleVisitor::operator()(vector<dataVariant> &v) {
     std::shuffle(v.begin(), v.end(), default_random_engine(seed));
 }
 
+// template<typename T> 
+// void shuffleVisitor::operator()(T const) const {
+//     //error handling of some sort
+// }
 
 //Add Visitor
 
@@ -104,7 +108,6 @@ dataVariant addVisitor::operator()(float f1, float f2) const{
 }
 
 
-//Append Visitor
 
 dataVariant appendVisitor::operator()(string s1, string s2) const{
     return dataVariant(s1+s2);
@@ -137,10 +140,4 @@ dataVariant appendVisitor::operator()(vector<dataVariant> v, string s) const{
 dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant> v2) const{
     v1.insert(v1.end(), v2.begin(), v2.end());
     return v1;
-
-
-// Reverse Visitor
-
-void reverseVisitor::operator()(vector<dataVariant> &v) {
-    std::reverse(v.begin(), v.end());
 }
