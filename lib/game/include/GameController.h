@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <stack>
+#include <iterator>
 #include <memory>
 
 #include "IRule.h"
@@ -14,12 +16,12 @@ public:
 
     //method to create List of Rules
     void addRule(std::unique_ptr<rules::IRule> rule);
+    void initializeStack();
 
-    void executeRules();
+    void executeNextRule();
+    bool isGameOver() noexcept;
 
 private:
-    
-    
     const std::string name;
     const int minimumPlayers;
     const int maximumPlayers;
@@ -27,7 +29,9 @@ private:
 
     GameModel model;
     //dictionary/map of setup
-
+    std::stack<rules::IRule*> ruleStack;
+    
     std::vector<std::unique_ptr<rules::IRule>> rules;
+    // std::vector<std::unique_ptr<rules::IRule>>::iterator nextRule;
 
 };

@@ -1,0 +1,44 @@
+{
+  "configuration": {
+    "name": "coin flip",
+    "player count": {
+      "min": 2,
+      "max": 2
+    },
+    "audience": false,
+    "setup": {
+      "Rounds": 1
+    }
+  },
+  "constants": {
+    "coin": [
+      {
+        "name": "heads",
+        "player": "1"
+      },
+      {
+        "name": "tails",
+        "player": "2"
+      }
+    ]
+  },
+  "variables": {
+    "winnerSide": []
+  },
+  "per-player": {},
+  "per-audience": {},
+  "rules": [
+    {
+      "rule": "global-message",
+      "value": "This is the First rule!"
+    },
+    {
+      "rule": "global-message",
+      "value": "This is the Second rule!"
+    },
+    {
+      "rule": "global-message",
+      "value": "And this is the Third rule!"
+    }
+  ]
+}
