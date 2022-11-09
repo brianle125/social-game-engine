@@ -40,28 +40,16 @@ GameController GameCreator::createGameController() {
 
 GameModel GameCreator::createGameModel() {
 
-	GameModel newGame;
 
 	//parse and add variables here
 	
-	// json constants = gameSource["constants"];
-	// for(auto constant : constants.items()) {
-	// 	std::string keyname = constant.key();
-	// 	std::string value = constant.value();
-	// 	dataVariant variant = value;
+	json constants = gameSource["constants"];
+	json variables = gameSource["variables"];
 
-	// 	newGame.addConstant(keyname, variant);
-	// }
+	GameModel newGame;
 
-	// json variables = gameSource["variables"];
-	// for(auto variable : variables.items()) {
-	// 	std::string keyname = variable.key();
-	// 	int value = variable.value();
-	// 	dataVariant variant = value;
-
-	// 	newGame.addVariable(keyname, variant);
-	// }
-	
+	newGame.addConstantsFromJson(constants);
+	newGame.addVariablesFromJson(variables);
 
 	return newGame;
 }
