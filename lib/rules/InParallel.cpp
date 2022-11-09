@@ -1,12 +1,13 @@
 #include <InParallel.h>
 
-InParallel::InParallel(std::vector<IRule> &rules) : rules{rules} {}
+InParallel::InParallel(std::vector<rules::IRule> &rules) : rules{rules} {}
 
-void InParallel::executeRule(GameModel model) {
+optional<vector<rules::IRule>> InParallel::executeRule(GameModel model) {
     for (auto &rule : rules) {
         rule.execute(model);
     }
-    // 
+    //
     // model.update() SOMETHING LIKE THIS MAYBE
+    // OR return rules --> vector of rules to be executed within one server update cycle.
 }
     

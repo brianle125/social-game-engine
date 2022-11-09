@@ -1,8 +1,8 @@
 #include <ParallelFor.h>
 
-ParallelFor::ParallelFor(std::vector<dataVariant> *elements, std::vector<IRule> &rules) : elements{elements}, rules{rules} {}
+ParallelFor::ParallelFor(std::vector<dataVariant> *elements, std::vector<rules::IRule> &rules) : elements{elements}, rules{rules} {}
 
-void ParallelFor::executeRule(GameModel model) {
+optional<vector<rules::IRule>> ParallelFor::executeRule(GameModel model) {
     for (auto &rule : rules) {
         for (auto &object : *elements) {
             // TODO: ACTUALLY FIGURE OUT IMPLEMENTATION
@@ -12,4 +12,14 @@ void ParallelFor::executeRule(GameModel model) {
             rule.execute(model);
         }
     }
+    //***** or THIS implementation *****//
+    // vector<rules::IRule> parallelRules;
+    // auto currentRule = rules.erase(rules.begin()); // one rule per call of executeRule() ???
+
+    // for (auto object : *elements) {
+    //     auto target = rva::visit(someVisitor{}, object);
+    //     currentRule.setTarget(target); // MAKE A COPY?
+    //     parallelRules.push_back(currentRule);
+    // }
+    // return parallelRules; // vector of the same rule with different targets to be executed in the same server cycle
 }
