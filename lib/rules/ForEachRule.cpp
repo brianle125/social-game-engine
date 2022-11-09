@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-ForEachRule::ForEachRule(std::vector<rules::IRule> & list) : memberList(list) {}
+ForEachRule(std::vector<dataVariant> *elements, std::vector<rules::IRule> &list);
 ForEachRule::ForEachRule(std::string list) : listName(list) {}
 
 std::optional<vector<rules::IRule>> ForEachRule::executeRule(GameModel model)

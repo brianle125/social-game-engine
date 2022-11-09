@@ -33,7 +33,6 @@ std::vector<std::string> WhenRule::getTokens(std::string str)
     tokens.reserve(str.size());
 
     const char delim = '.';
-
     int startPos = 0;
     int endPos = -1;
 
