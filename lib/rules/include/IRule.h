@@ -1,20 +1,23 @@
 #pragma once
 #include <string>
+#include <optional>
 
 #include <../../game/include/GameModel.h>
+
+using namespace std;
 
 namespace rules {
 
 	class IRule {
 	public:
-		virtual void executeRule(GameModel model) = 0;
+		virtual optional<vector<IRule>> executeRule(GameModel model) = 0;
 		IRule();
-		IRule(std::string name);
+		IRule(string name);
 		
 		virtual ~IRule();
 
 	private:
 
-		std::string ruleName;
+		string ruleName;
 	};
 }
