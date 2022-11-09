@@ -15,6 +15,7 @@
 #include <string>
 #include <unistd.h>
 #include <vector>
+#include <map>
 
 
 using networking::Server;
@@ -24,15 +25,16 @@ using networking::Message;
 
 std::vector<Connection> clients;
 InputChoiceRule icr;
-GameModel model;
-Player p1("PLAYER1");
 
 
 void
 onConnect(Connection c) {
   std::cout << "New connection found: " << c.id << "\n";
-  icr.target->connection = c;
-  icr.executeRule(model);
+    if (icr.target.init == false) {
+        icr.target = Player(c);
+        icr.target.init = true;
+    }
+    icr.executeRule();
   clients.push_back(c);
 }
 
@@ -105,10 +107,10 @@ processMessagesResponse(Server& server, const std::deque<Message>& incoming) {
       std::cout << "Shutting down.\n";
       quit = true;
     } else if (!server.responseQueue.empty()) {
-        std::unordered_map<uintptr_t, networking::Response>::iterator clientItr = server.responseQueue.find(message.connection.id);
+        std::map<uintptr_t, rules::InputRule*>::iterator clientItr = server.responseQueue.find(message.connection.id);
         if (clientItr != server.responseQueue.end()) {
-            rules::InputRule::InputValidation valid = clientItr->second.rule->receiveResponse(message.text, clientItr->second.start);
-            if (valid == rules::InputRule::InputValidation::success) { server.responseQueue.erase(clientItr); }
+            bool valid = clientItr->second->receiveResponse(message.text);
+            if (valid) { server.responseQueue.erase(clientItr); }
         }
     }
   }
@@ -126,13 +128,13 @@ main(int argc, char* argv[]) {
 
   unsigned short port = std::stoi(argv[1]);
   Server server{port, getHTTPMessage(argv[2]), onConnect, onDisconnect};
-  dataVariant one = std::string("one");
-  dataVariant two = std::string("two");
-  dataVariant three = std::string("three");
-  std::vector<dataVariant> choices = {one, two, three};
+  std::string one = "one";
+  std::string two = "two";
+  std::string three = "three";
+  std::vector<std::string> choices = {one, two, three};
   std::string prompt("idk choose something");
   std::string result("whygod");
-  InputChoiceRule rule(&p1, prompt, choices, result, &server, 0);
+  InputChoiceRule rule(prompt, choices, result, &server);
   icr = rule;
 
   while (true) {

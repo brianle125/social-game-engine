@@ -1,39 +1,39 @@
-#include "inputVoteRule.h"
+#include "inputChoiceRule.h"
 
 #include <typeinfo>
 #include <iostream>
 
 using networking::Message;
-using networking::Response;
 
-InputVoteRule::InputVoteRule(Player *target, std::string prompt, std::vector<dataVariant> choices, std::string result, Server* server, int timeout)
-    : target{target}, prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
+InputChoiceRule::InputChoiceRule(std::string prompt, std::vector<std::string> choices, std::string result, Server* server, int timeout)
+    : prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
 }
 
-void InputVoteRule::executeRule(GameModel model) {
+void InputChoiceRule::executeRule() {
     getInput();
 }
 
-void InputVoteRule::getInput() {
-    dataVariant choicesVariant(choices);
-    std::string choicesStr = rva::visit(toStringVisitor{}, choicesVariant);
+// TODO: implement timer
+void InputChoiceRule::getInput() {
+    std::string choicesStr = std::accumulate(std::next(choices.begin()), choices.end(), choices[0],
+        [] (const std::string &str1, const std::string &str2) {
+            return str1 + ", " + str2;
+        });
     std::string separator(": ");
-    Message message = { target->connection, prompt + separator + choicesStr };
+    Message message = { target.connection, prompt + separator + choicesStr };
     std::deque<Message> messages = { message };
     server->send(messages);
-    server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
+    server->awaitResponse(target.connection, this);
 }
 
-rules::InputRule::InputValidation InputVoteRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> duration = end-start;
+bool InputChoiceRule::receiveResponse(std::string message) {
     std::cout << message << std::endl;
-    if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
-        return rules::InputRule::InputValidation::success;
-    } else if (std::find(choices.begin(), choices.end(), dataVariant(message)) != choices.end()) {
-        return rules::InputRule::InputValidation::success;
+    if (std::find(choices.begin(), choices.end(), message) != choices.end()) {
+        std::cout << "OKAY" << std::endl;
+        return true;
     } else {
+        std::cout << "pls try again" << std::endl;
         getInput();
-        return rules::InputRule::InputValidation::failure;
+        return false;
     }
 }

@@ -58,30 +58,6 @@ std::string toStringVisitor::operator()(map<std::string, dataVariant> m) const {
 }
 
 
-//toIntVisitors
-int toIntVisitor::operator()(int i) const {
-    return i;
-}
-
-
-int toIntVisitor::operator()(float f) const {
-    return (int)f;
-}
-
-
-//toFloatVisitors
-float toFloatVisitor::operator()(int i) const {
-    return (float)i;
-}
-
-
-float toFloatVisitor::operator()(float f) const {
-    return f;
-}
-
-
-
-
 //Shuffle visitors
 
 void shuffleVisitor::operator()(vector<dataVariant> v) {
@@ -95,65 +71,53 @@ void shuffleVisitor::operator()(T const) const {
 }
 
 
-dataVariant addVisitor::operator()(int i1, int i2) const{
-    return dataVariant(i1+i2);
-}
 
-dataVariant addVisitor::operator()(int i, float f) const{
-    return dataVariant(i+f);
-}
+//Add visitors
 
-dataVariant addVisitor::operator()(float f, int i) const{
-    return dataVariant(f+i);
-}
+// void addVisitor::operator()(int i) {
 
-dataVariant addVisitor::operator()(float f1, float f2) const{
-    return dataVariant(f1+f2);
-}
+// }
+
+// void addVisitor::operator()(vector<dataVariant> v) {
+
+// }
 
 
-template <typename T, typename U>
-dataVariant addVisitor::operator()(T, U) const
-{
-    throw std::invalid_argument{"invalid"};
-}
 
 
-dataVariant appendVisitor::operator()(string s1, string s2) const{
-    return dataVariant(s1+s2);
-}
 
+// class addX
+//     : public boost::static_visitor<>
+// {
+// public:
+//     void operator()(int & i, int & X) const
+//     {
+//         i += X;
+//     }
 
-dataVariant appendVisitor::operator()(vector<dataVariant> v, float f) const{
-    v.push_back(f);
-    return dataVariant(v);
-}
+//     void operator()(string & i, string & X) const
+//     {
+//         i += X;
+//     }
 
+//     void operator()(bool & i, bool & X) const {}
 
-dataVariant appendVisitor::operator()(vector<dataVariant> v, int i) const{
-    v.push_back(i);
-    return dataVariant(v);
-}
+//     void operator()(vector<subVariant> & i, vector<subVariant> & X) const
+//     {
+//         i.insert(i.end(), X.begin(), X.end());
+//     }
 
-dataVariant appendVisitor::operator()(vector<dataVariant> v, bool b) const{
-    v.push_back(b);
-    return dataVariant(v);
-}
+//     void operator()(map<string, subVariant> & i, map<string, subVariant> & X) const { }
 
+// };
 
-dataVariant appendVisitor::operator()(vector<dataVariant> v, string s) const{
-    v.push_back(s);
-    return dataVariant(v);
-}
+// struct addVisitor {
+//     int addVal_;
 
+//     addVisitor(int& addVal) : addVal_{addVal} {}
 
-dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant> v2) const{
-    v1.insert(v1.end(), v2.begin(), v2.end());
-    return v1;
-}
-
-template <typename T, typename U>
-dataVariant appendVisitor::operator()(T, U) const
-{
-    throw std::invalid_argument{"invalid"};
-}
+//     void operator()(int & i) {
+//         //i + addVal_;
+//     }
+//     void operator()(auto& t) {}
+// };

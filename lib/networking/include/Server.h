@@ -14,7 +14,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include <chrono>
+#include <map>
 
 #include "inputRule.h"
 
@@ -51,11 +51,6 @@ struct ConnectionHash {
 struct Message {
   Connection connection;
   std::string text;
-};
-
-struct Response {
-  rules::InputRule *rule;
-  std::chrono::system_clock::time_point start;
 };
 
 
@@ -137,9 +132,9 @@ public:
    *  The responseQueue keeps track of the rules that are
    *  waiting on a reponse from a client.
    */
-  void awaitResponse(Connection client, Response response);
+  void awaitResponse(Connection client, rules::InputRule* rule);
 
-  std::unordered_map<uintptr_t, Response> responseQueue;
+  std::map<uintptr_t, rules::InputRule*> responseQueue;
 private:
   friend class ServerImpl;
 

@@ -1,10 +1,15 @@
-#include "include/add.h"
+#include "include/ForEachRule.h"
+
+
 
 rules::Add::Add(std::string to,gameModel::Game& game ,int addition_value)
 {
     target = to;
     game = game;
     value = addition_value;
+
+
+
 }
 
 

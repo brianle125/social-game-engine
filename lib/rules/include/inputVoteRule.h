@@ -6,27 +6,35 @@
 
 #include <nlohmann/json.hpp>
 #include "inputRule.h"
-#include "IRule.h"
 #include "Server.h"
-#include "Player.h"
 
 using nlohmann::json;
 using networking::Server;
 using networking::Connection;
 
-class InputVoteRule final : public rules::InputRule, public rules::IRule {
+struct Player {
+    Connection connection;
+    bool init = false;
+
+    Player(Connection c) : connection{c} {}
+    Player() {}
+};
+
+class InputVoteRule : public rules::InputRule {
 public:
-    Player *target; // TODO: maybe change to Player class when implemented
+    Player target; // TODO: maybe change to Player class when implemented
     std::string prompt;
-    std::vector<dataVariant> choices;
+    std::vector<std::string> choices;
     std::string result;
     Server *server;
     int timeout;
 
-    InputVoteRule(Player *target, std::string prompt, std::vector<dataVariant> choices, std::string result, Server* server, int timeout = 0);
+    InputVoteRule(std::string prompt, std::vector<std::string> choices, std::string result, Server* server, int timeout = 0);
+    InputVoteRule() {}
 
-    void executeRule(GameModel model) override;
+    void executeRule();
 private:
+    void validateArgs(json ruleConfig);
     void getInput() override;
-    rules::InputRule::InputValidation receiveResponse(std::string message, std::chrono::system_clock::time_point start) override;
+    bool receiveResponse(std::string message) override;
 };

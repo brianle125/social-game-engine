@@ -3,32 +3,25 @@
 #include <iostream>
 
 using networking::Message;
-using networking::Response;
 
-InputTextRule::InputTextRule(Player *target, std::string prompt, std::string result, Server* server, int timeout)
-    : target{target}, prompt{prompt}, result{result}, server{server}, timeout{timeout} {
+InputTextRule::InputTextRule(std::string prompt, std::string result, Server* server, int timeout)
+    : prompt{prompt}, result{result}, server{server}, timeout{timeout} {
 }
 
-void InputTextRule::executeRule(GameModel model) {
+void InputTextRule::executeRule() {
     getInput();
 }
 
+// TODO: implement timer
 void InputTextRule::getInput() {
     std::string separator(": ");
-    Message message = { target->connection, prompt + separator};
+    Message message = { target.connection, prompt + separator};
     std::deque<Message> messages = { message };
     server->send(messages);
-    server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
+    server->awaitResponse(target.connection, this);
 }
 
-rules::InputRule::InputValidation InputTextRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
+bool InputTextRule::receiveResponse(std::string message) {
     std::cout << message << std::endl;
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> duration = end-start;
-    std::cout << message << std::endl;
-    if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
-    } else {
-        // do something
-    }
-    return rules::InputRule::InputValidation::success;
+    return true;
 }
