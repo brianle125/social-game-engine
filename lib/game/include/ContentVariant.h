@@ -46,9 +46,9 @@ struct toFloatVisitor{
 
 
 struct shuffleVisitor {
-	void operator()(vector<dataVariant> &v);
+	void operator()(vector<dataVariant> v);
 	template<typename T>
-	void operator()(T const) const {}
+	void operator()(T const) const;
 };
 
 
@@ -77,12 +77,6 @@ struct appendVisitor
     // all other overloads invalid
     template <typename T, typename U>
     dataVariant operator()(T, U) const;
-};
-
-struct reverseVisitor {
-	void operator()(vector<dataVariant> &v);
-	template <typename T>
-	void operator()(T const) const {}
 };
 
 #endif

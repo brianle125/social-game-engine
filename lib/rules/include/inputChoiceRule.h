@@ -3,7 +3,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <optional>
 
 #include <nlohmann/json.hpp>
 #include "inputRule.h"
@@ -29,7 +28,7 @@ public:
     InputChoiceRule(Player *target, std::string prompt, std::vector<dataVariant> choices, std::string result, Server *server, int timeout = 0);
     InputChoiceRule() {}
 
-    optional<vector<rules::IRule>> executeRule(GameModel model) override;
+    void executeRule(GameModel model) override;
 private:
     void getInput() override;
     rules::InputRule::InputValidation receiveResponse(std::string message, std::chrono::system_clock::time_point start) override;
