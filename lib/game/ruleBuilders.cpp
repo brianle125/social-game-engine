@@ -36,13 +36,13 @@ void GameCreator::GenerateRuleBuilders() {
 	// 		return std::move(newRule);
 	// });	
 
-	// ruleBuilders.emplace("when", 
-	// 	[](json ruleData) -> std::unique_ptr<rules::IRule> {
-	// 		auto rulesToExecute = ruleData["rules"];
-	// 		//todo: make a list to feed whenrule?
-	// 		auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["condition"]));
-	// 		return std::move(newRule);
-	// });	
+	ruleBuilders.emplace("when", 
+		[](json ruleData) -> std::unique_ptr<rules::IRule> {
+			auto rulesToExecute = ruleData["rules"];
+			//todo: make a list to feed whenrule?
+			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["condition"]));
+			return std::move(newRule);
+	});	
 	
 	
 }
