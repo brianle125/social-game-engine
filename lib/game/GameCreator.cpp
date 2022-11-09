@@ -33,6 +33,8 @@ GameController GameCreator::createGameController() {
 		controller.addRule(std::move(rule));
 	}
 
+	controller.initializeStack();
+
 	return controller;
 }
 
@@ -41,25 +43,25 @@ GameModel GameCreator::createGameModel() {
 	GameModel newGame;
 
 	//parse and add variables here
-	/*
-	json constants = gameSource["constants"];
-	for(auto constant : constants.items()) {
-		std::string keyname = constant.key();
-		std::string valuename = constant.value();
-		dataVariant variant = valuename;
+	
+	// json constants = gameSource["constants"];
+	// for(auto constant : constants.items()) {
+	// 	std::string keyname = constant.key();
+	// 	std::string value = constant.value();
+	// 	dataVariant variant = value;
 
-		newGame.addConstant(keyname, variant);
-	}
+	// 	newGame.addConstant(keyname, variant);
+	// }
 
-	json variables = gameSource["variables"];
-	for(auto variable : variables.items()) {
-		std::string keyname = variable.key();
-		int valuename = variable.value();
-		dataVariant variant = valuename;
+	// json variables = gameSource["variables"];
+	// for(auto variable : variables.items()) {
+	// 	std::string keyname = variable.key();
+	// 	int value = variable.value();
+	// 	dataVariant variant = value;
 
-		newGame.addVariable(keyname, variant);
-	}
-	*/
+	// 	newGame.addVariable(keyname, variant);
+	// }
+	
 
 	return newGame;
 }
@@ -77,6 +79,8 @@ std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules() {
 			ruleList.push_back(std::move(newRule));
 		}
 	}
+
+	reverse(ruleList.begin(), ruleList.end());
 
 	return ruleList;
 }

@@ -12,7 +12,7 @@ class ForEachRule final : public rules::IRule {
         ForEachRule(std::vector<rules::IRule> & list);
         ForEachRule(std::string list);
         ~ForEachRule() {}
-        void executeRule(GameModel model) override;
+        std::optional<vector<rules::IRule>> executeRule(GameModel model);
 
     private:
         //list object to operate on, modify later

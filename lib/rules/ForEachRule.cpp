@@ -6,7 +6,7 @@
 ForEachRule::ForEachRule(std::vector<rules::IRule> & list) : memberList(list) {}
 ForEachRule::ForEachRule(std::string list) : listName(list) {}
 
-void ForEachRule::executeRule(GameModel model) 
+std::optional<vector<rules::IRule>> ForEachRule::executeRule(GameModel model)
 {
     //Execute each rule in the list for every round from 1 to n
     int totalRounds = model.getVariable("Rounds:");
@@ -19,4 +19,6 @@ void ForEachRule::executeRule(GameModel model)
             rule.executeRule(model);
         }
     }
+
+    return nullopt;
 }

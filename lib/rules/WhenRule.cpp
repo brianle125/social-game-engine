@@ -4,7 +4,7 @@
 
 WhenRule::WhenRule(std::string c) : failCondition(c) {}
 
-void WhenRule::executeRule(GameModel model) 
+optional<vector<rules::IRule>> WhenRule::executeRule(GameModel model)
 {
     std::vector<std::string> tokens = getTokens(failCondition);
     std::vector<dataVariant> variables;
@@ -18,11 +18,12 @@ void WhenRule::executeRule(GameModel model)
 
     //initialize boolean from variables; subject to rework
     bool condition;
-
     if(condition)
     {
         //TODO: execute rule(s) here
     }
+
+     return nullopt;
 }
 
 //handle brackets later
