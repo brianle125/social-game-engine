@@ -2,6 +2,7 @@
 
 #include <typeinfo>
 #include <iostream>
+#include <optional>
 
 using networking::Message;
 using networking::Response;
@@ -11,7 +12,8 @@ InputChoiceRule::InputChoiceRule(Player *target, std::string prompt, std::vector
         this->choices = choices;
 }
 
-void InputChoiceRule::executeRule(GameModel model) { // base class may need to pass reference or pointer instead
+optional<vector<rules::IRule>>
+InputChoiceRule::executeRule(GameModel model) { // base class may need to pass reference or pointer instead
     this->model = model;
     getInput();
 }
