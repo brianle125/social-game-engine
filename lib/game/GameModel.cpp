@@ -55,6 +55,8 @@ void GameModel::addConstantsFromJson(json constants) {
 		dataVariant variant = parser.makeVariantFromJson(constants.at(keyname));
 
 		addConstant(keyname, variant);
+
+		cout << keyname << " - " << rva::visit (toStringVisitor{}, variant) << "\n";
 	}
 }
 
@@ -64,5 +66,6 @@ void GameModel::addVariablesFromJson(json variables) {
 		dataVariant variant = parser.makeVariantFromJson(variables.at(keyname));
 
 		addVariable(keyname, variant);
+		cout << keyname << " - " << rva::visit (toStringVisitor{}, variant) << "\n";
 	}
 }

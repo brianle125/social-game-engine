@@ -1,4 +1,7 @@
 #include <VariantParser.h>
+#include <iostream>
+
+using namespace std;
 
 dataVariant VariantParser::makeVariantFromJson(const json& j) {
 	nlohmann::detail::value_t variableType = j.type();
@@ -22,9 +25,13 @@ dataVariant VariantParser::makeVariantFromJson(const json& j) {
 		break;
 
 	case nlohmann::detail::value_t::array:
-	//this is the complex case - could be vector or map, 
-	//and either needs the underlying variants built as well
-		//data = dataVariant(j.get<float>());
+		cout << "Array Found\n";
+		data = makeVariantVectorFromJson(j);
+		break;
+
+	case nlohmann::detail::value_t::object:
+		cout << "Object Found\n";
+		data = makeVariantMapFromJson(j);
 		break;
 
 	default:
@@ -32,4 +39,22 @@ dataVariant VariantParser::makeVariantFromJson(const json& j) {
 	}
 
 	return data;
+}
+
+dataVariant VariantParser::makeVariantVectorFromJson(const json& j) {
+	vector<dataVariant> internalData;
+	for(auto& item : j.items()) {
+		internalData.push_back(makeVariantFromJson(item.value()));
+	}
+	return dataVariant(internalData);
+}
+
+dataVariant VariantParser::makeVariantMapFromJson(const json& j) {
+	map<string, dataVariant> internalData;
+	for(auto& item : j.items()) {
+		string key = item.key();
+		dataVariant variant = makeVariantFromJson(item.value());
+		internalData.emplace(key, variant);
+	}
+	return dataVariant(internalData);
 }
