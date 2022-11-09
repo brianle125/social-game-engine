@@ -1,6 +1,4 @@
-#include "include/ForEachRule.h"
-
-
+#include "include/add.h"
 
 rules::Add::Add(std::string to,gameModel::Game& game ,int addition_value)
 {

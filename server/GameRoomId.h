@@ -15,6 +15,7 @@ private:
     std::string value;
 public:
     GameRoomId(const std::string&);
+    GameRoomId(std::string&&);
     GameRoomId(const boost::uuids::uuid &);
     std::string get_value() const;
     bool operator== (const GameRoomId &other) const;
