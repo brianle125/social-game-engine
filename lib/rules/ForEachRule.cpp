@@ -2,31 +2,23 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
 
-ForEachRule::ForEachRule(vector<string> & list) : memberList(list) {}
+ForEachRule(std::vector<dataVariant> *elements, std::vector<rules::IRule> &list);
+ForEachRule::ForEachRule(std::string list) : listName(list) {}
 
-void ForEachRule::executeRule() 
+std::optional<vector<rules::IRule>> ForEachRule::executeRule(GameModel model)
 {
-    for(auto rule: memberList)
-    {
-        //execute rule; todo
-        cout << "testing foreach" << endl;
-    }
-}
+    //Execute each rule in the list for every round from 1 to n
+    int totalRounds = model.getVariable("Rounds:");
+    int currentRound = 1;
 
-//testing only, removal later
-// int main()
-// {
-//     try 
-//     {
-//         vector<string> list = {"one", "two"};
-//         ForEachRule fe(list);
-//         fe.executeRule();
-//     } 
-//     catch(exception &e)
-//     {
-//         cout << e.what() << endl;
-//         return -1;
-//     }  
-// }
+    while(currentRound <= totalRounds)
+    {
+        for(auto & rule: memberList)
+        {
+            rule.executeRule(model);
+        }
+    }
+
+    return nullopt;
+}

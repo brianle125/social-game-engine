@@ -63,34 +63,29 @@ int toIntVisitor::operator()(int i) const {
     return i;
 }
 
-
 int toIntVisitor::operator()(float f) const {
     return (int)f;
 }
-
 
 //toFloatVisitors
 float toFloatVisitor::operator()(int i) const {
     return (float)i;
 }
 
-
 float toFloatVisitor::operator()(float f) const {
     return f;
 }
 
 
-
-
 //Shuffle visitors
 
-void shuffleVisitor::operator()(vector<dataVariant> v) {
+void shuffleVisitor::operator()(vector<dataVariant> &v) {
     unsigned seed = chrono::steady_clock::now().time_since_epoch().count();
     std::shuffle(v.begin(), v.end(), default_random_engine(seed));
 }
 
 
-
+//Add Visitor
 
 dataVariant addVisitor::operator()(int i1, int i2) const{
     return dataVariant(i1+i2);
@@ -109,6 +104,7 @@ dataVariant addVisitor::operator()(float f1, float f2) const{
 }
 
 
+//Append Visitor
 
 dataVariant appendVisitor::operator()(string s1, string s2) const{
     return dataVariant(s1+s2);
@@ -141,4 +137,10 @@ dataVariant appendVisitor::operator()(vector<dataVariant> v, string s) const{
 dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant> v2) const{
     v1.insert(v1.end(), v2.begin(), v2.end());
     return v1;
+
+
+// Reverse Visitor
+
+void reverseVisitor::operator()(vector<dataVariant> &v) {
+    std::reverse(v.begin(), v.end());
 }

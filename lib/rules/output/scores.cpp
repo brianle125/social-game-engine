@@ -1,4 +1,5 @@
   #include "scores.h"
+  #include "Player.h"
 //Player class included to test the function
     
 //     Player::Player(std::string passedName, double passedScore){

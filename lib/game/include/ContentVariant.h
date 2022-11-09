@@ -56,7 +56,7 @@ struct toFloatVisitor{
 
 
 struct shuffleVisitor {
-	void operator()(vector<dataVariant> v);
+	void operator()(vector<dataVariant> &v);
 	template<typename T>
 	void operator()(T const) const{
     throw std::invalid_argument{"invalid"};
@@ -93,6 +93,12 @@ struct appendVisitor
     dataVariant operator()(T, U) const{
     throw std::invalid_argument{"invalid"};
 }
+};
+
+struct reverseVisitor {
+	void operator()(vector<dataVariant> &v);
+	template <typename T>
+	void operator()(T const) const {}
 };
 
 #endif

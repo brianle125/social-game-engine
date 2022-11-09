@@ -11,6 +11,6 @@ class ShuffleList final : public rules::IRule {
     
     public:
         ShuffleList(vector<string>& l);
-        void executeRule() override;
+        void executeRule(GameMode model) override;
 
 };

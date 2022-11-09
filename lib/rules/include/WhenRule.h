@@ -1,10 +1,12 @@
 #include "IRule.h"
+#include <string>
 
 class WhenRule final : public rules::IRule
 {
     public:
-        WhenRule(bool con);
-        void executeRule() override;
+        WhenRule(std::string c);
+        optional<vector<rules::IRule>> executeRule(GameModel model) override;
+        std::vector<std::string> getTokens(std::string str);
     private:
-        bool condition;
+        std::string failCondition;
 };

@@ -28,7 +28,7 @@ public:
     InputChoiceRule(Player *target, std::string prompt, std::vector<dataVariant> choices, std::string result, Server *server, int timeout = 0);
     InputChoiceRule() {}
 
-    void executeRule(GameModel model) override;
+    optional<vector<rules::IRule>> executeRule(GameModel model) override;
 private:
     void getInput() override;
     rules::InputRule::InputValidation receiveResponse(std::string message, std::chrono::system_clock::time_point start) override;

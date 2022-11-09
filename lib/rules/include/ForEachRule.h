@@ -2,16 +2,20 @@
 #include <string>
 
 #include "IRule.h"
+#include <nlohmann/json.hpp>
 
-using namespace std;
+using nlohmann::json;
+
 
 class ForEachRule final : public rules::IRule {
     public:
-        ForEachRule(vector<string> & list);
+        ForEachRule(std::vector<rules::IRule> & list);
+        ForEachRule(std::string lis);
         ~ForEachRule() {}
-        void executeRule() override;
+        std::optional<vector<rules::IRule>> executeRule(GameModel model);
 
     private:
         //list object to operate on, modify later
-        vector<string> memberList;
+        std::vector<rules::IRule> memberList;
+        std::string listName;
 };
