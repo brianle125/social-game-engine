@@ -4,7 +4,7 @@ class WhenRule final : public rules::IRule
 {
     public:
         WhenRule(bool con);
-        void ExecuteRule() override;
+        void executeRule() override;
     private:
         bool condition;
 };

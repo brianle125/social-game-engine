@@ -6,9 +6,14 @@ using namespace std;
 //THIS IS A TESTING FUNCTION
 int
 main(int argc, char *argv[]) {
-	GameCreator creator;
 	std::string filename(argv[1]);
-	gameModel::Game newGame = creator.createGame(filename);
+	GameCreator creator(filename);
+	GameController newGame = creator.createGameController();
 	newGame.printGame();
+
+	// std::cout << boost::get<string>(newGame.getConstant("player-name")) << "\n";
+	// std::cout << boost::get<int>(newGame.getVariable("wins")) << "\n";
+
+	newGame.executeRules();
 	return 0;
 }

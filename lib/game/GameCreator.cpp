@@ -1,27 +1,85 @@
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <nlohmann/json.hpp>
-#include <GameCreator.h>
-#include <Game.h>
+#include "GameCreator.h"
+#include "GameModel.h"
 
 using json = nlohmann::json;
 
 using namespace std;
 
-gameModel::Game GameCreator::createGame(std::string gameSpecification) {
+GameCreator::GameCreator(std::string gameSpecification) {
 	std::ifstream f(gameSpecification);
-	json data = json::parse(f);
+	gameSource = json::parse(f);
 
-	cout << data.dump(4) << "\n";
+	GenerateRuleBuilders();
+}
 
-	gameModel::Game newGame(data["configuration"]["name"].get<std::string>(),
-				 data["configuration"]["player count"]["min"].get<int>(),
-				 data["configuration"]["player count"]["min"].get<int>(),
-				 data["configuration"]["audience"].get<bool>());
+GameController GameCreator::createGameController() {
+	json configData = gameSource["configuration"];
+
+	GameModel model = createGameModel();
+
+	GameController controller(configData["name"],
+							  configData["player count"]["min"],
+							  configData["player count"]["max"],
+							  configData["audience"],
+							  model);
+
+	auto rulesList = createRules();
+
+	for(auto &rule : rulesList) {
+		controller.addRule(std::move(rule));
+	}
+
+	return controller;
+}
+
+GameModel GameCreator::createGameModel() {
+
+	GameModel newGame;
 
 	//parse and add variables here
+	/*
+	json constants = gameSource["constants"];
+	for(auto constant : constants.items()) {
+		std::string keyname = constant.key();
+		std::string valuename = constant.value();
+		dataVariant variant = valuename;
 
-	//parse and add rules here
+		newGame.addConstant(keyname, variant);
+	}
+
+	json variables = gameSource["variables"];
+	for(auto variable : variables.items()) {
+		std::string keyname = variable.key();
+		int valuename = variable.value();
+		dataVariant variant = valuename;
+
+		newGame.addVariable(keyname, variant);
+	}
+	*/
 
 	return newGame;
 }
+
+std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules() {
+	json rules = gameSource["rules"];
+
+	std::vector<std::unique_ptr<rules::IRule>> ruleList;
+	ruleList.reserve(rules.size());
+
+	for(auto rule : rules) {
+		auto ruleBuilder = ruleBuilders.find(rule["rule"]);
+		if(ruleBuilder != ruleBuilders.end()) {
+			auto newRule = ruleBuilder->second(rule);
+			ruleList.push_back(std::move(newRule));
+		}
+	}
+
+	return ruleList;
+}
+
+
+

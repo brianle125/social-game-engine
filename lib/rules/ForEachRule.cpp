@@ -6,7 +6,7 @@ using namespace std;
 
 ForEachRule::ForEachRule(vector<string> & list) : memberList(list) {}
 
-void ForEachRule::ExecuteRule() 
+void ForEachRule::executeRule() 
 {
     for(auto rule: memberList)
     {
@@ -22,7 +22,7 @@ void ForEachRule::ExecuteRule()
 //     {
 //         vector<string> list = {"one", "two"};
 //         ForEachRule fe(list);
-//         fe.ExecuteRule();
+//         fe.executeRule();
 //     } 
 //     catch(exception &e)
 //     {

@@ -8,7 +8,6 @@
 #include <unistd.h> // For read, only unix
 #include <cstring>
 
-
 int ask_for_game_choice(int connection){
     //send message - choose game number
     std::string message_choose_game_number = "We provide games below:\n";

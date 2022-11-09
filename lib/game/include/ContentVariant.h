@@ -1,64 +1,52 @@
-
-#include <boost/variant.hpp>
+#pragma once
+//#include <boost/variant.hpp>
 #include <string>
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <variant>
+#include <rva/variant.hpp>
+
+#include <unordered_map>
+
+#include <iostream>
 
 using namespace std;
 
-typedef boost::variant<int, string, bool> subVariant;//, vector<myVariant>, map<string, myVariant>> myVariant; 
-typedef boost::variant<int, string, bool, vector<subVariant>, map<string, subVariant>>  myVariant;
+typedef rva::variant<
+    int,
+    float,
+    string,
+    bool,
+    vector<rva::self_t>,
+    map<string, rva::self_t>
+    > dataVariant;
 
-class times_two
-    : public boost::static_visitor<>
-{
-public:
+#ifndef SAMPLEVISIT_H
+#define SAMPLEVISIT_H
 
-    void operator()(int & i) const
-    {
-        i *= 2;
-    }
-
-    void operator()(std::string & str) const
-    {
-        str += str;
-    }
-
-    void operator()(bool & b) const {}
-
-    void operator()(vector<subVariant> & v) const {
-        auto old = v.size();   
-        v.reserve(2 * old);
-        copy_n(v.begin(), old, back_inserter(v));        
-    }
-
-    void operator()(map<string, subVariant> & m) const {}
-
-
+struct toStringVisitor {
+	string operator()(int i) const;
+	string operator()(float f) const;
+	string operator()(string s) const;
+	string operator()(bool b) const;
+	string operator()(vector<dataVariant> v) const;
+	string operator()(map<string, dataVariant> m) const;
 };
 
-// class addX
-//     : public boost::static_visitor<>
-// {
-// public:
-//     void operator()(int & i, int & X) const
-//     {
-//         i += X;
-//     }
+struct shuffleVisitor {
+	void operator()(vector<dataVariant> v);
+	template<typename T>
+	void operator()(T const) const;
+};
 
-//     void operator()(string & i, string & X) const
-//     {
-//         i += X;
-//     }
-
-//     void operator()(bool & i, bool & X) const {}
-
-//     void operator()(vector<subVariant> & i, vector<subVariant> & X) const
-//     {
-//         i.insert(i.end(), X.begin(), X.end());
-//     }
-
-//     void operator()(map<string, subVariant> & i, map<string, subVariant> & X) const { }
-
+// struct addVisitor {
+// 	void operator()(int i);
+// 	void operator()(float f);
+// 	void operator()(string s);
+// 	void operator()(bool b);
+// 	void operator()(vector<dataVariant> v);
+// 	void operator()(map<string, dataVariant> m);
 // };
+
+#endif
