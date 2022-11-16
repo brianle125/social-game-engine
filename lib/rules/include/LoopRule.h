@@ -1,14 +1,14 @@
-#include "IRule.h"
+#include "include/IRule.h"
 #include <vector>
 #include <string>
 
 class LoopRule final: public rules::IRule
 {
     public:
-        LoopRule(vector<string>& list, bool con);
-        void executeRule() override;
+        LoopRule(std::vector<myVariant>& list, bool con);
+        std::optional<vector<rules::IRule>> executeRule(GameModel model) override;
         
     private:
-        vector<string>& memberList;
+        std::vector<myVariant> memberList;
         bool failCondition;
 };

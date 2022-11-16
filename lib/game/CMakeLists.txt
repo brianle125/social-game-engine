@@ -11,7 +11,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(rva)
 
 
-add_library(gameLib GameCreator.cpp GameModel.cpp GameController.cpp ruleBuilders.cpp Player.cpp Audience.cpp ContentVariant.cpp)
+add_library(gameLib GameCreator.cpp GameModel.cpp GameController.cpp ruleBuilders.cpp VariantParser.cpp Player.cpp Audience.cpp ContentVariant.cpp)
 
 set_target_properties(gameLib PROPERTIES PUBLIC_HEADER include/GameCreator.h)
 #link gameLib with Json and rules
