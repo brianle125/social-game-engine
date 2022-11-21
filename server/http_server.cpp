@@ -7,9 +7,8 @@
 #include "GameRoomId.h"
 #include "GameRoom.h"
 #include "GameStatus.h"
-namespace fs = std::filesystem;
 
-std::unordered_map<GameRoomId, GameRoom, GameRoomIdHashFunction> gameRooms;
+namespace fs = std::filesystem;
 
 std::string to_game_room_storge_name(const GameRoomId& id) {
     fs::create_directory("game_room_database");
@@ -23,42 +22,39 @@ void store_game_room(GameRoom game_room){
     myfile.open(to_game_room_storge_name(id));
     myfile << game_room.serialized();
 
-    gameRooms.insert({game_room.get_game_room_id(), game_room});
     myfile.close();
 }
 
 std::optional<GameRoom> get_game_room(GameRoomId id){
-    auto itr = gameRooms.find(id);
-    if (itr == gameRooms.end()){
-        //catch error
+
+    std::ifstream f(to_game_room_storge_name(id));
+    if (!f.good()) {
         return {};
-    }else{
-        return itr->second;
     }
+
+    nlohmann::json data = nlohmann::json::parse(f);
+    return GameRoom::from_json(data);
 }
 
 std::optional<GameRoom> update_game_room(const GameRoom &room) {
-    auto itr = gameRooms.find(room.get_game_room_id());
-    if(itr == gameRooms.end()){
+    auto maybeRoom = get_game_room(room.get_game_room_id());
+    if (!maybeRoom) {
         return {};
     }
-    itr->second = room;
 
-    auto itr_2 = gameRooms.find(room.get_game_room_id());
-    if(itr_2 == gameRooms.end()){
-        return {};
-    } else {
-        return itr_2->second;
-    }
+    store_game_room(room);
+
+    auto updatedRoom = get_game_room(room.get_game_room_id());
+
+    return updatedRoom;
 }
 
 crow::response fetch_game_room_route(const std::string game_room_id) {
-    auto iter = gameRooms.find(game_room_id);
-    if (iter == gameRooms.end()){
+    auto maybeRoom = get_game_room(GameRoomId(game_room_id));
+    if (!maybeRoom) {
         return crow::response(crow::status::NOT_FOUND);
     }
-
-    return crow::response(crow::status::OK, "json", iter->second.serialized());
+    return crow::response(crow::status::OK, "json", maybeRoom->serialized());
 }
 
 
