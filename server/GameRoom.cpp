@@ -9,11 +9,18 @@
 // https://stackoverflow.com/questions/38336046/how-to-use-json-c-with-my-own-object
 void to_json(nlohmann::json& j, const GameRoom& g) {
     auto game_config = g.get_game_config();
+    std::vector<std::string> player_id_strings;
+    for (const auto PlayerId: g.get_players()) {
+        player_id_strings.push_back(PlayerId.get_value());
+    }
+
     j = nlohmann::json{
             {"id", g.get_game_room_id().get_value()},
             {"gameName", g.get_game_name()},
             {"gameConfig", game_config ? *game_config : nlohmann::json()},
-            {"gameStatus", g.get_game_status().get_value()}};
+            {"gameStatus", g.get_game_status().get_value()},
+            {"playerIds", player_id_strings}
+    };
 }
 
 std::optional <GameRoom> GameRoom::from_json(const nlohmann::json &j) {
@@ -23,11 +30,20 @@ std::optional <GameRoom> GameRoom::from_json(const nlohmann::json &j) {
         throw std::invalid_argument("invalid gameStatus: " + gameStatusString);
     }
     GameRoomId id(j.at("id").get<std::string>());
+
+    std::vector<std::string> player_id_strings = j.at("playerIds").get<std::vector<std::string>>();
+    std::vector<PlayerId> playerIds;
+    playerIds.reserve(player_id_strings.size());
+    for (const auto str: player_id_strings) {
+        playerIds.push_back(PlayerId(str));
+    }
+
     GameRoom room(
             id,
             j.at("gameName").get<std::string>(),
             j.at("gameConfig"),
-            *maybeGameStatus);
+            *maybeGameStatus,
+            playerIds);
 
     return room;
 }
@@ -44,10 +60,12 @@ GameRoom::GameRoom(
         const GameRoomId &id,
         const std::string&game,
         const std::optional<nlohmann::json>& config,
-        GameStatus status)
+        GameStatus status,
+        const std::vector<PlayerId> &player_ids)
         : id(id), game_name(game) {
     game_config = config;
     game_status = status;
+    this->player_ids = player_ids;
 }
 
 GameRoomId GameRoom::get_game_room_id() const {
@@ -66,6 +84,10 @@ GameStatus GameRoom::get_game_status() const {
     return game_status;
 }
 
+std::vector<PlayerId> GameRoom::get_players() const{
+    return player_ids;
+}
+
 std::string GameRoom::serialized() const {
     nlohmann::json j = *this;
     return j.dump();
@@ -75,20 +97,19 @@ bool GameRoom::operator== (const GameRoom &other) const {
     return other.id == this->id;
 }
 
-GameRoom GameRoom::with_config(const nlohmann::json& config){
-    GameRoom new_room(this->id, this->game_name, config, this->game_status);
+GameRoom GameRoom::with_config(const nlohmann::json& config) const {
+    GameRoom new_room(this->id, this->game_name, config, this->game_status, this->player_ids);
     return new_room;
 }
 
-GameRoom GameRoom::with_game_status(GameStatus status) {
-    GameRoom new_room(this->id, this->game_name, this->game_config, status);
+GameRoom GameRoom::with_game_status(GameStatus status) const {
+    GameRoom new_room(this->id, this->game_name, this->game_config, status, this->player_ids);
     return new_room;
 }
 
-//GameRoom GameRoom::operator= (const GameRoom &other){
-//    this->id(other.get_game_room_id());
-//    this->game_name = other.get_game_name();
-//    this->get_game_config(other.get_game_config());
-//    this->with_game_status(other.get_game_status());
-//    return this;
-//}
+GameRoom GameRoom::with_player_id(const PlayerId player_id) const {
+    std::vector<PlayerId> new_player_ids = get_players();
+    new_player_ids.push_back(player_id);
+    GameRoom new_room(this->id, this->game_name, this->game_config, this->game_status, new_player_ids);
+    return new_room;
+}
