@@ -174,6 +174,13 @@ crow::response add_player_to_game_room_route(const crow::request &req) {
         auto playerId = x["playerIds"].s();//get a player id
         PlayerId p_id(playerId);
 
+        for (const auto playerId: room->get_players()) {
+            if(p_id == playerId){//duplicate
+                return crow::response(crow::status::NOT_FOUND, "this player already join the game room");
+            }
+        }
+
+
         auto new_room = room->with_player_id(p_id);
         auto updated_room = update_game_room(new_room);
 
