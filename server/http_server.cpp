@@ -6,6 +6,7 @@
 #include <filesystem>
 #include "GameRoomId.h"
 #include "PlayerId.h"
+#include "AudienceId.h"
 #include "GameRoom.h"
 #include "GameStatus.h"
 
@@ -157,7 +158,6 @@ crow::response change_game_status_route(const crow::request &req) {
 
 crow::response add_player_to_game_room_route(const crow::request &req) {
     // TBD
-    std::cout << "mother fker" << std::endl;
     auto x = crow::json::load(req.body);
     if (!x) {
         return crow::response(crow::status::BAD_REQUEST, "missing body");
@@ -182,6 +182,44 @@ crow::response add_player_to_game_room_route(const crow::request &req) {
 
 
         auto new_room = room->with_player_id(p_id);
+        auto updated_room = update_game_room(new_room);
+
+        if (!updated_room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found while being updated");
+        }
+
+        return crow::response(crow::status::OK, "json", updated_room->serialized());
+    } catch (const std::exception& ex) {
+        return crow::response(crow::status::BAD_REQUEST, ex.what());
+    }
+}
+
+
+crow::response add_audience_to_game_room_route(const crow::request &req) {
+    auto x = crow::json::load(req.body);
+    if (!x) {
+        return crow::response(crow::status::BAD_REQUEST, "missing body");
+    }
+    try {
+        nlohmann::json payload = nlohmann::json::parse(req.body);
+        std::string id = payload["id"];
+        GameRoomId roomID(id);
+        auto room = get_game_room(roomID);
+        if (!room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found");
+        }
+
+        auto audienceId = x["audienceIds"].s();//get a audience id
+        AudienceId p_id(audienceId);
+
+        for (const auto audienceId: room->get_audiences()) {
+            if(p_id == audienceId){//duplicate
+                return crow::response(crow::status::NOT_FOUND, "this audience already join the game room");
+            }
+        }
+
+
+        auto new_room = room->with_audience_id(p_id);
         auto updated_room = update_game_room(new_room);
 
         if (!updated_room) {
@@ -219,6 +257,10 @@ int main() {
     CROW_ROUTE(app, "/player-join-room")
             .methods("POST"_method)
                     (add_player_to_game_room_route);
+
+    CROW_ROUTE(app, "/audience-join-room")
+            .methods("POST"_method)
+                    (add_audience_to_game_room_route);
 
     app.port(18080).run();
 }
