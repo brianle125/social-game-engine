@@ -18,6 +18,7 @@ private:
     GameStatus game_status = GameStatus::not_started;
 
 public:
+    static std::optional<GameRoom> from_json(const nlohmann::json& j);
     GameRoom(const GameRoomId &, const std::string&);
     GameRoom(const GameRoomId &, const std::string&, const std::optional<nlohmann::json>&, GameStatus);
     GameRoom(GameRoomId &&, std::string&&);
@@ -28,6 +29,7 @@ public:
     GameStatus get_game_status() const;
     std::string serialized() const;
     bool operator== (const GameRoom &other) const;
+//    GameRoom operator= (const GameRoom &other);
     GameRoom with_config(const nlohmann::json&);
     GameRoom with_game_status(GameStatus);
 };
