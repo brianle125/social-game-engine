@@ -210,16 +210,23 @@ crow::response add_audience_to_game_room_route(const crow::request &req) {
         }
 
         auto audienceId = x["audienceIds"].s();//get a audience id
-        AudienceId p_id(audienceId);
+        AudienceId a_id(audienceId);
 
         for (const auto audienceId: room->get_audiences()) {
-            if(p_id == audienceId){//duplicate
+            if(a_id == audienceId){//duplicate
                 return crow::response(crow::status::NOT_FOUND, "this audience already join the game room");
             }
         }
 
+        for (const auto playerId: room->get_players()) {
+            if(a_id.get_value() == playerId.get_value()){//duplicate
+                return crow::response(crow::status::NOT_FOUND, "player can not join room as an audience");
+            }
+        }
 
-        auto new_room = room->with_audience_id(p_id);
+
+
+        auto new_room = room->with_audience_id(a_id);
         auto updated_room = update_game_room(new_room);
 
         if (!updated_room) {
