@@ -11,7 +11,7 @@ FetchContent_MakeAvailable(json)
 
 find_package(Boost 1.72 COMPONENTS system REQUIRED)
 
-add_executable(game_room_server http_server.cpp GameRoomId.cpp GameRoom.cpp GameStatus.cpp PlayerId.cpp AudienceId.cpp)
+add_executable(game_room_server http_server.cpp GameRoomId.cpp GameRoom.cpp GameStatus.cpp PlayerId.cpp AudienceId.cpp GUITask.cpp Id.cpp Message.cpp PlayerInput.cpp RoundNumber.cpp)
 target_link_libraries(game_room_server PRIVATE nlohmann_json::nlohmann_json)
 
 target_include_directories(game_room_server

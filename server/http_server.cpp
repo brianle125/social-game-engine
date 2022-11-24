@@ -9,6 +9,10 @@
 #include "AudienceId.h"
 #include "GameRoom.h"
 #include "GameStatus.h"
+#include "RoundNumber.h"
+#include "GUITask.h"
+#include "Message.h"
+#include "PlayerInput.h"
 
 namespace fs = std::filesystem;
 
@@ -224,9 +228,134 @@ crow::response add_audience_to_game_room_route(const crow::request &req) {
             }
         }
 
-
-
         auto new_room = room->with_audience_id(a_id);
+        auto updated_room = update_game_room(new_room);
+
+        if (!updated_room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found while being updated");
+        }
+
+        return crow::response(crow::status::OK, "json", updated_room->serialized());
+    } catch (const std::exception& ex) {
+        return crow::response(crow::status::BAD_REQUEST, ex.what());
+    }
+}
+
+crow::response add_GUI_task_to_game_room_route(const crow::request &req) {
+    auto x = crow::json::load(req.body);
+    if (!x) {
+        return crow::response(crow::status::BAD_REQUEST, "missing body");
+    }
+    try {
+        nlohmann::json payload = nlohmann::json::parse(req.body);
+        std::string id = payload["id"];
+        GameRoomId roomID(id);
+        auto room = get_game_room(roomID);
+        if (!room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found");
+        }
+
+        nlohmann::json GUI_json = payload["GUITask"];
+        std::cout << GUI_json << std::endl;
+
+        std::cout << "GUI " << GUI_json.size() << std::endl;
+
+        auto GUI_task = GUITask::from_json(GUI_json);
+        auto new_room = room->with_GUI_task(GUI_task);
+        std::cout << "GUI " << new_room.get_GUI_tasks()[0].get_value() << std::endl;
+        auto updated_room = update_game_room(new_room);
+        if (!updated_room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found while being updated");
+        }
+        return crow::response(crow::status::OK, "json", updated_room->serialized());
+    } catch (const std::exception& ex) {
+        return crow::response(crow::status::BAD_REQUEST, ex.what());
+    }
+}
+
+crow::response add_message_to_game_room_route(const crow::request &req) {
+    auto x = crow::json::load(req.body);
+    if (!x) {
+        return crow::response(crow::status::BAD_REQUEST, "missing body");
+    }
+    try {
+        nlohmann::json payload = nlohmann::json::parse(req.body);
+        std::string id = payload["id"];
+        GameRoomId roomID(id);
+        auto room = get_game_room(roomID);
+        if (!room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found");
+        }
+        nlohmann::json message_json = payload["message"];
+        std::cout << message_json << std::endl;
+
+        std::cout << "message " << message_json.size() << std::endl;
+
+        auto message = Message::from_json(message_json);
+        auto new_room = room->with_message(message);
+        std::cout << "message string:" << new_room.get_messages()[0].get_message_str() << std::endl;
+        auto updated_room = update_game_room(new_room);
+        if (!updated_room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found while being updated");
+        }
+
+        return crow::response(crow::status::OK, "json", updated_room->serialized());
+    } catch (const std::exception& ex) {
+        return crow::response(crow::status::BAD_REQUEST, ex.what());
+    }
+}
+
+crow::response add_player_input_to_game_room_route(const crow::request &req) {
+    auto x = crow::json::load(req.body);
+    if (!x) {
+        return crow::response(crow::status::BAD_REQUEST, "missing body");
+    }
+    try {
+        nlohmann::json payload = nlohmann::json::parse(req.body);
+        std::string id = payload["id"];
+        GameRoomId roomID(id);
+        auto room = get_game_room(roomID);
+        if (!room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found");
+        }
+
+        nlohmann::json input_json = payload["playerInput"];
+        std::cout << input_json << std::endl;
+
+        std::cout << "playerInput " << input_json.size() << std::endl;
+
+        auto input = PlayerInput::from_json(input_json);
+        auto new_room = room->with_player_input(input);
+        std::cout << "playerInput string:"<< std::endl;
+        auto updated_room = update_game_room(new_room);
+        if (!updated_room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found while being updated");
+        }
+
+        return crow::response(crow::status::OK, "json", updated_room->serialized());
+    } catch (const std::exception& ex) {
+        return crow::response(crow::status::BAD_REQUEST, ex.what());
+    }
+}
+
+crow::response add_round_number_to_game_room_route(const crow::request &req) {
+    auto x = crow::json::load(req.body);
+    if (!x) {
+        return crow::response(crow::status::BAD_REQUEST, "missing body");
+    }
+    try {
+        nlohmann::json payload = nlohmann::json::parse(req.body);
+        std::string id = payload["id"];
+        GameRoomId roomID(id);
+        auto room = get_game_room(roomID);
+        if (!room) {
+            return crow::response(crow::status::NOT_FOUND, "game room not found");
+        }
+
+        auto round_num = payload["roundNumber"];//get roundNumber
+        RoundNumber r_num(round_num);
+
+        auto new_room = room->with_round_number(r_num);
         auto updated_room = update_game_room(new_room);
 
         if (!updated_room) {
@@ -268,6 +397,22 @@ int main() {
     CROW_ROUTE(app, "/audience-join-room")
             .methods("POST"_method)
                     (add_audience_to_game_room_route);
+
+    CROW_ROUTE(app, "/add-GUI-task")
+            .methods("POST"_method)
+                    (add_GUI_task_to_game_room_route);
+
+    CROW_ROUTE(app, "/add-message")
+            .methods("POST"_method)
+                    (add_message_to_game_room_route);
+
+    CROW_ROUTE(app, "/add-player-input")
+            .methods("POST"_method)
+                    (add_player_input_to_game_room_route);
+
+    CROW_ROUTE(app, "/add-round-number")
+            .methods("POST"_method)
+                    (add_round_number_to_game_room_route);
 
     app.port(18080).run();
 }
