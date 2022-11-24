@@ -32,13 +32,22 @@ void GameCreator::GenerateRuleBuilders() {
 
 	// ruleBuilders.emplace("foreach", 
 	// 	[](json ruleData) -> std::unique_ptr<rules::IRule> {
-	// 		auto newRule = std::make_unique<ForEachRule>(ForEachRule(ruleData["list"]));
+	// 		nlohmann::json rules = ruleData["foreach"]["rules"];
+	// 		std::vector<rules::IRule> ruleList;
+
+	// 		//todo: construct the list of rules from the rules array
+	// 		// for(auto & rule : rules)
+	// 		// {
+	// 		// 	//ruleList.emplace_back();
+	// 		// }
+	// 		auto newRule = std::make_unique<ForEachRule>(ForEachRule(ruleList));
 	// 		return std::move(newRule);
 	// });	
 
 	ruleBuilders.emplace("when", 
 		[](json ruleData) -> std::unique_ptr<rules::IRule> {
-			auto rulesToExecute = ruleData["rules"];
+			auto rulesToExecute = ruleData["when"]["rules"];
+
 			//todo: make a list to feed whenrule?
 			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["condition"]));
 			return std::move(newRule);

@@ -8,6 +8,7 @@ add_executable(runTests
 target_link_libraries(runTests
   gmock gtest gtest_main
   rulesLib
+  gameLib
 )
 
 add_test(NAME AllTests COMMAND runTests)

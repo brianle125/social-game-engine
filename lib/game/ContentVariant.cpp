@@ -137,6 +137,7 @@ dataVariant appendVisitor::operator()(vector<dataVariant> v, string s) const{
 dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant> v2) const{
     v1.insert(v1.end(), v2.begin(), v2.end());
     return v1;
+}
 
 
 // Reverse Visitor
