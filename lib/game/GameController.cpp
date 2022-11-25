@@ -35,16 +35,25 @@ void GameController::initializeStack() {
 void GameController::executeNextRule() {
 	try {
 		auto rule = ruleStack.top();
-		ruleStack.pop();
 		auto newRules = rule->executeRule(model);
-		//TODO: parallel rules need some kind of immediate processing most likely, 
-		//or else rules need a way to mark themselves parallel and thus non-blocking
 
+		RuleStatus status = rule->getStatus();
+
+		if(status == FINISHED) {
+			ruleStack.pop();
+		}
+		//TODO: may need extra logic to deal with unfinished rules or rules awaiting input?
+		 
 		//can probably use value_or somehow to skip this check but Im not sure how right now
 		if(newRules.has_value()) {
-			for(auto& newRule : *newRules) {
-				cout << "new Rule\n";
-				ruleStack.push(&newRule);
+			if(rule->isParallel()) {
+				//split into stacks, add parallel rules, need to figure out how many stacks to split into
+			} else {
+				//TODO: simplify this / break into a function
+				for(auto& newRule : *newRules) {
+					cout << "new Rule\n";
+					ruleStack.push(&newRule);
+				}
 			}
 		}
 	}
@@ -58,3 +67,13 @@ bool GameController::isGameOver() noexcept {
 	return ruleStack.empty();
 	//return nextRule == rules.end();
 }
+
+// void GameController::addToStack(std::vector<rules::IRule> newRules) {
+// 	for(auto& newRule : *newRules) {
+// 		cout << "new Rule\n";
+// 		ruleStack.push(&newRule);
+// 	}
+// }
+
+
+//void GameController::parallelStack(std::vector<rules::IRule> newRules) {}

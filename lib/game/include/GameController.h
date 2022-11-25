@@ -33,5 +33,6 @@ private:
     
     std::vector<std::unique_ptr<rules::IRule>> rules;
     // std::vector<std::unique_ptr<rules::IRule>>::iterator nextRule;
-
+    // void addToStack(std::vector<rules::IRule> newRules);
+    //void parallelStack(std::vector<rules::IRule> newRules);
 };
