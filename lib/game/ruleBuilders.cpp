@@ -5,6 +5,7 @@
 #include "GlobalMessage.h"
 #include "ForEachRule.h"
 #include "WhenRule.h"
+#include "LoopRule.h"
 //#include "ShuffleList.h"
 
 
@@ -30,19 +31,19 @@ void GameCreator::GenerateRuleBuilders() {
 	});	
 
 
-	// ruleBuilders.emplace("foreach", 
-	// 	[](json ruleData) -> std::unique_ptr<rules::IRule> {
-	// 		nlohmann::json rules = ruleData["foreach"]["rules"];
-	// 		std::vector<rules::IRule> ruleList;
+	ruleBuilders.emplace("foreach", 
+		[](json ruleData) -> std::unique_ptr<rules::IRule> {
+			nlohmann::json rules = ruleData["foreach"]["rules"];
+			std::vector<rules::IRule*> ruleList;
 
-	// 		//todo: construct the list of rules from the rules array
-	// 		// for(auto & rule : rules)
-	// 		// {
-	// 		// 	//ruleList.emplace_back();
-	// 		// }
-	// 		auto newRule = std::make_unique<ForEachRule>(ForEachRule(ruleList));
-	// 		return std::move(newRule);
-	// });	
+			//todo: construct the list of rules from the rules array
+			// for(auto & rule : rules)
+			// {
+			// 	// ruleList.emplace_back(std::make_unique<>);
+			// }
+			auto newRule = std::make_unique<ForEachRule>(ForEachRule(ruleList));
+			return std::move(newRule);
+	});	
 
 	ruleBuilders.emplace("when", 
 		[](json ruleData) -> std::unique_ptr<rules::IRule> {
@@ -52,6 +53,27 @@ void GameCreator::GenerateRuleBuilders() {
 			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["condition"]));
 			return std::move(newRule);
 	});	
+
+	ruleBuilders.emplace("loop",
+		[](json ruleData) -> std::unique_ptr<rules::IRule> {
+			auto rulesToExecute = ruleData["loop"];
+			std::vector<rules::IRule*> ruleList;
+			json untilKeyword = ruleData["loop"]["until"];
+			json whileKeyWord = ruleData["loop"]["while"];
+
+			//needs to parse the keywords into a suitable boolean
+			//or have loop refactored
+			bool condition = true;
+
+			if(!untilKeyword.is_null())
+			{
+				auto newRule = std::make_unique<LoopRule>(LoopRule(ruleList, condition));
+				return std::move(newRule);
+			}
+			auto newRule = std::make_unique<LoopRule>(LoopRule(ruleList, condition));
+			return std::move(newRule);
+		}
+	);
 	
 	
 }

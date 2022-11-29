@@ -2,7 +2,7 @@ add_subdirectory(gtest)
 enable_testing()
 
 add_executable(runTests
-  Dummy.cpp
+  #foreach.cpp
 )
 
 target_link_libraries(runTests

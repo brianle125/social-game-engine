@@ -3,16 +3,16 @@
 #include <iostream>
 
 
-ForEachRule::ForEachRule(std::vector<rules::IRule> list) : memberList(list) {}
+ForEachRule::ForEachRule(std::vector<rules::IRule*> list) : memberList(list) {}
 
 std::optional<vector<rules::IRule>> ForEachRule::executeRule(GameModel model) 
 {
     //TENTATIVE, OPEN TO REWORK
     //Execute each rule in the list for every round from 1 to n
     dataVariant totalRounds = model.getVariable("Rounds");
-    int currentRound = 1;
+    int currentRound = 0;
 
-    while(currentRound <= std::get<int>(totalRounds))
+    while(currentRound < std::get<int>(totalRounds))
     {
         for(auto & rule: memberList)
         {
