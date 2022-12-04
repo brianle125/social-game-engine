@@ -3,6 +3,8 @@
 //
 
 #include "GameRoomId.h"
+#include <boost/uuid/uuid_generators.hpp> // generators
+#include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
 
 GameRoomId::GameRoomId(const std::string& id){
     value = id;

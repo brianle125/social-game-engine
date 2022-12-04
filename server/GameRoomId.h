@@ -4,11 +4,8 @@
 
 #ifndef HTTP_SERVER_CPP_GAMEROOMID_H
 #define HTTP_SERVER_CPP_GAMEROOMID_H
-#include <iostream>
 #include <string>
 #include <boost/uuid/uuid.hpp>            // uuid class
-#include <boost/uuid/uuid_generators.hpp> // generators
-#include <boost/uuid/uuid_io.hpp>         // streaming operators etc.
 
 class GameRoomId {
 private:
