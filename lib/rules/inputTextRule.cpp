@@ -9,7 +9,8 @@ InputTextRule::InputTextRule(Player *target, std::string prompt, std::string res
     : target{target}, prompt{prompt}, result{result}, server{server}, timeout{timeout} {
 }
 
-void InputTextRule::executeRule(GameModel model) {
+optional<vector<rules::IRule>> InputTextRule::executeRule(GameModel model) {
+    this->model = model;
     getInput();
 }
 
@@ -28,7 +29,7 @@ rules::InputRule::InputValidation InputTextRule::receiveResponse(std::string mes
     std::cout << message << std::endl;
     if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
     } else {
-        // do something
+        model.addVariable(result, dataVariant(message));
     }
     return rules::InputRule::InputValidation::success;
 }
