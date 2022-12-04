@@ -22,14 +22,8 @@ void GameController::printGame() {
 
 void GameController::addRule(std::unique_ptr<rules::IRule> rule) {
 	rules.push_back(std::move(rule));
-	//nextRule = rules.begin();
-}
-
-void GameController::initializeStack() {
-	for(auto& rule : rules) {
-		rules::IRule* rulePointer = rule.get();
-		ruleStack.push(rulePointer);
-	}
+	rules::IRule* rulePointer = rules[rules.size() - 1].get();
+	ruleStack.push(rulePointer);
 }
 
 void GameController::executeNextRule() {

@@ -10,8 +10,8 @@ using json = nlohmann::json;
 using namespace std;
 
 GameCreator::GameCreator(std::string gameSpecification) {
-	std::ifstream f(gameSpecification);
-	gameSource = json::parse(f);
+	std::ifstream gameFile(gameSpecification);
+	gameSource = json::parse(gameFile);
 
 	GenerateRuleBuilders();
 }
@@ -32,8 +32,6 @@ GameController GameCreator::createGameController() {
 	for(auto &rule : rulesList) {
 		controller.addRule(std::move(rule));
 	}
-
-	controller.initializeStack();
 
 	return controller;
 }

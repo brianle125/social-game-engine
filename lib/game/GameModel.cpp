@@ -1,31 +1,35 @@
 #include <iostream>
 #include <stdexcept>
+#include <string_view>
+#include <sstream>
 #include <GameModel.h>
 #include <ContentVariant.h>
 #include "VariantParser.h"
 #include "IRule.h"
 
 using namespace std;
-using lookupKey = string;
+using LookupKey = string;
 
 GameModel::GameModel() {
 	parser = VariantParser();
 }
 
-void GameModel::addSetupVariable(lookupKey key, dataVariant value) {
+void GameModel::addSetupVariable(LookupKey key, dataVariant value) {
 	setup.emplace(key, value);
 }
 
-void GameModel::addConstant(lookupKey key, dataVariant value) {
+void GameModel::addConstant(LookupKey key, dataVariant value) {
 	constants.emplace(key, value);
 }
 
-void GameModel::addVariable(lookupKey key, dataVariant value) {
+void GameModel::addVariable(LookupKey key, dataVariant value) {
 	variables.emplace(key, value);
 }
 
-dataVariant GameModel::getVariable(lookupKey key) {
+dataVariant GameModel::getVariable(LookupKey key) {
 	//Todo: use Variant Parser to deal with more complex keys like deck.elements.name
+
+
 	auto varToReturn = variables.find(key);
 	if(varToReturn != variables.end()) {
 		return varToReturn->second;
@@ -39,7 +43,39 @@ dataVariant GameModel::getVariable(lookupKey key) {
 	throw std::invalid_argument("Variable " + key + " Not Found");
 }
 
-void GameModel::setVariable(lookupKey key, dataVariant value) {
+std::string GameModel::fillInVariables(std::string_view toParse) {
+	auto keys = parser.getKeysFromString(toParse);
+	std::vector<std::string> variables;
+
+	for(auto key : keys) {
+		std::string lookup{key};
+		dataVariant variable = getVariable(lookup);
+		variables.push_back(rva::visit(toStringVisitor{}, variable));
+	}
+
+	std::ostringstream parsedString;
+	bool writing = true;
+	size_t variableIndex = 0;
+
+	for(char c : toParse) {
+		if(c == '{') {
+			writing = false;
+		}
+		if(writing) {
+			parsedString << c;
+		}
+		if(c == '}') {
+			writing = true;
+			parsedString << variables[variableIndex];
+			variableIndex++;
+		}
+
+	}
+
+	return parsedString.str();
+}
+
+void GameModel::setVariable(LookupKey key, dataVariant value) {
 	auto varToUpdate = variables.find(key);
 	if(varToUpdate != variables.end()) {
 		varToUpdate->second = value;

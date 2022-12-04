@@ -1,8 +1,6 @@
 #include <VariantParser.h>
 #include <iostream>
 
-using namespace std;
-
 dataVariant VariantParser::makeVariantFromJson(const json& j) {
 	nlohmann::detail::value_t variableType = j.type();
 	dataVariant data;
@@ -40,7 +38,7 @@ dataVariant VariantParser::makeVariantFromJson(const json& j) {
 }
 
 dataVariant VariantParser::makeVariantVectorFromJson(const json& j) {
-	vector<dataVariant> internalData;
+	std::vector<dataVariant> internalData;
 	for(auto& item : j.items()) {
 		internalData.push_back(makeVariantFromJson(item.value()));
 	}
@@ -48,11 +46,32 @@ dataVariant VariantParser::makeVariantVectorFromJson(const json& j) {
 }
 
 dataVariant VariantParser::makeVariantMapFromJson(const json& j) {
-	map<string, dataVariant> internalData;
+	std::map<string, dataVariant> internalData;
 	for(auto& item : j.items()) {
-		string key = item.key();
+		std::string key = item.key();
 		dataVariant variant = makeVariantFromJson(item.value());
 		internalData.emplace(key, variant);
 	}
 	return dataVariant(internalData);
+}
+
+std::vector<string_view> VariantParser::getKeysFromString(const string_view toParse) {
+	std::vector<string_view> keys;
+	size_t keyBegin = 0;
+	size_t keyEnd = 0;
+	while(keyBegin != string_view::npos) {
+		keyBegin = toParse.find('{', keyEnd);
+		keyEnd = toParse.find('}', keyBegin);
+		if(keyBegin != string_view::npos && keyBegin + 1 <= keyEnd - 1) {
+			keys.push_back(toParse.substr(keyBegin + 1, keyEnd - keyBegin - 1));
+			std::cout << "Key Found: " << keys[keys.size() - 1] << "\n";
+		}
+	}
+	// for(char c : toParse) {
+	// 	if(c == '{') {
+	// 		std::distance(toParse.begin(), );
+	// 	}
+	// }
+
+	return keys;
 }

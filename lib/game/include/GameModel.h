@@ -14,6 +14,7 @@ public:
     void addConstant(std::string name, dataVariant value);
     void addVariable(std::string name, dataVariant value);
     dataVariant getVariable(std::string key);
+    std::string fillInVariables(std::string_view toParse);
     void setVariable(std::string key, dataVariant value);
     void addSetupVariablesFromJson(json setup);
     void addConstantsFromJson(json constants);

@@ -23,14 +23,15 @@
     ]
   },
   "variables": {
-    "winnerSide": []
+    "winnerSide": [],
+    "no" : "yes"
   },
   "per-player": {},
   "per-audience": {},
   "rules": [
     {
       "rule": "global-message",
-      "value": "This is the First rule!"
+      "value": "This is the First rule! is this working? {no}"
     },
     {
       "rule": "global-message",
