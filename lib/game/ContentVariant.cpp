@@ -141,3 +141,9 @@ dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant
     v1.insert(v1.end(), v2.begin(), v2.end());
     return v1;
 }
+
+// Reverse Visitor
+
+void reverseVisitor::operator()(vector<dataVariant> &v) {
+    std::reverse(v.begin(), v.end());
+}
