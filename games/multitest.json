@@ -35,7 +35,7 @@
     },
     {
       "rule": "global-message",
-      "value": "This is the Second rule!"
+      "value": "This is the Second rule! {coin.elements.name}"
     },
     {
       "rule": "global-message",

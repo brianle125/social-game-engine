@@ -98,3 +98,19 @@ std::string VariantParser::replaceKeysInString(const string_view baseString, std
 
 	return parsedString.str();
 }
+
+std::vector<string_view> VariantParser::splitVariableReference(const string_view toParse) {
+	std::vector<string_view> keys;
+	size_t lastKey = 0;
+	size_t keyEnd = 0;
+	while(keyEnd != string_view::npos) {
+		keyEnd = toParse.find('.', lastKey);
+		if(lastKey <= keyEnd) {
+			keys.push_back(toParse.substr(lastKey, keyEnd - lastKey));
+			std::cout << "Split Found: " << keys[keys.size() - 1] << "\n";
+		}
+		lastKey = keyEnd + 1;
+	}
+
+	return keys;
+}

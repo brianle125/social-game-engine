@@ -27,17 +27,23 @@ void GameModel::addVariable(LookupKey key, dataVariant value) {
 }
 
 dataVariant GameModel::getVariable(LookupKey key) {
-	//Todo: use Variant Parser to deal with more complex keys like deck.elements.name
-	
+	auto variableAccess = parser.splitVariableReference(key);
+	dataVariant varToReturn;
 
-	auto varToReturn = variables.find(key);
-	if(varToReturn != variables.end()) {
-		return varToReturn->second;
-	}
-	varToReturn = constants.find(key);
-	if(varToReturn != constants.end()) {
-		return varToReturn->second;
-	}
+	//Todo: use Variant Parser to deal with more complex keys like deck.elements.name
+	//These elements are now parsed out, next up is to resolve them
+	for(auto accessor : variableAccess) {
+		auto variableIterator = variables.find(LookupKey{accessor});
+		if(variableIterator != variables.end()) {
+			varToReturn = variableIterator->second;
+		}
+		variableIterator = constants.find(LookupKey{accessor});
+		if(variableIterator != constants.end()) {
+			varToReturn = variableIterator->second;
+		}
+	}	
+
+	return varToReturn;
 
 	//TODO: this may need to be replaced with implicit creation
 	throw std::invalid_argument("Variable " + key + " Not Found");
@@ -48,8 +54,8 @@ std::string GameModel::fillInVariables(std::string_view toParse) {
 	std::vector<std::string> variables;
 
 	for(auto key : keys) {
-		LookupKey lookup{key};
-		dataVariant variable = getVariable(lookup);
+		// LookupKey lookup;
+		dataVariant variable = getVariable(LookupKey{key});
 		variables.push_back(rva::visit(toStringVisitor{}, variable));
 	}
 
