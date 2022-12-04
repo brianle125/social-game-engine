@@ -52,24 +52,24 @@ TEST(ForEachRuleSuite, fiveRoundsBasicRules)
     EXPECT_EQ(true, true);
 }
 
-// TEST(ForEachSuite, nestedForEach)
-// {
-//     GameModel model;
-//     model.addVariable("Rounds", 2);
-//     model.addVariable("upfrom", 1);
+TEST(ForEachSuite, nestedForEach)
+{
+    GameModel model;
+    model.addVariable("Rounds", 2);
+    model.addVariable("upfrom", 1);
     
-//     std::vector<rules::IRule*> rules;
-//     GlobalMessage glob("first");
-//     GlobalMessage glob2("second");
-//     GlobalMessage glob3("third");
-//     rules.emplace_back(std::move(&glob));
-//     rules.emplace_back(std::move(&glob2));
-//     rules.emplace_back(std::move(&glob3));
-//     ForEachRule nested(rules);
-//     rules.emplace_back(std::move(&nested));
-//     ForEachRule foreach(rules);
-//     foreach.executeRule(model);
+    std::vector<rules::IRule*> rules;
+    GlobalMessage glob("first");
+    GlobalMessage glob2("second");
+    GlobalMessage glob3("third");
+    rules.emplace_back(std::move(&glob));
+    rules.emplace_back(std::move(&glob2));
+    rules.emplace_back(std::move(&glob3));
+    ForEachRule nested(rules);
+    rules.emplace_back(std::move(&nested));
+    ForEachRule foreach(rules);
+    foreach.executeRule(model);
 
-//     EXPECT_EQ(true, true);
-// }
+    EXPECT_EQ(true, true);
+}
 
