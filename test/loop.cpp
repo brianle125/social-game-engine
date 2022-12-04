@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include "Loop.h"
+#include "LoopRule.h"
 #include "GlobalMessage.h"
 
 
@@ -10,13 +10,8 @@
  * JSON game construction. 
  */
 
-class MockRule : public rules::IRule
-{
-    MOCK_METHOD(std::optional<std::vector<rules::IRule>, executeRule, (Gamemodel model), (override));
-}
-
-//Printing messages
-TEST(ForEachRuleSuite, oneRoundBasicRules)
+//Check whether globalmessages can print within Loop
+TEST(LoopRuleSuite, basicRuleLoop)
 {
     GameModel model;
     model.addVariable("Rounds", 1);
@@ -25,9 +20,37 @@ TEST(ForEachRuleSuite, oneRoundBasicRules)
     bool con = std::get<bool>(model.getVariable("condition"));
 
     std::vector<rules::IRule*> rules;
-    rules.emplace_back(std::make_unique<GlobalMessage>("first"));
-    rules.emplace_back(std::make_unique<GlobalMessage>("second"));
-    rules.emplace_back(std::make_unique<GlobalMessage>("third"));
+    GlobalMessage glob("first");
+    GlobalMessage glob2("second");
+    GlobalMessage glob3("third");
+    rules.emplace_back(std::move(&glob));
+    rules.emplace_back(std::move(&glob2));
+    rules.emplace_back(std::move(&glob3));
+    LoopRule loop(rules, con);
+    loop.executeRule(model);
+
+    EXPECT_EQ(true, true);
+
+}
+
+
+TEST(LoopRuleSuite, nestedLoopRule)
+{
+    GameModel model;
+    model.addVariable("Rounds", 1);
+    model.addVariable("upfrom", 1);
+    model.addVariable("condition", false);
+    bool con = std::get<bool>(model.getVariable("condition"));
+
+    std::vector<rules::IRule*> rules;
+    GlobalMessage glob("first");
+    GlobalMessage glob2("second");
+    GlobalMessage glob3("third");
+    rules.emplace_back(std::move(&glob));
+    rules.emplace_back(std::move(&glob2));
+    rules.emplace_back(std::move(&glob3));
+    LoopRule nested(rules, con);
+    rules.emplace_back(std::move(&nested));
     LoopRule loop(rules, con);
     loop.executeRule(model);
 
