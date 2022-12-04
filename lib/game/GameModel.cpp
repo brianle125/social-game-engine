@@ -28,7 +28,7 @@ void GameModel::addVariable(LookupKey key, dataVariant value) {
 
 dataVariant GameModel::getVariable(LookupKey key) {
 	//Todo: use Variant Parser to deal with more complex keys like deck.elements.name
-
+	
 
 	auto varToReturn = variables.find(key);
 	if(varToReturn != variables.end()) {
@@ -48,7 +48,7 @@ std::string GameModel::fillInVariables(std::string_view toParse) {
 	std::vector<std::string> variables;
 
 	for(auto key : keys) {
-		std::string lookup{key};
+		LookupKey lookup{key};
 		dataVariant variable = getVariable(lookup);
 		variables.push_back(rva::visit(toStringVisitor{}, variable));
 	}
