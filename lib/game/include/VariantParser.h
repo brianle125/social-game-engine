@@ -12,6 +12,8 @@ public:
 
     std::vector<string_view> getKeysFromString(const string_view toParse);
 
+    std::string replaceKeysInString(const string_view baseString, std::vector<string> variables);
+
 private:
     dataVariant makeVariantVectorFromJson(const json& j);
     dataVariant makeVariantMapFromJson(const json& j);

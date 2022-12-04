@@ -53,26 +53,7 @@ std::string GameModel::fillInVariables(std::string_view toParse) {
 		variables.push_back(rva::visit(toStringVisitor{}, variable));
 	}
 
-	std::ostringstream parsedString;
-	bool writing = true;
-	size_t variableIndex = 0;
-
-	for(char c : toParse) {
-		if(c == '{') {
-			writing = false;
-		}
-		if(writing) {
-			parsedString << c;
-		}
-		if(c == '}') {
-			writing = true;
-			parsedString << variables[variableIndex];
-			variableIndex++;
-		}
-
-	}
-
-	return parsedString.str();
+	return parser.replaceKeysInString(toParse, variables);
 }
 
 void GameModel::setVariable(LookupKey key, dataVariant value) {

@@ -75,3 +75,26 @@ std::vector<string_view> VariantParser::getKeysFromString(const string_view toPa
 
 	return keys;
 }
+
+std::string VariantParser::replaceKeysInString(const string_view baseString, std::vector<string> variables) {
+	std::ostringstream parsedString;
+	bool writing = true;
+	size_t variableIndex = 0;
+
+	for(char c : baseString) {
+		if(c == '{') {
+			writing = false;
+		}
+		if(writing) {
+			parsedString << c;
+		}
+		if(c == '}') {
+			writing = true;
+			parsedString << variables[variableIndex];
+			variableIndex++;
+		}
+
+	}
+
+	return parsedString.str();
+}
