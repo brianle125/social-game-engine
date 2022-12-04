@@ -16,8 +16,9 @@ std::optional<vector<rules::IRule>> ForEachRule::executeRule(GameModel model)
     {
         for(auto & rule: memberList)
         {
-            rule.executeRule(model);
+            rule->executeRule(model);
         }
+        currentRound++;
     }
 
     return nullopt;

@@ -10,10 +10,6 @@
  * JSON game construction. 
  */
 
-class MockRule : public rules::IRule
-{
-    MOCK_METHOD(std::optional<std::vector<rules::IRule>, executeRule, (Gamemodel model), (override));
-}
 
 //Printing messages
 TEST(ForEachRuleSuite, oneRoundBasicRules)
@@ -23,9 +19,12 @@ TEST(ForEachRuleSuite, oneRoundBasicRules)
     model.addVariable("upfrom", 1);
 
     std::vector<rules::IRule*> rules;
-    rules.emplace_back(std::make_unique<GlobalMessage>("first"));
-    rules.emplace_back(std::make_unique<GlobalMessage>("second"));
-    rules.emplace_back(std::make_unique<GlobalMessage>("third"));
+    GlobalMessage glob("first");
+    GlobalMessage glob2("second");
+    GlobalMessage glob3("third");
+    rules.emplace_back(std::move(&glob));
+    rules.emplace_back(std::move(&glob2));
+    rules.emplace_back(std::move(&glob3));
     ForEachRule foreach(rules);
     foreach.executeRule(model);
 
@@ -41,30 +40,36 @@ TEST(ForEachRuleSuite, fiveRoundsBasicRules)
     model.addVariable("upfrom", 1);
     
     std::vector<rules::IRule*> rules;
-    rules.emplace_back(std::make_unique<GlobalMessage>("first"));
-    rules.emplace_back(std::make_unique<GlobalMessage>("second"));
-    rules.emplace_back(std::make_unique<GlobalMessage>("third"));
+    GlobalMessage glob("first");
+    GlobalMessage glob2("second");
+    GlobalMessage glob3("third");
+    rules.emplace_back(std::move(&glob));
+    rules.emplace_back(std::move(&glob2));
+    rules.emplace_back(std::move(&glob3));
     ForEachRule foreach(rules);
     foreach.executeRule(model);
     
     EXPECT_EQ(true, true);
 }
 
-TEST(ForEachSuite, nestedForEach)
-{
-    GameModel model;
-    model.addVariable("Rounds", 2);
-    model.addVariable("upfrom", 1);
+// TEST(ForEachSuite, nestedForEach)
+// {
+//     GameModel model;
+//     model.addVariable("Rounds", 2);
+//     model.addVariable("upfrom", 1);
     
-    std::vector<rules::IRule*> rules;
-    rules.emplace_back(std::make_unique<GlobalMessage>("first"));
-    rules.emplace_back(std::make_unique<GlobalMessage>("second"));
-    rules.emplace_back(std::make_unique<GlobalMessage>("third"));
-    std::vector<rules::IRule*> copy = rules;
-    rules.emplace_back(std::make_unique<ForEachRule>(copy));
-    ForEachRule foreach(rules);
-    foreach.executeRule(model);
+//     std::vector<rules::IRule*> rules;
+//     GlobalMessage glob("first");
+//     GlobalMessage glob2("second");
+//     GlobalMessage glob3("third");
+//     rules.emplace_back(std::move(&glob));
+//     rules.emplace_back(std::move(&glob2));
+//     rules.emplace_back(std::move(&glob3));
+//     ForEachRule nested(rules);
+//     rules.emplace_back(std::move(&nested));
+//     ForEachRule foreach(rules);
+//     foreach.executeRule(model);
 
-    EXPECT_EQ(true, true);
-}
+//     EXPECT_EQ(true, true);
+// }
 
