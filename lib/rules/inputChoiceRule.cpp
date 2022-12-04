@@ -33,6 +33,7 @@ rules::InputRule::InputValidation InputChoiceRule::receiveResponse(std::string m
     if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
         return rules::InputRule::InputValidation::success;
     } else if (std::find(choices.begin(), choices.end(), dataVariant(message)) != choices.end()) {
+        model.addVariable(result, dataVariant(message));
         return rules::InputRule::InputValidation::success;
     } else {
         getInput();

@@ -10,7 +10,8 @@ InputVoteRule::InputVoteRule(Player *target, std::string prompt, std::vector<dat
     : target{target}, prompt{prompt}, choices{choices}, result{result}, server{server}, timeout{timeout} {
 }
 
-void InputVoteRule::executeRule(GameModel model) {
+optional<vector<rules::IRule>> InputVoteRule::executeRule(GameModel model) {
+    this->model = model;
     getInput();
 }
 
@@ -31,6 +32,11 @@ rules::InputRule::InputValidation InputVoteRule::receiveResponse(std::string mes
     if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
         return rules::InputRule::InputValidation::success;
     } else if (std::find(choices.begin(), choices.end(), dataVariant(message)) != choices.end()) {
+        // the invariant currently doesn't support maps so can't store a map of { "choice": int }
+        // currently storing each choice as a 1D key : value which might conflict with
+        // keys that share the same name
+        int voteCount = rva::visit(toIntVisitor{}, model.getVariable(message));
+        model.setVariable(message, dataVariant(voteCount+1));
         return rules::InputRule::InputValidation::success;
     } else {
         getInput();

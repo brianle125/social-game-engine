@@ -22,9 +22,11 @@ public:
     Server *server;
     int timeout;
 
+    GameModel model;
+
     InputTextRule(Player *target, std::string prompt, std::string result, Server* server, int timeout = 0);
 
-    void executeRule(GameModel model) override;
+    optional<vector<rules::IRule>> executeRule(GameModel model) override;
 private:
     void getInput() override;
     rules::InputRule::InputValidation receiveResponse(std::string message, std::chrono::system_clock::time_point start) override;
