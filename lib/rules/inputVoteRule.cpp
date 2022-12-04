@@ -12,22 +12,23 @@ InputVoteRule::InputVoteRule(Player *target, std::string prompt, std::vector<dat
 
 optional<vector<rules::IRule>> InputVoteRule::executeRule(GameModel model) {
     this->model = model;
-    getInput();
-}
 
-void InputVoteRule::getInput() {
     dataVariant choicesVariant(choices);
     std::string choicesStr = rva::visit(toStringVisitor{}, choicesVariant);
     std::string separator(": ");
-    Message message = { target->connection, prompt + separator + choicesStr };
+    std::string msg = prompt + separator + choicesStr;
+
+    getInput(target, msg);
+}
+
+void InputVoteRule::getInput(Player *target, std::string msg) {
+    Message message = { target->connection, msg };
     std::deque<Message> messages = { message };
     server->send(messages);
     server->awaitResponse(target->connection, Response{ this, std::chrono::system_clock::now() });
 }
 
-rules::InputRule::InputValidation InputVoteRule::receiveResponse(std::string message, std::chrono::system_clock::time_point start) {
-    auto end = std::chrono::system_clock::now();
-    std::chrono::duration<double> duration = end-start;
+rules::InputRule::InputValidation InputVoteRule::receiveResponse(std::string message, std::chrono::duration<double> duration) {
     std::cout << message << std::endl;
     if (timeout > 0 && duration.count() > timeout) { // TODO: Could change to use tickrate instead
         return rules::InputRule::InputValidation::success;
@@ -39,7 +40,12 @@ rules::InputRule::InputValidation InputVoteRule::receiveResponse(std::string mes
         model.setVariable(message, dataVariant(voteCount+1));
         return rules::InputRule::InputValidation::success;
     } else {
-        getInput();
+        dataVariant choicesVariant(choices);
+        std::string choicesStr = rva::visit(toStringVisitor{}, choicesVariant);
+        std::string separator(": ");
+        std::string msg = prompt + separator + choicesStr;
+
+        getInput(target, msg);
         return rules::InputRule::InputValidation::failure;
     }
 }

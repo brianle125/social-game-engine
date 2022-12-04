@@ -16,7 +16,7 @@ using networking::Connection;
 
 class InputTextRule final : public rules::InputRule, public rules::IRule {
 public:
-    Player *target; // TODO: maybe change to Player class when implemented
+    Player *target;
     std::string prompt;
     std::string result;
     Server *server;
@@ -28,6 +28,6 @@ public:
 
     optional<vector<rules::IRule>> executeRule(GameModel model) override;
 private:
-    void getInput() override;
-    rules::InputRule::InputValidation receiveResponse(std::string message, std::chrono::system_clock::time_point start) override;
+    void getInput(Player *target, std::string msg);
+    rules::InputRule::InputValidation receiveResponse(std::string message, std::chrono::duration<double> duration) override;
 };
