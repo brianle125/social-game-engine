@@ -28,8 +28,8 @@ TEST(ForEachRuleSuite, oneRoundBasicRules)
     rules.emplace_back(std::make_unique<GlobalMessage>("first"));
     rules.emplace_back(std::make_unique<GlobalMessage>("second"));
     rules.emplace_back(std::make_unique<GlobalMessage>("third"));
-    LoopRule foreach(rules, con);
-    foreach.executeRule(model);
+    LoopRule loop(rules, con);
+    loop.executeRule(model);
 
     EXPECT_EQ(true, true);
 
