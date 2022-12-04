@@ -62,6 +62,7 @@ void GameCreator::GenerateRuleBuilders() {
 			json whileKeyWord = ruleData["loop"]["while"];
 
 			//needs to parse the keywords into a suitable boolean
+			
 			//or have loop refactored
 			bool condition = true;
 
