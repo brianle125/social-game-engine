@@ -139,7 +139,6 @@ dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant
     return v1;
 }
 
-
 // Reverse Visitor
 
 void reverseVisitor::operator()(vector<dataVariant> &v) {
