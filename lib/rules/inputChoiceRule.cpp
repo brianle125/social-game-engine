@@ -42,6 +42,9 @@ rules::InputRule::InputValidation InputChoiceRule::receiveResponse(std::string m
         std::string separator(": ");
         std::string msg = prompt + separator + choicesStr + "\n";
 
+        // set timeout to remaining time
+        // TODO: Change timeout to double to avoid roundoff
+        timeout = timeout - duration.count();
         getInput(target, msg);
         return rules::InputRule::InputValidation::failure;
     }

@@ -1,4 +1,4 @@
-#include "inputChoiceRule.h"
+#include "inputTextRule.h"
 
 #include "gameModelMock.h"
 
@@ -14,32 +14,31 @@ public:
     MOCK_METHOD(void, awaitResponse, (networking::Connection client, networking::Response response), (override));
 };
 
-class MockInputChoiceRule : public InputChoiceRule {
+class MockInputTextRule : public InputTextRule {
 public:
     MOCK_METHOD(void, getInput, (Player *target, std::string msg), (override));
 };
 
-class InputChoiceRuleTest : public ::testing::Test {
+class InputTextRuleTest : public ::testing::Test {
 protected:
-    InputChoiceRule rule;
+    InputTextRule rule;
     MockPlayer player;
     MockServer server;
     MockGameModel model;
 
     void SetUp() override {
-        std::vector<dataVariant> choices = [];
-        rule = InputChoiceRule(&player, "prompt", choices, "result", &server, 0);
+        rule = InputTextRule(&player, "prompt", "result", &server, 0);
     }
 };
 
-TEST(InputChoiceRuleTest, executeShouldCallGetInputWithInputs) {
-    MockInputChoiceRule mockRule;
-    EXPECT_CALL(mockRule, getInput(&player, "prompt: \n")).Times(1);
+TEST(InputTextRuleTest, executeShouldCallGetInputWithInputs) {
+    MockInputTextRule mockRule;
+    EXPECT_CALL(mockRule, getInput(&player, "prompt: ")).Times(1);
 
     mockRule.execute(model);
 }
 
-TEST(InputChoiceRuleTest, getInputShouldCallSendAndAwait) {
+TEST(InputTextRuleTest, getInputShouldCallSendAndAwait) {
     networking::Message message = { target->connection, "prompt" };
     std::deque<Message> messages = { message };
 
@@ -54,32 +53,9 @@ TEST(InputChoiceRuleTest, getInputShouldCallSendAndAwait) {
     rule.getInput(&player, "prompt");
 }
 
-TEST(InputChoiceRuleTest, receiveInputShouldReturnSuccessOnTimeout) {
-    std::chrono::duration<double> duration = std::chrono::seconds(11);
-    rule.timeout = 10;
-
-    auto status = rule.receiveResponse("PEPW", duration);
-    
-    EXPECT_EQ(status, rules::InputRule::InputValidation::success);
-}
-
 TEST(InputChoiceRuleTest, receiveInputShouldReturnSuccess) {
-    std::vector<dataVariant> choices = [dataVariant("PEPW")];
-
     auto status = rule.receiveResponse("PEPW", duration);
     
     EXPECT_EQ(status, rules::InputRule::InputValidation::success);
-}
-
-TEST(InputChoiceRuleTest, receiveInputShouldReturnFailureAndGetInput) {
-    std::vector<dataVariant> choices = [dataVariant("NOTPEPW")];
-    MockInputChoiceRule mockRule;
-    mockRule.choices = choices;
-
-    EXPECT_CALL(mockRule, getInput(&player, "prompt: NOTPEPW\n")).Times(1);
-
-    auto status = mockRule.receiveResponse("PEPW", duration);
-    
-    EXPECT_EQ(status, rules::InputRule::InputValidation::failure);
 }
 }
