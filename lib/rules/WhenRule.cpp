@@ -4,12 +4,11 @@
 
 WhenRule::WhenRule(std::string c) : failCondition(c) {}
 
-optional<vector<rules::IRule>> WhenRule::executeRule(GameModel model)
+std::optional<vector<rules::IRule>> WhenRule::executeRule(GameModel model)
 {
     std::vector<std::string> tokens = getTokens(failCondition);
     std::vector<dataVariant> variables;
 
-    
     for(auto & token : tokens)
     {
         dataVariant var = model.getVariable(token);

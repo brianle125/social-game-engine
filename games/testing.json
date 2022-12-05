@@ -16,18 +16,7 @@
   "rules": [
     {
         "rule": "global-message",
-<<<<<<< HEAD
-        "value": "testing from file!"
-    },
-    { "rule": "when",
-      "cases": [
-        { "condition": "some condition",
-          "rules": []
-        }
-      ]
-=======
         "value": "{player-name} has won {wins} times!"
->>>>>>> bfe84de6a2f16841238efcc17408892ea0371d46
     }
   ]
 }
