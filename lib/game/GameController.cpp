@@ -34,24 +34,71 @@ void GameController::initializeStack() {
 
 void GameController::executeNextRule() {
 	try {
-		auto rule = ruleStack.top();
-		ruleStack.pop();
-		auto newRules = rule->executeRule(model);
-		//TODO: parallel rules need some kind of immediate processing most likely, 
-		//or else rules need a way to mark themselves parallel and thus non-blocking
-
-		//can probably use value_or somehow to skip this check but Im not sure how right now
-		if(newRules.has_value()) {
-			for(auto& newRule : *newRules) {
-				cout << "new Rule\n";
-				ruleStack.push(&newRule);
+		//Parallel Processing
+		if(parallelStacksActive()){
+			for(auto& stack : parallelStacks) {
+				processRuleFromStack(stack);
 			}
+			if(!parallelStacksActive()) {
+				parallelStacks.clear();
+			}
+			return;
 		}
+
+		processRuleFromStack(ruleStack);	
+
 	}
 	catch (invalid_argument& e) {
 		cout << "exception: " << e.what() << "\n";
 		//do more error handling here
 	}
+}
+
+bool GameController::parallelStacksActive() {
+	for(auto& stack : parallelStacks) {
+		if(stack.size() > 0) return true;
+	}
+
+	return false;
+}
+
+void GameController::processRuleFromStack(std::stack<rules::IRule*>& stack) {
+	if(stack.empty()) return;
+
+	//single processing
+	auto rule = stack.top();
+	auto newRules = rule->executeRule(model);
+
+	RuleStatus status = rule->getStatus();
+
+	if(status == FINISHED) {
+		stack.pop();
+	}
+	//TODO: may need extra logic to deal with unfinished rules or rules awaiting input?
+		
+	//can probably use value_or somehow to skip this check but Im not sure how right now
+	if(!newRules.has_value()) {
+		return;
+	}
+
+	auto addRules = [& newRules](std::stack<rules::IRule*>& stack) {
+		for(auto& newRule : *newRules) {
+			cout << "new Rule\n";
+			stack.push(&newRule);
+		}
+	};
+
+	if(rule->isParallel()) {
+		int stackCount = rule->getParallelCount();
+		for(int i = 0; i < stackCount; i++) {
+			std::stack<rules::IRule*> newStack;
+			addRules(newStack);
+			parallelStacks.push_back(newStack);
+		}
+		return;
+	}
+
+	addRules(stack);
 }
 
 bool GameController::isGameOver() noexcept {
