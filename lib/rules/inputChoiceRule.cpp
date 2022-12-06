@@ -20,6 +20,7 @@ optional<vector<rules::IRule>> InputChoiceRule::executeRule(GameModel model) { /
     std::string msg = prompt + separator + choicesStr + "\n";
 
     getInput(target, msg);
+    return vector<rules::IRule>{};
 }
 
 void InputChoiceRule::getInput(Player *target, std::string msg) {
