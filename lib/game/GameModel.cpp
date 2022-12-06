@@ -29,8 +29,6 @@ dataVariant GameModel::getVariable(LookupKey key) {
 	auto accessors = parser.splitVariableReference(key);
 	dataVariant currentVariable;
 
-	//Todo: use Variant Parser to deal with more complex keys like coin.elements.name
-	//These elements are now parsed out, next up is to resolve them
 	std::vector<string_view>::iterator accessorIndex = accessors.begin();
 
 	while(accessorIndex != accessors.end()) {
@@ -76,6 +74,10 @@ dataVariant GameModel::lookupVariable(LookupKey key) {
 		varToReturn = variableIterator->second;
 	}
 	variableIterator = constants.find(key);
+	if(variableIterator != constants.end()) {
+		varToReturn = variableIterator->second;
+	}
+	variableIterator = setup.find(key);
 	if(variableIterator != constants.end()) {
 		varToReturn = variableIterator->second;
 	}
