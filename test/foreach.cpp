@@ -2,6 +2,7 @@
 #include "gmock/gmock.h"
 #include "ForEachRule.h"
 #include "GlobalMessage.h"
+#include "gameModelMock.h"
 
 
 /** 
@@ -9,12 +10,10 @@
  * through Gamemodel directly rather than through
  * JSON game construction. 
  */
-
-
 //Printing messages
 TEST(ForEachRuleSuite, oneRoundBasicRules)
-{
-    GameModel model;
+{   
+    MockGameModel model;
     model.addVariable("Rounds", 1);
     model.addVariable("upfrom", 1);
 
@@ -26,16 +25,18 @@ TEST(ForEachRuleSuite, oneRoundBasicRules)
     rules.emplace_back(std::move(&glob2));
     rules.emplace_back(std::move(&glob3));
     ForEachRule foreach(rules);
+    EXPECT_CALL(model, getVariable("Rounds"));
+
     foreach.executeRule(model);
 
-    EXPECT_EQ(true, true);
+    EXPECT_EQ(RuleStatus::FINISHED, foreach.getStatus());
 
 }
 
 
 TEST(ForEachRuleSuite, fiveRoundsBasicRules)
 {
-    GameModel model;
+    MockGameModel model;
     model.addVariable("Rounds", 5);
     model.addVariable("upfrom", 1);
     
@@ -47,14 +48,16 @@ TEST(ForEachRuleSuite, fiveRoundsBasicRules)
     rules.emplace_back(std::move(&glob2));
     rules.emplace_back(std::move(&glob3));
     ForEachRule foreach(rules);
+    EXPECT_CALL(model, getVariable("Rounds"));
+
     foreach.executeRule(model);
     
-    EXPECT_EQ(true, true);
+    EXPECT_EQ(RuleStatus::FINISHED, foreach.getStatus());
 }
 
 TEST(ForEachSuite, nestedForEach)
 {
-    GameModel model;
+    MockGameModel model;
     model.addVariable("Rounds", 2);
     model.addVariable("upfrom", 1);
     
@@ -68,8 +71,10 @@ TEST(ForEachSuite, nestedForEach)
     ForEachRule nested(rules);
     rules.emplace_back(std::move(&nested));
     ForEachRule foreach(rules);
+    EXPECT_CALL(model, getVariable("Rounds"));
+
     foreach.executeRule(model);
 
-    EXPECT_EQ(true, true);
+    EXPECT_EQ(RuleStatus::FINISHED, foreach.getStatus());
 }
 

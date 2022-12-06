@@ -48,9 +48,10 @@ void GameCreator::GenerateRuleBuilders() {
 	ruleBuilders.emplace("when", 
 		[](json ruleData) -> std::unique_ptr<rules::IRule> {
 			auto rulesToExecute = ruleData["when"]["rules"];
+			std::vector<rules::IRule*> ruleList;
 
 			//todo: make a list to feed whenrule?
-			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["condition"]));
+			auto newRule = std::make_unique<WhenRule>(WhenRule(ruleData["condition"], ruleList));
 			return std::move(newRule);
 	});	
 

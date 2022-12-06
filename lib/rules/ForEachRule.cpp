@@ -20,6 +20,7 @@ std::optional<vector<rules::IRule>> ForEachRule::executeRule(GameModel model)
         }
         currentRound++;
     }
+    status = FINISHED;
 
     return nullopt;
 }

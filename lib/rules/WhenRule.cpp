@@ -2,26 +2,17 @@
 #include <vector>
 #include <iostream>
 
-WhenRule::WhenRule(std::string c) : failCondition(c) {}
+WhenRule::WhenRule(std::vector<bool> cases, std::vector<rules::IRule*> list) : cases(cases), ruleList(list) {}
 
 std::optional<vector<rules::IRule>> WhenRule::executeRule(GameModel model)
 {
     std::vector<std::string> tokens = getTokens(failCondition);
     std::vector<dataVariant> variables;
 
-    for(auto & token : tokens)
+    for(auto c : cases)
     {
-        dataVariant var = model.getVariable(token);
-        variables.push_back(var);
+        
     }
-
-    //initialize boolean from variables; subject to rework
-    bool condition;
-    if(condition)
-    {
-        //TODO: execute rule(s) here
-    }
-
      return nullopt;
 }
 
