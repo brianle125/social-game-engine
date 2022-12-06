@@ -24,13 +24,15 @@ namespace rules {
 		
 		RuleStatus getStatus() { return status; }
 		bool isParallel() { return parallel; } 
+		int getParallelCount() { return parallelStackCount; }
 
 	private:
 
 		string ruleName;
-		bool parallel = false;
 
 	protected:
 		RuleStatus status = FINISHED;
+		bool parallel = false;
+		int parallelStackCount = 1;
 	};
 }

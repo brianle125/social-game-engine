@@ -34,28 +34,19 @@ void GameController::initializeStack() {
 
 void GameController::executeNextRule() {
 	try {
-		auto rule = ruleStack.top();
-		auto newRules = rule->executeRule(model);
-
-		RuleStatus status = rule->getStatus();
-
-		if(status == FINISHED) {
-			ruleStack.pop();
-		}
-		//TODO: may need extra logic to deal with unfinished rules or rules awaiting input?
-		 
-		//can probably use value_or somehow to skip this check but Im not sure how right now
-		if(newRules.has_value()) {
-			if(rule->isParallel()) {
-				//split into stacks, add parallel rules, need to figure out how many stacks to split into
-			} else {
-				//TODO: simplify this / break into a function
-				for(auto& newRule : *newRules) {
-					cout << "new Rule\n";
-					ruleStack.push(&newRule);
-				}
+		//Parallel Processing
+		if(parallelStacksActive()){
+			for(auto& stack : parallelStacks) {
+				processRuleFromStack(stack);
 			}
+			if(!parallelStacksActive()) {
+				parallelStacks.clear();
+			}
+			return;
 		}
+
+		processRuleFromStack(ruleStack);	
+
 	}
 	catch (invalid_argument& e) {
 		cout << "exception: " << e.what() << "\n";
@@ -63,17 +54,54 @@ void GameController::executeNextRule() {
 	}
 }
 
+bool GameController::parallelStacksActive() {
+	for(auto& stack : parallelStacks) {
+		if(stack.size() > 0) return true;
+	}
+
+	return false;
+}
+
+void GameController::processRuleFromStack(std::stack<rules::IRule*>& stack) {
+	if(stack.empty()) return;
+
+	//single processing
+	auto rule = stack.top();
+	auto newRules = rule->executeRule(model);
+
+	RuleStatus status = rule->getStatus();
+
+	if(status == FINISHED) {
+		stack.pop();
+	}
+	//TODO: may need extra logic to deal with unfinished rules or rules awaiting input?
+		
+	//can probably use value_or somehow to skip this check but Im not sure how right now
+	if(!newRules.has_value()) {
+		return;
+	}
+
+	auto addRules = [& newRules](std::stack<rules::IRule*>& stack) {
+		for(auto& newRule : *newRules) {
+			cout << "new Rule\n";
+			stack.push(&newRule);
+		}
+	};
+
+	if(rule->isParallel()) {
+		int stackCount = rule->getParallelCount();
+		for(int i = 0; i < stackCount; i++) {
+			std::stack<rules::IRule*> newStack;
+			addRules(newStack);
+			parallelStacks.push_back(newStack);
+		}
+		return;
+	}
+
+	addRules(stack);
+}
+
 bool GameController::isGameOver() noexcept {
 	return ruleStack.empty();
 	//return nextRule == rules.end();
 }
-
-// void GameController::addToStack(std::vector<rules::IRule> newRules) {
-// 	for(auto& newRule : *newRules) {
-// 		cout << "new Rule\n";
-// 		ruleStack.push(&newRule);
-// 	}
-// }
-
-
-//void GameController::parallelStack(std::vector<rules::IRule> newRules) {}
