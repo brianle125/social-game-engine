@@ -13,7 +13,7 @@ public:
 
 	//create game from JSON
 	GameController createGameController();
-	std::vector<std::unique_ptr<rules::IRule>> createRules();
+	void createRules(GameController& controller);
 
 private:
 
