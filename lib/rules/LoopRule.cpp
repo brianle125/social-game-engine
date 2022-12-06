@@ -3,7 +3,7 @@
 
 using namespace std;
 
-LoopRule::LoopRule(vector<dataVariant>& memberList, bool con) : memberList(list), failCondition(con) {}
+LoopRule::LoopRule(vector<rules::IRule*> & list, bool con) : memberList(list), failCondition(con) {}
 
 std::optional<vector<rules::IRule>> LoopRule::executeRule(GameModel model) 
 {
@@ -11,7 +11,7 @@ std::optional<vector<rules::IRule>> LoopRule::executeRule(GameModel model)
     while(!failCondition && idx < memberList.size())
     {
         //execute rules in the ruleList 
-        memberList[idx].executeRule();
+        memberList[idx]->executeRule(model);
         idx++;
     }
     return nullopt;

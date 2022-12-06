@@ -1,23 +1,24 @@
-#include "include/ForEachRule.h"
+#include <ForEachRule.h>
 #include <vector>
 #include <iostream>
 
 
-ForEachRule(std::vector<dataVariant> *elements, std::vector<rules::IRule> &list);
-ForEachRule::ForEachRule(std::string list) : listName(list) {}
+ForEachRule::ForEachRule(std::vector<rules::IRule*> list) : memberList(list) {}
 
-std::optional<vector<rules::IRule>> ForEachRule::executeRule(GameModel model)
+std::optional<vector<rules::IRule>> ForEachRule::executeRule(GameModel model) 
 {
+    //TENTATIVE, OPEN TO REWORK
     //Execute each rule in the list for every round from 1 to n
-    int totalRounds = model.getVariable("Rounds:");
-    int currentRound = 1;
+    dataVariant totalRounds = model.getVariable("Rounds");
+    int currentRound = std::get<int>(model.getVariable("upfrom"));
 
-    while(currentRound <= totalRounds)
+    while(currentRound < std::get<int>(totalRounds))
     {
         for(auto & rule: memberList)
         {
-            rule.executeRule(model);
+            rule->executeRule(model);
         }
+        currentRound++;
     }
 
     return nullopt;
