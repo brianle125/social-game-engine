@@ -4,6 +4,8 @@ enable_testing()
 add_executable(runTests
   foreach.cpp
   loop.cpp
+  inputChoiceRuleTest.cpp
+  inputTextRuleTest.cpp
 )
 
 target_link_libraries(runTests
