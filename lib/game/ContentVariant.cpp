@@ -144,3 +144,24 @@ dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant
 void reverseVisitor::operator()(vector<dataVariant> &v) {
     std::reverse(v.begin(), v.end());
 }
+
+dataVariant searchVisitor::operator()(std::vector<dataVariant> v, string s) const {
+    vector<dataVariant> newList;
+    dataVariant key(s);
+    std::cout << "Testing\n"; 
+    for(dataVariant var : v) {
+        dataVariant temp = rva::visit(searchVisitor{}, var, key);
+        newList.push_back(temp);
+    }
+
+    return dataVariant(newList);
+}
+
+dataVariant searchVisitor::operator()(map<std::string, dataVariant> m, string s) const {
+    
+    auto variable = m.find(s);
+    if(variable != m.end()) {
+        return variable->second;
+    }
+    throw std::invalid_argument("Variable Not Found");
+}

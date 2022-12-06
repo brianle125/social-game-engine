@@ -7,13 +7,14 @@
 #include "ContentVariant.h"
 #include "VariantParser.h"
 
+using LookupKey = std::string;
 
 class GameModel {
 public:
     GameModel();
     void addConstant(std::string name, dataVariant value);
     void addVariable(std::string name, dataVariant value);
-    dataVariant getVariable(std::string key);
+    dataVariant getVariable(LookupKey key);
     std::string fillInVariables(std::string_view toParse);
     void setVariable(std::string key, dataVariant value);
     void addSetupVariablesFromJson(json setup);
@@ -26,6 +27,7 @@ private:
     //list of Players
     //dictionary of setup
 
+    dataVariant lookupVariable(LookupKey key);
     std::unordered_map<std::string, dataVariant> setup;
     std::unordered_map<std::string, dataVariant> constants;
     std::unordered_map<std::string, dataVariant> variables;

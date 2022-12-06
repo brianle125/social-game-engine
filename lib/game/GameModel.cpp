@@ -7,8 +7,7 @@
 #include "VariantParser.h"
 #include "IRule.h"
 
-using namespace std;
-using LookupKey = string;
+using LookupKey = std::string;
 
 GameModel::GameModel() {
 	parser = VariantParser();
@@ -28,25 +27,44 @@ void GameModel::addVariable(LookupKey key, dataVariant value) {
 
 dataVariant GameModel::getVariable(LookupKey key) {
 	auto variableAccess = parser.splitVariableReference(key);
-	dataVariant varToReturn;
+	dataVariant currentVariable;
 
-	//Todo: use Variant Parser to deal with more complex keys like deck.elements.name
+	//Todo: use Variant Parser to deal with more complex keys like coin.elements.name
 	//These elements are now parsed out, next up is to resolve them
-	for(auto accessor : variableAccess) {
-		auto variableIterator = variables.find(LookupKey{accessor});
-		if(variableIterator != variables.end()) {
-			varToReturn = variableIterator->second;
+	int accessorIndex = 0;
+
+	while(accessorIndex < variableAccess.size()) {
+		string_view currentAccessor = variableAccess[accessorIndex];
+		if(currentAccessor == "elements") {
+			dataVariant key(std::string{variableAccess[accessorIndex + 1]});
+			std::cout << "Searching through " << rva::visit(toStringVisitor{}, currentVariable) << " to create list of " << rva::visit(toStringVisitor{}, key) << "\n";
+			currentVariable = rva::visit(searchVisitor{}, currentVariable, key);
+			accessorIndex += 2; //burns this and the following accessor
 		}
-		variableIterator = constants.find(LookupKey{accessor});
-		if(variableIterator != constants.end()) {
-			varToReturn = variableIterator->second;
+		else { //Default case
+			std::cout << "Searching for: " << currentAccessor << "\n";
+			currentVariable = lookupVariable(LookupKey{currentAccessor});
+			accessorIndex += 1;
 		}
 	}	
 
-	return varToReturn;
+	return currentVariable;
 
 	//TODO: this may need to be replaced with implicit creation
 	throw std::invalid_argument("Variable " + key + " Not Found");
+}
+
+dataVariant GameModel::lookupVariable(LookupKey key) {
+	dataVariant varToReturn;
+	auto variableIterator = variables.find(key);
+	if(variableIterator != variables.end()) {
+		varToReturn = variableIterator->second;
+	}
+	variableIterator = constants.find(key);
+	if(variableIterator != constants.end()) {
+		varToReturn = variableIterator->second;
+	}
+	return varToReturn;
 }
 
 std::string GameModel::fillInVariables(std::string_view toParse) {
