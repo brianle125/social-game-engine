@@ -67,11 +67,6 @@ std::vector<string_view> VariantParser::getKeysFromString(const string_view toPa
 			std::cout << "Key Found: " << keys[keys.size() - 1] << "\n";
 		}
 	}
-	// for(char c : toParse) {
-	// 	if(c == '{') {
-	// 		std::distance(toParse.begin(), );
-	// 	}
-	// }
 
 	return keys;
 }
@@ -93,7 +88,6 @@ std::string VariantParser::replaceKeysInString(const string_view baseString, std
 			parsedString << variables[variableIndex];
 			variableIndex++;
 		}
-
 	}
 
 	return parsedString.str();
