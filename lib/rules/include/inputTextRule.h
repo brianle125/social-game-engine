@@ -14,7 +14,7 @@ using nlohmann::json;
 using networking::Server;
 using networking::Connection;
 
-class InputTextRule final : public rules::InputRule, public rules::IRule {
+class InputTextRule : public rules::InputRule, public rules::IRule {
 public:
     Player *target;
     std::string prompt;
@@ -25,9 +25,10 @@ public:
     GameModel model;
 
     InputTextRule(Player *target, std::string prompt, std::string result, Server* server, int timeout = 0);
+    InputTextRule() {}
 
     optional<vector<rules::IRule>> executeRule(GameModel model) override;
-private:
-    void getInput(Player *target, std::string msg);
+
+    virtual void getInput(Player *target, std::string msg);
     rules::InputRule::InputValidation receiveResponse(std::string message, std::chrono::duration<double> duration) override;
 };

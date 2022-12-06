@@ -16,6 +16,7 @@ optional<vector<rules::IRule>> InputTextRule::executeRule(GameModel model) {
     std::string msg = prompt + separator;
 
     getInput(target, msg);
+    return vector<rules::IRule>{};
 }
 
 void InputTextRule::getInput(Player *target, std::string msg) {
