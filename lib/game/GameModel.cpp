@@ -26,32 +26,47 @@ void GameModel::addVariable(LookupKey key, dataVariant value) {
 }
 
 dataVariant GameModel::getVariable(LookupKey key) {
-	auto variableAccess = parser.splitVariableReference(key);
+	auto accessors = parser.splitVariableReference(key);
 	dataVariant currentVariable;
 
 	//Todo: use Variant Parser to deal with more complex keys like coin.elements.name
 	//These elements are now parsed out, next up is to resolve them
-	int accessorIndex = 0;
+	std::vector<string_view>::iterator accessorIndex = accessors.begin();
 
-	while(accessorIndex < variableAccess.size()) {
-		string_view currentAccessor = variableAccess[accessorIndex];
-		if(currentAccessor == "elements") {
-			dataVariant key(std::string{variableAccess[accessorIndex + 1]});
-			std::cout << "Searching through " << rva::visit(toStringVisitor{}, currentVariable) << " to create list of " << rva::visit(toStringVisitor{}, key) << "\n";
-			currentVariable = rva::visit(searchVisitor{}, currentVariable, key);
-			accessorIndex += 2; //burns this and the following accessor
-		}
-		else { //Default case
-			std::cout << "Searching for: " << currentAccessor << "\n";
-			currentVariable = lookupVariable(LookupKey{currentAccessor});
-			accessorIndex += 1;
-		}
+	while(accessorIndex != accessors.end()) {
+		currentVariable = resolveKey(currentVariable, accessors, accessorIndex);
 	}	
 
 	return currentVariable;
 
 	//TODO: this may need to be replaced with implicit creation
 	throw std::invalid_argument("Variable " + key + " Not Found");
+}
+
+dataVariant GameModel::resolveKey(dataVariant currentVariable, std::vector<string_view> accessors, std::vector<string_view>::iterator& index) {
+	string_view currentAccessor = *index;
+
+	if(currentAccessor == "elements") {
+		if(index + 1 == accessors.end()) 
+			throw std::invalid_argument("elements is not valid as the final accessor in a chain");
+		dataVariant key(LookupKey{*(index + 1)});
+		index += 2; //burns this and the following accessor
+		return rva::visit(searchVisitor{}, currentVariable, key);;
+	}
+
+	if (currentAccessor == "size") { 
+		index += 1;
+		return rva::visit(sizeVisitor{}, currentVariable);
+	}
+
+	if (currentAccessor == "contains") {
+		
+	}
+
+	//Default case, where no special commands were invoked, just finds the variable in the lists.
+	currentVariable = lookupVariable(LookupKey{currentAccessor});
+	index += 1;
+	return currentVariable;
 }
 
 dataVariant GameModel::lookupVariable(LookupKey key) {

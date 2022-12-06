@@ -39,7 +39,7 @@
     },
     {
       "rule": "global-message",
-      "value": "And this is the Third rule!"
+      "value": "And this is the Third rule! {coin.size}"
     }
   ]
 }

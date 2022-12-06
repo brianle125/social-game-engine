@@ -101,12 +101,30 @@ struct reverseVisitor {
 	void operator()(T const) const {}
 };
 
+struct sizeVisitor {
+	dataVariant operator()(std::vector<dataVariant> &v) const;
+	dataVariant operator()(std::map<std::string, dataVariant> &m) const;
+	template <typename T>
+	dataVariant operator()(T const) const {
+		throw std::invalid_argument{"Size is only valid for Lists and Maps"};
+	}
+};
+
 struct searchVisitor {
 	dataVariant operator()(std::vector<dataVariant> v, string s) const;
 	dataVariant operator()(map<std::string, dataVariant> m, string s) const;
 	template <typename T, typename U>
 	dataVariant operator()(T, U) const {
 		throw std::invalid_argument{"Search is only valid for Lists and Maps"};
+	}
+};
+
+struct containsVisitor {
+	dataVariant operator()(std::vector<dataVariant> v, string s) const;
+	dataVariant operator()(map<std::string, dataVariant> m, string s) const;
+	template <typename T, typename U>
+	dataVariant operator()(T, U) const {
+		throw std::invalid_argument{"Contains is only valid for Lists and Maps"};
 	}
 };
 

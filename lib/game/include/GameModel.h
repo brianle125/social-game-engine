@@ -27,6 +27,7 @@ private:
     //list of Players
     //dictionary of setup
 
+    dataVariant resolveKey(dataVariant currentVariable, std::vector<string_view> accessors, std::vector<string_view>::iterator& index);
     dataVariant lookupVariable(LookupKey key);
     std::unordered_map<std::string, dataVariant> setup;
     std::unordered_map<std::string, dataVariant> constants;
