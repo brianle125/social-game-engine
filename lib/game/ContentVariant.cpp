@@ -141,10 +141,6 @@ dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant
     v1.insert(v1.end(), v2.begin(), v2.end());
     return v1;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> importing googletest, with gamelib
 
 // Reverse Visitor
 
