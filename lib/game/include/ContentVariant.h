@@ -49,7 +49,7 @@ struct toFloatVisitor{
 	float operator()(float f) const;
 
 	template <typename T>
-    int operator()(T) const{
+    float operator()(T) const{
     throw std::invalid_argument{"invalid"};
 	}
 };
