@@ -16,5 +16,6 @@ std::optional<std::vector<rules::IRule>> Sort::executeRule(GameModel model) {
     } else {
         //rva::visit(sortVisitor(), v, sortingKey);
     }
+    model.setVariable(key, v);
     return nullopt;
 }
