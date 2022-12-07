@@ -57,17 +57,14 @@ dataVariant GameModel::resolveKey(dataVariant currentVariable, std::vector<strin
 		return rva::visit(sizeVisitor{}, currentVariable);
 	}
 
-	//this is deceptively simple
 	if (currentAccessor == "contains") {
 		if(index + 1 == accessors.end()) 
 			throw std::invalid_argument("contains is not valid as the final accessor in a chain");
 		string_view nextAccessor = *(index + 1);
-		std::cout << nextAccessor << "\n";
 
 		dataVariant key(LookupKey{*(index + 1)});
 		if(nextAccessor.starts_with("(")) {
 			key = getVariable(LookupKey{nextAccessor.substr(1, nextAccessor.size() - 2)});
-			std::cout << rva::visit(toStringVisitor{}, key) << "\n";
 		}
 		index += 2; //uses up this and the following accessor
 		return rva::visit(containsVisitor{}, currentVariable, key);

@@ -32,15 +32,19 @@
   "rules": [
     {
       "rule": "global-message",
-      "value": "This is the First rule! is this working? {no}"
+      "value": "This is the First rule! is variable resolution working? {no}"
     },
     {
       "rule": "global-message",
-      "value": "This is the Second rule! {coin.elements.name.contains(winner)}"
+      "value": "This is the Second rule! Do the names of the sides of a coin contain winner {winner}? {coin.elements.name.contains(winner)}"
     },
     {
       "rule": "global-message",
-      "value": "And this is the Third rule! {coin.size}"
+      "value": "And this is the Third rule! The size of the coin list is {coin.size}"
+    },
+    {
+      "rule": "global-message",
+      "value": "And this is the Fourth rule!  The sides of the coin are {coin.elements.name}"
     }
   ]
 }
