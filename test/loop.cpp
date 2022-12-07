@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include "LoopRule.h"
+#include "ForEachRule.h"
 #include "GlobalMessage.h"
 
 
@@ -29,12 +30,12 @@ TEST(LoopRuleSuite, basicRuleLoop)
     LoopRule loop(rules, con);
     loop.executeRule(model);
 
-    EXPECT_EQ(true, true);
+    EXPECT_EQ(RuleStatus::FINISHED, loop.getStatus());
 
 }
 
 
-TEST(LoopRuleSuite, nestedLoopRule)
+TEST(LoopRuleSuite, executeNestedLoopRules)
 {
     GameModel model;
     model.addVariable("Rounds", 1);
@@ -54,6 +55,33 @@ TEST(LoopRuleSuite, nestedLoopRule)
     LoopRule loop(rules, con);
     loop.executeRule(model);
 
-    EXPECT_EQ(true, true);
+    EXPECT_EQ(RuleStatus::FINISHED, loop.getStatus());
+
+}
+
+TEST(LoopRuleSuite, executeNestedLoopAndForEachRules)
+{
+    GameModel model;
+    model.addVariable("Rounds", 1);
+    model.addVariable("upfrom", 1);
+    model.addVariable("condition", false);
+    bool con = std::get<bool>(model.getVariable("condition"));
+
+    std::vector<rules::IRule*> rules;
+    GlobalMessage glob("first");
+    GlobalMessage glob2("second");
+    GlobalMessage glob3("third");
+    rules.emplace_back(std::move(&glob));
+    rules.emplace_back(std::move(&glob2));
+    rules.emplace_back(std::move(&glob3));
+    LoopRule nested(rules, con);
+    rules.emplace_back(std::move(&nested));
+    ForEachRule foreach(rules);
+    rules.emplace_back(std::move(&foreach));
+
+    LoopRule loop(rules, con);
+    loop.executeRule(model);
+
+    EXPECT_EQ(RuleStatus::FINISHED, loop.getStatus());
 
 }

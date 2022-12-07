@@ -14,5 +14,6 @@ std::optional<vector<rules::IRule>> LoopRule::executeRule(GameModel model)
         memberList[idx]->executeRule(model);
         idx++;
     }
+    status = FINISHED;
     return nullopt;
 }
