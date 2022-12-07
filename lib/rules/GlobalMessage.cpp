@@ -10,6 +10,7 @@ optional<vector<rules::IRule>> GlobalMessage::executeRule(GameModel model) {
     //string_view view(message);
 
     std::cout << message << "\n";
+    status = FINISHED;
     return nullopt;
 }
 

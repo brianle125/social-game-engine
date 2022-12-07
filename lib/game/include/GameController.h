@@ -30,8 +30,10 @@ private:
     GameModel model;
     //dictionary/map of setup
     std::stack<rules::IRule*> ruleStack;
+    std::vector<std::stack<rules::IRule*>> parallelStacks;
     
     std::vector<std::unique_ptr<rules::IRule>> rules;
-    // std::vector<std::unique_ptr<rules::IRule>>::iterator nextRule;
 
+    void processRuleFromStack(std::stack<rules::IRule*>& stack);
+    bool parallelStacksActive();
 };
