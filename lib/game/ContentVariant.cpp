@@ -144,3 +144,24 @@ dataVariant appendVisitor::operator()(vector<dataVariant> v1, vector<dataVariant
 void reverseVisitor::operator()(vector<dataVariant> &v) {
     std::reverse(v.begin(), v.end());
 }
+
+//Sort visitor
+
+void sortVisitor::operator()(std::vector<map<std::string, dataVariant>> &v, std::string key) {
+    //std::sort(v.begin(), v.end(), v[key]);
+}
+
+void sortVisitor::operator()(std::vector<dataVariant> &v) {
+    //std::sort(v.begin(), v.end());
+}
+
+
+//deal visitor
+
+std::vector<dataVariant> dealVisitor::operator()(std::vector<dataVariant> &v, int count) {
+    std::vector<dataVariant> x;
+    for (int i = 0; i < count; i++) {
+        x.push_back(v[i]);
+    }
+    return x;
+}
