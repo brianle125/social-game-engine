@@ -48,7 +48,7 @@ dataVariant GameModel::resolveKey(dataVariant currentVariable, std::vector<strin
 		if(index + 1 == accessors.end()) 
 			throw std::invalid_argument("elements is not valid as the final accessor in a chain");
 		dataVariant key(LookupKey{*(index + 1)});
-		index += 2; //burns this and the following accessor
+		index += 2; //uses up this and the following accessor
 		return rva::visit(searchVisitor{}, currentVariable, key);
 	}
 
@@ -67,7 +67,7 @@ dataVariant GameModel::resolveKey(dataVariant currentVariable, std::vector<strin
 		if(index + 1 == accessors.end()) 
 			throw std::invalid_argument("contains is not valid as the final accessor in a chain");
 		dataVariant key(LookupKey{*(index + 1)});
-		index += 2; //burns this and the following accessor
+		index += 2; //uses up this and the following accessor
 		return rva::visit(containsVisitor{}, currentVariable, key);
 	}
 

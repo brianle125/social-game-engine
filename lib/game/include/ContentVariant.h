@@ -120,9 +120,8 @@ struct searchVisitor {
 };
 
 struct containsVisitor {
-	// template<typename T>
-	dataVariant operator()(std::vector<dataVariant> v, string object) const;
-	dataVariant operator()(map<std::string, dataVariant> m, string s) const;
+	dataVariant operator()(std::vector<dataVariant> v, std::string object) const;
+	dataVariant operator()(map<std::string, dataVariant> m, std::string s) const;
 	template <typename T, typename U>
 	dataVariant operator()(T, U) const {
 		throw std::invalid_argument{"Contains is only valid for Lists and Maps"};

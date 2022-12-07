@@ -97,11 +97,17 @@ std::vector<string_view> VariantParser::splitVariableReference(const string_view
 	std::vector<string_view> keys;
 	size_t lastKey = 0;
 	size_t keyEnd = 0;
-	while(keyEnd != string_view::npos) {
+	size_t openParen = 0;
+	//run until the last key isreached, or until the pointer to last key goes out of bounds
+	while(keyEnd != string_view::npos && lastKey <= toParse.size() - 1) {
+		openParen = toParse.find('(', lastKey);
 		keyEnd = toParse.find('.', lastKey);
-		if(lastKey <= keyEnd) {
+		if(openParen < keyEnd) {
+			lastKey = openParen;
+			keyEnd = toParse.find(')', openParen) + 1;
+		}
+		if(lastKey < keyEnd) {
 			keys.push_back(toParse.substr(lastKey, keyEnd - lastKey));
-			std::cout << "Split Found: " << keys[keys.size() - 1] << "\n";
 		}
 		lastKey = keyEnd + 1;
 	}
