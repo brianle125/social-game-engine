@@ -34,7 +34,6 @@ TEST(ForEachRuleSuite, oneRoundBasicRules)
 
 }
 
-
 TEST(ForEachRuleSuite, fiveRoundsBasicRules)
 {
     MockGameModel model;
@@ -98,7 +97,8 @@ TEST(ForEachSuite, complexAndNestedRules)
     LoopRule loopTwo(rules, con);
     rules.emplace_back(std::move(&loop));
     rules.emplace_back(std::move(&loopTwo));
-
+    EXPECT_CALL(model, getVariable("Rounds"));
+    
     ForEachRule foreach(rules);
     foreach.executeRule(model);
     EXPECT_EQ(RuleStatus::FINISHED, foreach.getStatus());
