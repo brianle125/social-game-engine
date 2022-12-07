@@ -3,12 +3,17 @@
 #include <ContentVariant>
 
 
-class Sort{
+class Sort final : public rules::IRule{
     public:
-        Sort(std::vector<dataVariant>& vector);
+        Sort(std::string key);
+        Sort(std::string key, std::string sortingKey);
+        ~Sort() {}
+        std::optional<std::vector<rules::IRule>> executeRule(GameModel model) override;
 
-        void Sort::ExecuteRule();
+       // void Sort::ExecuteRule();
 
     private:
-        vector<dataVariant>& sortVector;
+       // vector<dataVariant>& sortVector;
+       std::string key;
+       std::string sortingKey;
 };

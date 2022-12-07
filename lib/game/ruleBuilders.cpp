@@ -6,7 +6,7 @@
 #include "ForEachRule.h"
 #include "WhenRule.h"
 #include "LoopRule.h"
-//#include "ShuffleList.h"
+#include "ShuffleList.h"
 
 
 using json = nlohmann::json;
@@ -29,7 +29,6 @@ void GameCreator::GenerateRuleBuilders() {
 			auto newRule = std::make_unique<GlobalMessage>(GlobalMessage(ruleData["value"]));
 			return std::move(newRule);
 	});	
-
 
 	ruleBuilders.emplace("foreach", 
 		[](json ruleData) -> std::unique_ptr<rules::IRule> {
@@ -75,6 +74,17 @@ void GameCreator::GenerateRuleBuilders() {
 			return std::move(newRule);
 		}
 	);
+
+	ruleBuilders.emplace("shuffle",
+		[](json ruleData) -> std::unique_ptr<rules::IRule> {
+			auto newRule = std::make_unique<ShuffleList>(ShuffleList(ruleData["list"]));
+			return std::move(newRule);
+		}
+	);
+
+
+
+
 	
 	
 }

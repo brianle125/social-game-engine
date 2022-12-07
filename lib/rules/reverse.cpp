@@ -1,41 +1,28 @@
 #include "include/reverse.h"
-#include <iostream>
 
-using namespace std;
 
-vector<string> Reverse::getList()
-{
-    return list;
+Reverse::Reverse(std::string key)
+: k(key) {}
+
+std::optional<std::vector<rules::IRule>> Reverse::executeRule(GameModel model) {
+    dataVariant v = model.getVariable(k);
+    rva::visit(reverseVisitor(), v);
+    model.setVariable(k, v);
+    return nullopt;
 }
 
-// TODO: remove set and use constructor instead?
-void Reverse::setList(vector<string> newList)
-{
-    list = newList;
-}
-
-void Reverse::reverseList()
-{
-    reverse(list.begin(), list.end());
-}
-
-// int main()
+// vector<string> Reverse::getList()
 // {
-//     Reverse test;
+//     return list;
+// }
 
-//     vector<string> ok;
-//     ok.push_back("hello");
-//     ok.push_back("one");
-//     ok.push_back("two");
-//     ok.push_back("three");
+// // TODO: remove set and use constructor instead?
+// void Reverse::setList(vector<string> newList)
+// {
+//     list = newList;
+// }
 
-//     test.setList(ok);
-//     test.reverseList();
-
-//     // printing the reversed list
-//     for (auto i : test.getList())
-//     {
-//         cout << i << " ";
-//     }
-//     cout << endl;
+// void Reverse::reverseList()
+// {
+//     reverse(list.begin(), list.end());
 // }
