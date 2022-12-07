@@ -101,4 +101,20 @@ struct reverseVisitor {
 	void operator()(T const) const {}
 };
 
+struct sortVisitor {
+	void operator()(std::vector<map<std::string, dataVariant>> &v, std::string key);
+	void operator()(std::vector<dataVariant> &v);
+	template <typename T>
+	void operator()(T const) const {}
+	template <typename T, typename U>
+	void operator()(T const, U const) const {}
+
+};
+
+struct dealVisitor {
+	std::vector<dataVariant> operator()(std::vector<dataVariant> &v, int count);
+	template <typename T>
+	void operator()(T const) const {}
+};
+
 #endif

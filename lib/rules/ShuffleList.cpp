@@ -1,18 +1,15 @@
-#include "include/ShuffleList.h"
-#include <algorithm>
-#include <random>
+#include <ShuffleList.h>
 #include <vector>
-#include <chrono>
+#include <optional>
 
-using namespace std;
-
-ShuffleList::ShuffleList(vector<string>& l)
-: memberList(l) {}
+ShuffleList::ShuffleList(std::string key)
+: k(key) {}
 
 
-//adapted from https://www.techiedelight.com/shuffle-vector-cpp/
-void ShuffleList::executeRule(GameModel model) 
+std::optional<std::vector<rules::IRule>> ShuffleList::executeRule(GameModel model) 
 {
-    unsigned seed = chrono::steady_clock::now().time_since_epoch().count(); //change to better random generator later
-    std::shuffle(memberList.begin(), memberList.end(), default_random_engine(seed));
+    dataVariant v = model.getVariable(k);
+    rva::visit(shuffleVisitor(), v);
+    model.setVariable(k, v);
+    return nullopt;
 }

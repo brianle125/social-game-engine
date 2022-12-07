@@ -1,16 +1,18 @@
+#pragma once
+
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <optional>
 #include "IRule.h"
 
-using namespace std;
 
 class ShuffleList final : public rules::IRule {
     private:
-        vector<string>& memberList;
+        std::string k;
     
     public:
-        ShuffleList(vector<string>& l);
-        void executeRule(GameMode model) override;
-
+        ShuffleList(std::string key);
+        ~ShuffleList() {}
+        std::optional<std::vector<rules::IRule>> executeRule(GameModel model) override;
 };
