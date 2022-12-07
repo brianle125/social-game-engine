@@ -112,9 +112,9 @@ struct sortVisitor {
 };
 
 struct dealVisitor {
-	std::vector<dataVariant> operator()(std::vector<dataVariant> &v, int count);
-	template <typename T>
-	void operator()(T const) const {}
+	void operator()(std::vector<dataVariant> &from, std::vector<dataVariant> &to, int unsigned count);
+	template <typename T, typename U, typename V>
+	void operator()(T const, U const, V const) const {}
 };
 
 #endif

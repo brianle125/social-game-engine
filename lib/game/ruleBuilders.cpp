@@ -9,6 +9,7 @@
 #include "ShuffleList.h"
 #include "Sort.h"
 #include "reverse.h"
+#include "Deal.h"
 
 
 using json = nlohmann::json;
@@ -98,6 +99,13 @@ void GameCreator::GenerateRuleBuilders() {
 	ruleBuilders.emplace("reverse",
 		[](json ruleData) -> std::unique_ptr<rules::IRule> {
 			auto newRule = std::make_unique<Reverse>(Reverse(ruleData["list"]));
+			return std::move(newRule);
+		}
+	);
+		
+	ruleBuilders.emplace("deal",
+		[](json ruleData) -> std::unique_ptr<rules::IRule> {
+			auto newRule = std::make_unique<Deal>(Deal(ruleData["from"], ruleData["to"], ruleData["count"]));
 			return std::move(newRule);
 		}
 	);
