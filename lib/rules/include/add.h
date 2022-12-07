@@ -1,26 +1,21 @@
+#pragma once
+
 #include "IRule.h"
+#include <string>
+#include <optional>
+#include "ContentVariant.h"
+#include <vector>
 
 
+class Add final : public rules::IRule
+{
+public:
+    //add value parameter can be either integer literal or name of a variable or constant containing the value to add.
+    Add(std::string key, dataVariant value);
+    ~Add() {}
+    std::optional<std::vector<rules::IRule>> executeRule(GameModel model) override;
 
-namespace rules{
-
-	class Add: public IRule
-    {
-        public:
-            //add value parameter can be either integer literal or name of a variable or constant containing the value to add.
-            Add(std::string to,gameModel::Game& game ,int addition_value);
-            Add(std::string to,gameModel::Game& game ,std::string addition_source);
-            ~Add();
-
-            void ExecuteRule();
-
-            void add();
-
-		
-
-	    private:
-            std::string target;
-            int value;
-            gameModel::Game& game;
-	};
-}
+private:
+    std::string key;
+    dataVariant val;
+};

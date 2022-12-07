@@ -1,26 +1,12 @@
-#include "include/add.h"
+#include <add.h>
 
-rules::Add::Add(std::string to,gameModel::Game& game ,int addition_value)
-{
-    target = to;
-    game = game;
-    value = addition_value;
-}
+Add::Add(std::string key, dataVariant value) 
+: key(key), val(value) {}
 
-
-
-rules::Add::Add(std::string to,gameModel::Game& game ,std::string addition_source)
-{
-    target = to;
-    game = game;
-    
-    // TODO once gamemodel variable implimentation is cemented add call to fetch value of named variable
-}
-
-void rules::Add::ExecuteRule(){
-    add();
-}
-
-void rules::Add::add(){
-    //TODO once gamemodel variable implimentation is cemented add call to modify value of named variable
+std::optional<std::vector<rules::IRule>> Add::executeRule(GameModel model) {
+    dataVariant v = model.getVariable(key);
+   // v = v + val;
+    dataVariant result = rva::visit(addVisitor(), v, val);
+    model.setVariable(key, result);
+    return nullopt;
 }

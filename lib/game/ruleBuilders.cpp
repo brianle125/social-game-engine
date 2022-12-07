@@ -10,6 +10,7 @@
 #include "Sort.h"
 #include "reverse.h"
 #include "Deal.h"
+#include "add.h"
 
 
 using json = nlohmann::json;
@@ -109,4 +110,11 @@ void GameCreator::GenerateRuleBuilders() {
 			return std::move(newRule);
 		}
 	);
+
+	// ruleBuilders.emplace("add",
+	// 	[](json ruleData) -> std::unique_ptr<rules::IRule> {
+	// 		auto newRule = std::make_unique<Add>(Add(ruleData["to"], ruleData["value"]));
+	// 		return std::move(newRule);
+	// 	}
+	// );
 }
