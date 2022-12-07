@@ -7,6 +7,7 @@
 #include "WhenRule.h"
 #include "LoopRule.h"
 #include "ShuffleList.h"
+#include "Sort.h"
 
 
 using json = nlohmann::json;
@@ -82,9 +83,14 @@ void GameCreator::GenerateRuleBuilders() {
 		}
 	);
 
-
-
-
-	
-	
+	ruleBuilders.emplace("sort", 
+		[](json ruleData) -> std::unique_ptr<rules::IRule> {
+			std::unique_ptr<Sort> newRule;
+			if (ruleData["key"]) {
+				newRule = std::make_unique<Sort>(Sort(ruleData["list"], ruleData["key"]));
+			} else {
+				newRule = std::make_unique<Sort>(Sort(ruleData["list"]));
+			}
+			return std::move(newRule);
+	});	
 }

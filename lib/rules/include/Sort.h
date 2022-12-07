@@ -1,7 +1,9 @@
+#pragma once
+
 #include <vector>
 #include "IRule.h"
-#include <ContentVariant>
-
+#include <optional>
+#include <string>
 
 class Sort final : public rules::IRule{
     public:
@@ -10,10 +12,7 @@ class Sort final : public rules::IRule{
         ~Sort() {}
         std::optional<std::vector<rules::IRule>> executeRule(GameModel model) override;
 
-       // void Sort::ExecuteRule();
-
     private:
-       // vector<dataVariant>& sortVector;
        std::string key;
        std::string sortingKey;
 };

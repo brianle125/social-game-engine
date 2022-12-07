@@ -106,6 +106,9 @@ struct sortVisitor {
 	void operator()(std::vector<dataVariant> &v);
 	template <typename T>
 	void operator()(T const) const {}
+	template <typename T, typename U>
+	void operator()(T const, U const) const {}
+
 };
 
 struct dealVisitor {

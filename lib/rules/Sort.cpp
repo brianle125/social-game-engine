@@ -1,5 +1,7 @@
-#include "include/sort.h"
-
+//#include "include/sort.h"
+#include <Sort.h>
+#include <vector>
+#include <optional>
 
 Sort::Sort(std::string key) 
 : key(key) {}
@@ -7,19 +9,12 @@ Sort::Sort(std::string key)
 Sort::Sort(std::string key, std::string sortingKey)
 : key(key), sortingKey(sortingKey) {}
 
-optional<std::vector<rules::IRule>> executeRule(GameModel model) override {
+std::optional<std::vector<rules::IRule>> Sort::executeRule(GameModel model) {
+    dataVariant v = model.getVariable(key);
     if (sortingKey.empty()) {
-        rva::visit(sortVisitor, key);
+        rva::visit(sortVisitor(), v);
     } else {
-        rva::visit(sortVisitor, key, sortingKey);
+        //rva::visit(sortVisitor(), v, sortingKey);
     }
     return nullopt;
 }
-
-// Sort::Sort(std::vector<dataVariant>& vector):sortVector(vector){}
-
-
-// void Sort::ExecuteRule()
-// {
-//     std::sort(sortVector.begin(),sortVector.end());
-// }
