@@ -4,11 +4,10 @@
 class WhenRule final : public rules::IRule
 {
     public:
-        WhenRule(std::vector<bool> cases, std::vector<rules::IRule*> list);
+        WhenRule(std::vector<bool> cases, std::vector<std::vector<rules::IRule*>> list);
         std::optional<vector<rules::IRule>> executeRule(GameModel model) override;
-        std::vector<std::string> getTokens(std::string str);
     private:
-        std::string failCondition;
-        std::vector<rules::IRule*> ruleList;
         std::vector<bool> cases;
+        std::vector<std::vector<rules::IRule*>> rulesCollection;
+        
 };

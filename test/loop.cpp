@@ -29,7 +29,7 @@ TEST(LoopRuleSuite, basicRuleLoop)
     LoopRule loop(rules, con);
     loop.executeRule(model);
 
-    EXPECT_EQ(RuleStatus::FINISHED, foreach.getStatus());
+    EXPECT_EQ(RuleStatus::FINISHED, loop.getStatus());
 
 }
 
@@ -54,6 +54,6 @@ TEST(LoopRuleSuite, nestedLoopRule)
     LoopRule loop(rules, con);
     loop.executeRule(model);
 
-    EXPECT_EQ(RuleStatus::FINISHED, foreach.getStatus());
+    EXPECT_EQ(RuleStatus::FINISHED, loop.getStatus());
 
 }

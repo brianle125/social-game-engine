@@ -3,6 +3,7 @@
 #include "ForEachRule.h"
 #include "GlobalMessage.h"
 #include "gameModelMock.h"
+#include "LoopRule.h"
 
 
 /** 
@@ -78,3 +79,27 @@ TEST(ForEachSuite, nestedForEach)
     EXPECT_EQ(RuleStatus::FINISHED, foreach.getStatus());
 }
 
+TEST(ForEachSuite, complexAndNestedRules)
+{
+    MockGameModel model;
+    model.addVariable("Rounds", 2);
+    model.addVariable("upfrom", 1);
+    model.addVariable("condition", false);
+    bool con = std::get<bool>(model.getVariable("condition"));
+
+    std::vector<rules::IRule*> rules;
+    GlobalMessage glob("first");
+    GlobalMessage glob2("second");
+    GlobalMessage glob3("third");
+    rules.emplace_back(std::move(&glob));
+    rules.emplace_back(std::move(&glob2));
+    rules.emplace_back(std::move(&glob3));
+    LoopRule loop(rules, con);
+    LoopRule loopTwo(rules, con);
+    rules.emplace_back(std::move(&loop));
+    rules.emplace_back(std::move(&loopTwo));
+
+    ForEachRule foreach(rules);
+    foreach.executeRule(model);
+    EXPECT_EQ(RuleStatus::FINISHED, foreach.getStatus());
+}

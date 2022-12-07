@@ -2,43 +2,26 @@
 #include <vector>
 #include <iostream>
 
-WhenRule::WhenRule(std::vector<bool> cases, std::vector<rules::IRule*> list) : cases(cases), ruleList(list) {}
+WhenRule::WhenRule(std::vector<bool> cases, std::vector<std::vector<rules::IRule*>> list) : cases(cases), rulesCollection(list) {}
 
 std::optional<vector<rules::IRule>> WhenRule::executeRule(GameModel model)
 {
-    std::vector<std::string> tokens = getTokens(failCondition);
-    std::vector<dataVariant> variables;
-
-    for(auto c : cases)
+    for(int i=0; i < cases.size(); i++)
     {
+        //continue down if-else chain until true statement evaluated or end of list is reached
+        //Needs to utilize expression parser to compare more concrete booleans
+        if(cases.at(i) == false) {
+            continue;
+        } 
+        else {
+            for(auto rule : rulesCollection[i])
+            {
+                rule->executeRule(model);
+            }
+            break;
+        }
         
     }
-     return nullopt;
-}
-
-//handle brackets later
-std::vector<std::string> WhenRule::getTokens(std::string str)
-{
-    std::vector<std::string> tokens;
-    tokens.reserve(str.size());
-
-    const char delim = '.';
-    int startPos = 0;
-    int endPos = -1;
-
-    for (int i= 0; i < str.size(); i++)
-    {
-        if (str[i] == delim || str[i] == ' ')
-        {
-            startPos = endPos;
-            endPos = i;
-            int index = startPos + 1;
-            int length = endPos - index;
-
-            std::string token(str.data() + index, length);
-            tokens.push_back(token);
-        }
-    }
-    return tokens;
-    
+    status = FINISHED;
+    return nullopt;
 }
