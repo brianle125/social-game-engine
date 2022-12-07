@@ -1,14 +1,18 @@
+#pragma once
+
 #include <vector>
 #include "IRule.h"
-#include <ContentVariant>
+#include <optional>
+#include <string>
 
-
-class Sort{
+class Sort final : public rules::IRule{
     public:
-        Sort(std::vector<dataVariant>& vector);
-
-        void Sort::ExecuteRule();
+        Sort(std::string key);
+        Sort(std::string key, std::string sortingKey);
+        ~Sort() {}
+        std::optional<std::vector<rules::IRule>> executeRule(GameModel model) override;
 
     private:
-        vector<dataVariant>& sortVector;
+       std::string key;
+       std::string sortingKey;
 };

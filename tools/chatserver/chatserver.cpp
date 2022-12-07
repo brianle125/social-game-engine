@@ -107,7 +107,8 @@ processMessagesResponse(Server& server, const std::deque<Message>& incoming) {
     } else if (!server.responseQueue.empty()) {
         std::unordered_map<uintptr_t, networking::Response>::iterator clientItr = server.responseQueue.find(message.connection.id);
         if (clientItr != server.responseQueue.end()) {
-            rules::InputRule::InputValidation valid = clientItr->second.rule->receiveResponse(message.text, clientItr->second.start);
+            std::chrono::duration<double> duration = std::chrono::system_clock::now() - clientItr->second.start;
+            rules::InputRule::InputValidation valid = clientItr->second.rule->receiveResponse(message.text, duration);
             if (valid == rules::InputRule::InputValidation::success) { server.responseQueue.erase(clientItr); }
         }
     }

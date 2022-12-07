@@ -132,6 +132,9 @@ public:
    */
   void disconnect(Connection connection);
 
+  // added for unit tests
+  Server() {}
+
   /**
    *  Add rule to the responseQueue.
    *  The responseQueue keeps track of the rules that are
