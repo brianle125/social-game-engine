@@ -32,7 +32,7 @@
   "rules": [
     {
       "rule": "global-message",
-      "value": "This is the First rule! is this working? {no.}"
+      "value": "This is the First rule! is this working? {no}"
     },
     {
       "rule": "global-message",

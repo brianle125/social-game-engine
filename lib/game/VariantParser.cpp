@@ -103,11 +103,15 @@ std::vector<string_view> VariantParser::splitVariableReference(const string_view
 		openParen = toParse.find('(', lastKey);
 		keyEnd = toParse.find('.', lastKey);
 		if(openParen < keyEnd) {
+			keyEnd = openParen;
+			keys.push_back(toParse.substr(lastKey, keyEnd - lastKey));
+			std::cout << "Split on: " << keys[keys.size()-1] << "\n";
 			lastKey = openParen;
 			keyEnd = toParse.find(')', openParen) + 1;
 		}
 		if(lastKey < keyEnd) {
 			keys.push_back(toParse.substr(lastKey, keyEnd - lastKey));
+			std::cout << "Split on: " << keys[keys.size()-1] << "\n";
 		}
 		lastKey = keyEnd + 1;
 	}

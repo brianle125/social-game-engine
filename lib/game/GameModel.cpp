@@ -52,11 +52,6 @@ dataVariant GameModel::resolveKey(dataVariant currentVariable, std::vector<strin
 		return rva::visit(searchVisitor{}, currentVariable, key);
 	}
 
-	//this one likely needs more complex variable splitting
-	if(currentAccessor == "collect") {
-
-	}
-
 	if (currentAccessor == "size") { 
 		index += 1;
 		return rva::visit(sizeVisitor{}, currentVariable);
@@ -66,7 +61,14 @@ dataVariant GameModel::resolveKey(dataVariant currentVariable, std::vector<strin
 	if (currentAccessor == "contains") {
 		if(index + 1 == accessors.end()) 
 			throw std::invalid_argument("contains is not valid as the final accessor in a chain");
+		string_view nextAccessor = *(index + 1);
+		std::cout << nextAccessor << "\n";
+
 		dataVariant key(LookupKey{*(index + 1)});
+		if(nextAccessor.starts_with("(")) {
+			key = getVariable(LookupKey{nextAccessor.substr(1, nextAccessor.size() - 2)});
+			std::cout << rva::visit(toStringVisitor{}, key) << "\n";
+		}
 		index += 2; //uses up this and the following accessor
 		return rva::visit(containsVisitor{}, currentVariable, key);
 	}
