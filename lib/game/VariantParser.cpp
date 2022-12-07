@@ -1,8 +1,6 @@
 #include <VariantParser.h>
 #include <iostream>
 
-using namespace std;
-
 dataVariant VariantParser::makeVariantFromJson(const json& j) {
 	nlohmann::detail::value_t variableType = j.type();
 	dataVariant data;
@@ -40,7 +38,7 @@ dataVariant VariantParser::makeVariantFromJson(const json& j) {
 }
 
 dataVariant VariantParser::makeVariantVectorFromJson(const json& j) {
-	vector<dataVariant> internalData;
+	std::vector<dataVariant> internalData;
 	for(auto& item : j.items()) {
 		internalData.push_back(makeVariantFromJson(item.value()));
 	}
@@ -48,11 +46,73 @@ dataVariant VariantParser::makeVariantVectorFromJson(const json& j) {
 }
 
 dataVariant VariantParser::makeVariantMapFromJson(const json& j) {
-	map<string, dataVariant> internalData;
+	std::map<string, dataVariant> internalData;
 	for(auto& item : j.items()) {
-		string key = item.key();
+		std::string key = item.key();
 		dataVariant variant = makeVariantFromJson(item.value());
 		internalData.emplace(key, variant);
 	}
 	return dataVariant(internalData);
+}
+
+std::vector<string_view> VariantParser::getKeysFromString(const string_view toParse) {
+	std::vector<string_view> keys;
+	size_t keyBegin = 0;
+	size_t keyEnd = 0;
+	while(keyBegin != string_view::npos) {
+		keyBegin = toParse.find('{', keyEnd);
+		keyEnd = toParse.find('}', keyBegin);
+		if(keyBegin != string_view::npos && keyBegin + 1 <= keyEnd - 1) {
+			keys.push_back(toParse.substr(keyBegin + 1, keyEnd - keyBegin - 1));
+			std::cout << "Key Found: " << keys[keys.size() - 1] << "\n";
+		}
+	}
+
+	return keys;
+}
+
+std::string VariantParser::replaceKeysInString(const string_view baseString, std::vector<string> variables) {
+	std::ostringstream parsedString;
+	bool writing = true;
+	size_t variableIndex = 0;
+
+	for(char c : baseString) {
+		if(c == '{') {
+			writing = false;
+		}
+		if(writing) {
+			parsedString << c;
+		}
+		if(c == '}') {
+			writing = true;
+			parsedString << variables[variableIndex];
+			variableIndex++;
+		}
+	}
+
+	return parsedString.str();
+}
+
+std::vector<string_view> VariantParser::splitVariableReference(const string_view toParse) {
+	std::vector<string_view> keys;
+	size_t lastKey = 0;
+	size_t keyEnd = 0;
+	size_t openParen = 0;
+	//run until the last key isreached, or until the pointer to last key goes out of bounds
+	while(keyEnd != string_view::npos && lastKey <= toParse.size() - 1) {
+		openParen = toParse.find('(', lastKey);
+		keyEnd = toParse.find('.', lastKey);
+		if(openParen < keyEnd) {
+			keyEnd = openParen;
+			keys.push_back(toParse.substr(lastKey, keyEnd - lastKey));
+			lastKey = openParen;
+			keyEnd = toParse.find(')', openParen) + 1;
+		}
+		if(lastKey < keyEnd) {
+			keys.push_back(toParse.substr(lastKey, keyEnd - lastKey));
+		}
+		lastKey = keyEnd + 1;
+	}
+
+	return keys;
 }

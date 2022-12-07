@@ -8,8 +8,9 @@ GlobalMessage::GlobalMessage(std::string message)
 
 optional<vector<rules::IRule>> GlobalMessage::executeRule(GameModel model) {
     //string_view view(message);
+    std::string paramaterizedMessage = model.fillInVariables(message);
 
-    std::cout << message << "\n";
+    std::cout << "Global Message: " << paramaterizedMessage << "\n";
     status = FINISHED;
     return nullopt;
 }

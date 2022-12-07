@@ -1,45 +1,112 @@
 #include <iostream>
 #include <stdexcept>
+#include <string_view>
+#include <sstream>
 #include <GameModel.h>
 #include <ContentVariant.h>
 #include "VariantParser.h"
 #include "IRule.h"
 
-using namespace std;
-using lookupKey = string;
+using LookupKey = std::string;
 
 GameModel::GameModel() {
 	parser = VariantParser();
 }
 
-void GameModel::addSetupVariable(lookupKey key, dataVariant value) {
+void GameModel::addSetupVariable(LookupKey key, dataVariant value) {
 	setup.emplace(key, value);
 }
 
-void GameModel::addConstant(lookupKey key, dataVariant value) {
+void GameModel::addConstant(LookupKey key, dataVariant value) {
 	constants.emplace(key, value);
 }
 
-void GameModel::addVariable(lookupKey key, dataVariant value) {
+void GameModel::addVariable(LookupKey key, dataVariant value) {
 	variables.emplace(key, value);
 }
 
-dataVariant GameModel::getVariable(lookupKey key) {
-	//Todo: use Variant Parser to deal with more complex keys like deck.elements.name
-	auto varToReturn = variables.find(key);
-	if(varToReturn != variables.end()) {
-		return varToReturn->second;
-	}
-	varToReturn = constants.find(key);
-	if(varToReturn != constants.end()) {
-		return varToReturn->second;
-	}
+dataVariant GameModel::getVariable(LookupKey key) {
+	auto accessors = parser.splitVariableReference(key);
+	dataVariant currentVariable;
+
+	std::vector<string_view>::iterator accessorIndex = accessors.begin();
+
+	while(accessorIndex != accessors.end()) {
+		currentVariable = resolveKey(currentVariable, accessors, accessorIndex);
+	}	
+
+	return currentVariable;
 
 	//TODO: this may need to be replaced with implicit creation
 	throw std::invalid_argument("Variable " + key + " Not Found");
 }
 
-void GameModel::setVariable(lookupKey key, dataVariant value) {
+dataVariant GameModel::resolveKey(dataVariant currentVariable, std::vector<string_view> accessors, std::vector<string_view>::iterator& index) {
+	string_view currentAccessor = *index;
+
+	if(currentAccessor == "elements") {
+		if(index + 1 == accessors.end()) 
+			throw std::invalid_argument("elements is not valid as the final accessor in a chain");
+		dataVariant key(LookupKey{*(index + 1)});
+		index += 2; //uses up this and the following accessor
+		return rva::visit(searchVisitor{}, currentVariable, key);
+	}
+
+	if (currentAccessor == "size") { 
+		index += 1;
+		return rva::visit(sizeVisitor{}, currentVariable);
+	}
+
+	if (currentAccessor == "contains") {
+		if(index + 1 == accessors.end()) 
+			throw std::invalid_argument("contains is not valid as the final accessor in a chain");
+		string_view nextAccessor = *(index + 1);
+
+		dataVariant key(LookupKey{*(index + 1)});
+		if(nextAccessor.starts_with("(")) {
+			key = getVariable(LookupKey{nextAccessor.substr(1, nextAccessor.size() - 2)});
+		}
+		index += 2; //uses up this and the following accessor
+		return rva::visit(containsVisitor{}, currentVariable, key);
+	}
+
+	//Default case, where no special commands were invoked, just finds the variable in the lists.
+	currentVariable = lookupVariable(LookupKey{currentAccessor});
+	index += 1;
+	return currentVariable;
+}
+
+dataVariant GameModel::lookupVariable(LookupKey key) {
+	dataVariant varToReturn;
+	auto variableIterator = variables.find(key);
+	if(variableIterator != variables.end()) {
+		varToReturn = variableIterator->second;
+	}
+	variableIterator = constants.find(key);
+	if(variableIterator != constants.end()) {
+		varToReturn = variableIterator->second;
+	}
+	variableIterator = setup.find(key);
+	if(variableIterator != constants.end()) {
+		varToReturn = variableIterator->second;
+	}
+	return varToReturn;
+}
+
+std::string GameModel::fillInVariables(std::string_view toParse) {
+	auto keys = parser.getKeysFromString(toParse);
+	std::vector<std::string> variables;
+
+	for(auto key : keys) {
+		// LookupKey lookup;
+		dataVariant variable = getVariable(LookupKey{key});
+		variables.push_back(rva::visit(toStringVisitor{}, variable));
+	}
+
+	return parser.replaceKeysInString(toParse, variables);
+}
+
+void GameModel::setVariable(LookupKey key, dataVariant value) {
 	auto varToUpdate = variables.find(key);
 	if(varToUpdate != variables.end()) {
 		varToUpdate->second = value;

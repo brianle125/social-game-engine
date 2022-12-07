@@ -145,6 +145,55 @@ void reverseVisitor::operator()(vector<dataVariant> &v) {
     std::reverse(v.begin(), v.end());
 }
 
+dataVariant searchVisitor::operator()(std::vector<dataVariant> v, string s) const {
+    vector<dataVariant> newList;
+    dataVariant key(s);
+    for(dataVariant var : v) {
+        dataVariant temp = rva::visit(searchVisitor{}, var, key);
+        newList.push_back(temp);
+    }
+
+    return dataVariant(newList);
+}
+
+dataVariant searchVisitor::operator()(map<std::string, dataVariant> m, string s) const {
+    auto variable = m.find(s);
+    if(variable != m.end()) {
+        return variable->second;
+    }
+    throw std::invalid_argument("Variable Not Found");
+}
+
+dataVariant sizeVisitor::operator()(std::vector<dataVariant> &v) const {
+    int size = v.size();
+    return dataVariant(size);
+}
+
+dataVariant sizeVisitor::operator()(std::map<std::string, dataVariant> &m) const {
+    int size = m.size();
+    return dataVariant(size);
+}
+
+//WIP
+//This is an incredibly naive implementation of contains, that doesn't account for
+//complex variables in it's own search, nor for any types aside from string.
+//will be improved if theres time.
+dataVariant containsVisitor::operator()(std::vector<dataVariant> v, std::string object) const {
+    auto variable = std::find(v.begin(), v.end(), object);
+    if(variable == v.end()) {
+        return false;
+    }
+    return true;
+}
+
+dataVariant containsVisitor::operator()(map<std::string, dataVariant> m, std::string s) const {
+    auto variable = m.find(s);
+    if(variable == m.end()) {
+        return false;
+    }
+    return true;
+}
+
 //Sort visitor
 
 void sortVisitor::operator()(std::vector<map<std::string, dataVariant>> &v, std::string key) {

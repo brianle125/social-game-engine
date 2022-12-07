@@ -10,8 +10,8 @@ using json = nlohmann::json;
 using namespace std;
 
 GameCreator::GameCreator(std::string gameSpecification) {
-	std::ifstream f(gameSpecification);
-	gameSource = json::parse(f);
+	std::ifstream gameFile(gameSpecification);
+	gameSource = json::parse(gameFile);
 
 	GenerateRuleBuilders();
 }
@@ -27,13 +27,7 @@ GameController GameCreator::createGameController() {
 							  configData["audience"],
 							  model);
 
-	auto rulesList = createRules();
-
-	for(auto &rule : rulesList) {
-		controller.addRule(std::move(rule));
-	}
-
-	controller.initializeStack();
+	createRules(controller);
 
 	return controller;
 }
@@ -52,7 +46,7 @@ GameModel GameCreator::createGameModel() {
 	return newGame;
 }
 
-std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules() {
+void GameCreator::createRules(GameController& controller) {
 	json rules = gameSource["rules"];
 
 	std::vector<std::unique_ptr<rules::IRule>> ruleList;
@@ -68,7 +62,9 @@ std::vector<std::unique_ptr<rules::IRule>> GameCreator::createRules() {
 
 	reverse(ruleList.begin(), ruleList.end());
 
-	return ruleList;
+	for(auto &rule : ruleList) {
+		controller.addRule(std::move(rule));
+	}
 }
 
 
