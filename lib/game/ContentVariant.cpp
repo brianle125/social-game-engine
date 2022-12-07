@@ -175,8 +175,12 @@ dataVariant sizeVisitor::operator()(std::map<std::string, dataVariant> &m) const
 }
 
 //WIP
-dataVariant containsVisitor::operator()(std::vector<dataVariant> v, string s) const {
-    auto variable = std::find(v.begin(), v.end(), s);
+//This is an incredibly naive implementation of contains, that doesn't account for
+//complex variables in it's own search, nor for any types aside from string.
+//will be improved if theres time.
+// template<typename T>
+dataVariant containsVisitor::operator()(std::vector<dataVariant> v, string object) const {
+    auto variable = std::find(v.begin(), v.end(), object);
     if(variable == v.end()) {
         return false;
     }

@@ -120,7 +120,8 @@ struct searchVisitor {
 };
 
 struct containsVisitor {
-	dataVariant operator()(std::vector<dataVariant> v, string s) const;
+	// template<typename T>
+	dataVariant operator()(std::vector<dataVariant> v, string object) const;
 	dataVariant operator()(map<std::string, dataVariant> m, string s) const;
 	template <typename T, typename U>
 	dataVariant operator()(T, U) const {

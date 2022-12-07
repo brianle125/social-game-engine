@@ -35,7 +35,7 @@
     },
     {
       "rule": "global-message",
-      "value": "This is the Second rule! {coin.elements.name}"
+      "value": "This is the Second rule! {coin.elements.name.contains.heads}"
     },
     {
       "rule": "global-message",
