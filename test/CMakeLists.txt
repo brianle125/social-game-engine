@@ -6,6 +6,7 @@ add_executable(runTests
   loop.cpp
   inputChoiceRuleTest.cpp
   inputTextRuleTest.cpp
+  ContentVariantTest.cpp
 )
 
 target_link_libraries(runTests
