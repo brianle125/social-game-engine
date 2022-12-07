@@ -207,10 +207,11 @@ void sortVisitor::operator()(std::vector<dataVariant> &v) {
 
 //deal visitor
 
-std::vector<dataVariant> dealVisitor::operator()(std::vector<dataVariant> &v, int count) {
-    std::vector<dataVariant> x;
-    for (int i = 0; i < count; i++) {
-        x.push_back(v[i]);
+void dealVisitor::operator()(std::vector<dataVariant> &from, std::vector<dataVariant> &to, int unsigned count) {
+    if (from.size() < count) {
+        count = from.size();
     }
-    return x;
+    to.insert(to.end(), std::make_move_iterator(from.begin() + count), 
+                        std::make_move_iterator(from.end()));
+    from.erase(from.begin() + count, from.end());
 }
